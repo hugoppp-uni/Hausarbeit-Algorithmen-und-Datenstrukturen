@@ -4,10 +4,13 @@ Ein AVL-Baum ist ein Binärbaum, der die zusätzliche Eigenschaft besitzt, dass
 der Betrag der Balance, die als die Differenz der Höhe $h$ der beiden
 Teilbäume definiert ist (siehe~\ref{eq:balance}), bei jedem Knoten maximal 1 beträgt.
 Diese Eigenschaft wird AVL-Bedingung genannt.
+Dabei ist die Höhe analog zum regulären Binärbaum definiert (siehe~\ref{eq:equation}).
 
-Dabei ist die Höhe analog zum regulären Binärbaum definiert.
 \begin{equation}
     bal(k) = h(T_r) - h(T_l)\label{eq:balance}
+\end{equation}
+\begin{equation}
+    h(k) = max(h(T_l), h(T_r))\label{eq:equation}
 \end{equation}
 Durch diese Bedingung wird sichergestellt, dass der Baum zu jedem Zeitpunkt
 balanciert ist und somit das in der Einleitung beschriebene Problem der
@@ -26,40 +29,50 @@ der Balancewerte definiert sind (siehe auch Abbildung~\ref{fig:AVL-Cases}):
     \item Left Right: 2/-1
     \item Right Left: -2/1
 \end{enumerate}
-Bei den ersten beiden Fällen muss jeweils lediglich eine Rotation am Knoten
-ausgeführt werden.
-Bei den letzteren Fällen kann der Baum nicht durch eine einzige Rotation
-balanciert werden, es müssen insgesamt zwei Rotationen durchgeführt werden:
-Mit der ersten Rotation wird der Left Left bzw. Right Right Case
-herbeigeführt, die zweite Rotation befriedigt anschließen die AVL-Bedingung.
 
-\paragraph{Rotation}
+\paragraph*{Rotation}
 
-Bei einer Rotation wird immer der Knoten als Wurzelknoten betrachtet, bei dem
-die AVL-Bedingung verletzt wird.
-Alle Knoten, die über diesem stehen, sind für die Rotation nicht von Relevanz.
+Bei einer Rotation wird immer ein Knoten als Wurzelknoten betrachtet.
+Alle Knoten, die über dem Wurzelknoten stehen, sind für die Rotation nicht von
+Relevanz.
+Im Left Left bzw. Right Right Case ist dies der Knoten,
+bei dem die AVL-Bedingung verletzt wird.
 
-Der Wurzelknoten wird mit dem Nachfolger vertauscht, auf dessen Seite die
+Der Wurzelknoten wird mit dem Kindknoten rotiert, auf dessen Seite die
 Unbalance vorliegt:
 Bei einer negativen Balance mit dem rechten Kindknoten (Linksrotation),
 bei einer positiven Balance mit dem linken Kindknoten (Rechtsrotation).
-Im Folgenden wird dieses Kind Tauschknoten genannt.
+Im Folgenden wird dieses Kind Rotationsknoten genannt.
 
-Betrachte Abbildung~\ref{fig:AVL-Cases}(Left~Left~Case).
-Zum Tauschen der beiden Knoten werden folgende Operationen ausgeführt:
+Betrachte Abbildung~\ref{fig:AVL-Cases}~(Left~Left~Case).
+Zum Rotieren der beiden Knoten werden folgende Operationen ausgeführt:
 Bei einer Rechtsrotation wird der Wurzelknoten (5) als rechtes Kind vom
-Tauschknoten (4) gesetzt, da dieser größer als der Tauschknoten ist.
+Rotationsknoten (4) gesetzt, da dieser größer als der Rotationsknoten ist.
 Der soeben ersetzte Knoten (C), also das ursprüngliche rechte Kind vom
-Tauschknoten, wird als linkes Kind des Wurzelknotens (5) gesetzt,
+Rotationsknoten, wird als linkes Kind des Wurzelknotens (5) gesetzt,
 da dieser kleiner als der Wurzelknoten ist.
-Der Tauschknoten steht somit oben und ist die neue Wurzel.
-
+Der Rotationsknoten steht somit oben und ist die neue Wurzel.
 An Abbildung~\ref{fig:AVL-Cases}~(Balanced) wird deutlich, dass durch die
 Rechtsrotation beim Left Left Case die AVL-Bedingung wieder erfüllt ist.
 
 Eine Linksrotation erfolgt symmetrisch.
 
 \paragraph{Doppelrotation}
+
+Bei den Fällen Left Left und Right Right konnte der Baum mit lediglich
+einer Rotation balanciert werden.
+Dies reicht bei den anderen Fällen nicht aus, wie wird aus Abbildung x %TODO
+ersichtlich wird.
+
+Es müssen insgesamt zwei Rotationen durchgeführt werden:
+Mit der ersten Rotation wird der Left Left bzw. Right Right Case
+herbeigeführt, die zweite Rotation befriedigt anschließen die AVL-Bedingung.
+Betrachte Abbildung~\ref{fig:AVL-Cases}`(Left Right Case).
+Im Left Right Case wird zunächst eine Linksrotation zwischen dem linken
+Kindknoten des Wurzelelementes und des rechten Nachfolgers ausgeführt.
+Diese Rotation wird wie symetrisch zur oben beschriebenen Rechtsrotation ausgeführt.
+Anschließend liegt der Left Left Case vor, eine einfache Rechtsrotation
+befriedigt nun die AVL-Bedingung.
 
 
 \begin{figure}
@@ -70,8 +83,3 @@ Eine Linksrotation erfolgt symmetrisch.
     \caption{Rebalancierung}
     \label{fig:AVL-Cases}
 \end{figure}
-
-
-
-
-\paragraph{Links Links / Rechts Rechts}
