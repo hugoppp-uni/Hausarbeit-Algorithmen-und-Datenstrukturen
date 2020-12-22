@@ -1,0 +1,50 @@
+\subsection{Entwurf}\label{subsec:entwurf}
+\paragraph{AVL-Bedingung}
+Ein AVL-Baum ist ein Binärbaum, der die zusätzliche Eigenschaft besitzt, dass
+der Betrag der Balance, die als die Differenz der Höhe $h$ der beiden
+Teilbäume definiert ist (siehe~\ref{eq:balance}), bei jedem Knoten maximal 1 beträgt.
+Diese Eigenschaft wird AVL-Bedingung genannt.
+
+Dabei ist die Höhe analog zum regulären Binärbaum definiert.
+\begin{equation}
+    bal(k) = h(T_r) - h(T_l)\label{eq:balance}
+\end{equation}
+Durch diese Bedingung wird sichergestellt, dass der Baum zu jedem Zeitpunkt
+balanciert ist und somit das in der Einleitung beschriebene Problem der
+schlechten Laufzeit des Binärbaumes durch Entartung nicht auftreten kann.
+
+\paragraph{Rebalancierung}
+Nach dem Einfügen und Löschen von Elementen kann es jeweils vorkommen, dass die
+Balance eines Konten -2 oder 2 beträgt.
+Somit muss der AVL-Baum nach diesen Operationen die AVL-Bedingung überprüfen,
+und eventuell eine Rebalancierung vornehmen.
+Dabei wird zwischen insgesamt vier Fällen unterschieden, die durch die Folge
+der Balancewerte definiert sind (siehe auch Abbildung~\ref{fig:AVL-Cases}):
+\begin{enumerate}
+    \item Left Left: 2/1
+    \item Right Right: -2/-1
+    \item Left Right: 2/-1
+    \item Right Left: -2/1
+\end{enumerate}
+Bei den ersten beiden Fällen muss jeweils lediglich eine Rotation am Knoten
+ausgeführt werden.
+Bei den letzteren Fällen kann der Baum nicht durch eine einzige Rotation
+balanciert werden, es müssen insgesamt zwei Rotationen durchgeführt werden:
+Mit der ersten Rotation wird der Left Left bzw. Right Right Case
+herbeigeführt, die zweite Rotation befriedigt anschließen die AVL-Bedingung.
+
+\paragraph{Rotation}
+
+\begin{figure}
+    \centering
+    %https://fr.m.wikipedia.org/wiki/Fichier:AVL_Tree_Rebalancing.svg
+    %https://github.com/LambdaSchool/Data-Structures
+    \includegraphics[width= 0.5\textwidth]{img/AVL_Tree_Rebalancing.png}
+    \caption{Rebalancierung}
+    \label{fig:AVL-Cases}
+\end{figure}
+
+
+
+
+\paragraph{Links Links / Rechts Rechts}

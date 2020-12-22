@@ -1,3 +1,4 @@
+\documentclass[11pt]{article}
 \usepackage{amsmath}
 \usepackage{cite}
 \usepackage{graphicx}
@@ -10,12 +11,14 @@
 \usepackage{subfig}
 \usepackage{hyperref}
 
-\documentclass[11pt]{article}
 \title{ADP Hausarbeit: Vergleich von Bäumen}
 \author{Hugo Protsch}
 
+
 \begin{document}
 
+    \tableofcontents
+    \newpage
     \section{Einleitung}\label{sec:Einleitung}
 
     In der ersten Praktikumsaufgabe haben wir binäre Suchbäume betrachtet.
@@ -34,6 +37,9 @@
     Ein Ansatz, der in Abschnitt~\ref{sec:avl-tree} betrachtet wird, ist der AVL-Baum,
     der jeweils beim Einfuegen und Loeschen von Elementen die
     Balance des Baumes ueberprueft und im Falle der Entartung diese ausgleicht.
+
+    In beiden Abschnitten werden doppelte Schlüsselwerte in den Bäumen nicht
+    erlaubt.
 
 
     \section{AVL Tree}\label{sec:avl-tree}
