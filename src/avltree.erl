@@ -5,7 +5,7 @@
 -import(timer, [now_diff/2]).
 
 -export([initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1, deleteBT/2,
-  listAppend/2, printBT/2, rotateL/1, rotateR/1, buildElementAndRotateIfNeeded/1]).
+  listAppend/2, printBT/2, rotateL/1, rotateR/1, buildNodeAndRotateIfNeeded/1]).
 
 initBT() -> {}.
 
@@ -21,16 +21,16 @@ isBT({Element, Height, Left, {}}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
     (Height == (getHeight(Left) + 1)) and
     (Height =< 2) and % => balance < 2
-    (isBT(Left, LowerLimit, Element));
+  (isBT(Left, LowerLimit, Element));
 isBT({Element, Height, {}, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
     (Height == (getHeight(Right) + 1)) and
     (Height =< 2) and % => balance < 2
-    (isBT(Right, Element, UpperLimit));
+  (isBT(Right, Element, UpperLimit));
 isBT({Element, Height, Left, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
     (Height == (maxInt(getHeight(Left), getHeight(Right)) + 1)) and
-    (getBalance(Left, Right) < 2 ) and
+    (getBalance(Left, Right) < 2) and
     (isBT(Left, LowerLimit, Element)) and
     (isBT(Right, Element, UpperLimit)).
 basicChecks(Element, LowerLimit, UpperLimit, Height) ->
@@ -67,7 +67,7 @@ insertBT({NodeElement, _, Left, Right}, Element) when Element > NodeElement ->
   buildElementAndRotateIfNeeded(NodeElement, Left, NewRight).
 
 
-buildElementAndRotateIfNeeded({El, _, L, R}) ->
+buildNodeAndRotateIfNeeded({El, _, L, R}) ->
   buildElementAndRotateIfNeeded(El, L, R).
 buildElementAndRotateIfNeeded(El, L, R) ->
   Node = buildNode(El, L, R),

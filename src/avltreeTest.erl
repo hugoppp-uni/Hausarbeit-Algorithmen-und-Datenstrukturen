@@ -1,7 +1,7 @@
 -module(avltreeTest).
 -author("Hugo Protsch").
 -import(avltree, [initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1,
-deleteBT/2, listAppend/2, printBT/2, rotateR/1, rotateL/1, buildElementAndRotateIfNeeded/1]).
+deleteBT/2, listAppend/2, printBT/2, rotateR/1, rotateL/1, buildNodeAndRotateIfNeeded/1]).
 -include_lib("eunit/include/eunit.hrl").
 
 
@@ -58,11 +58,11 @@ rotateRight_test() ->
   ?assertEqual(treeExampleBalanced(), rotateR(treeExampleLeftLeft())).
 
 buildElementAndRotate_test() ->
-  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleRightRight())),
-  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleLeftLeft())).
+  ?assertEqual(treeExampleBalanced(), buildNodeAndRotateIfNeeded(treeExampleRightRight())),
+  ?assertEqual(treeExampleBalanced(), buildNodeAndRotateIfNeeded(treeExampleLeftLeft())).
 buildElementAndRotateDoubleRot_test() ->
-  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleLeftRight())),
-  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleRightLeft()))
+  ?assertEqual(treeExampleBalanced(), buildNodeAndRotateIfNeeded(treeExampleLeftRight())),
+  ?assertEqual(treeExampleBalanced(), buildNodeAndRotateIfNeeded(treeExampleRightLeft()))
 .
 
 insertNoRotate_test() ->
@@ -98,9 +98,9 @@ randomInsert_test() ->
   Numbers = util:randomliste(1000),
   ?assertEqual(ok, insertList(initBT(), Numbers)).
 
-insertList(Tree, [H|T]) ->
-    Res = insertBT(Tree, H),
-    ?assert(isBT(Res)),
+insertList(Tree, [H | T]) ->
+  Res = insertBT(Tree, H),
+  ?assert(isBT(Res)),
   insertList(Res, T);
 insertList(Tree, []) -> printBT(Tree, randomRes), ok.
 
@@ -249,4 +249,4 @@ doubl() ->
   {1, 2, {}, {3, 1, {}, {}}}.
 
 doublAdd2() ->
-  {2, 2, {1, 1, {}, {}}, {3,1,{},{}}}.
+  {2, 2, {1, 1, {}, {}}, {3, 1, {}, {}}}.
