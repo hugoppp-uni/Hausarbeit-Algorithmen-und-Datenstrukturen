@@ -20,14 +20,17 @@ isBT({Element, Height, {}, {}}, LowerLimit, UpperLimit) ->
 isBT({Element, Height, Left, {}}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
     (Height == (getHeight(Left) + 1)) and
+    (Height =< 2) and % => balance < 2
     (isBT(Left, LowerLimit, Element));
 isBT({Element, Height, {}, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
     (Height == (getHeight(Right) + 1)) and
+    (Height =< 2) and % => balance < 2
     (isBT(Right, Element, UpperLimit));
 isBT({Element, Height, Left, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
     (Height == (maxInt(getHeight(Left), getHeight(Right)) + 1)) and
+    (getBalance(Left, Right) < 2 ) and
     (isBT(Left, LowerLimit, Element)) and
     (isBT(Right, Element, UpperLimit)).
 basicChecks(Element, LowerLimit, UpperLimit, Height) ->
@@ -58,10 +61,10 @@ insertBT({Element, Height, Left, Right}, Element) ->
   {Element, Height, Left, Right};
 insertBT({NodeElement, _, Left, Right}, Element) when Element < NodeElement ->
   NewLeft = insertBT(Left, Element),
-  buildNode(NodeElement, NewLeft, Right);
+  buildElementAndRotateIfNeeded(NodeElement, NewLeft, Right);
 insertBT({NodeElement, _, Left, Right}, Element) when Element > NodeElement ->
   NewRight = insertBT(Right, Element),
-  buildNode(NodeElement, Left, NewRight).
+  buildElementAndRotateIfNeeded(NodeElement, Left, NewRight).
 
 
 buildElementAndRotateIfNeeded({El, _, L, R}) ->
@@ -70,7 +73,7 @@ buildElementAndRotateIfNeeded(El, L, R) ->
   Node = buildNode(El, L, R),
   Balance = getBalance(L, R),
   if
-    Balance < 1 ->
+    Balance == -2 ->
       {NodeEl, _, Rotate, NonRotate} = Node,
       RotateBalance = getBalance(Rotate),
       if
@@ -79,7 +82,7 @@ buildElementAndRotateIfNeeded(El, L, R) ->
           rotateR(buildNode(NodeEl, NewRotate, NonRotate));
         true -> rotateR(Node)
       end;
-    Balance > 1 ->
+    Balance == 2 ->
       {NodeEl, _, NonRotate, Rotate} = Node,
       RotateBalance = getBalance(Rotate),
       if
@@ -123,6 +126,7 @@ findAndDeleteMax({NodeElement, _, Left, Right}) ->
 getHeight({}) -> 0;
 getHeight({_, Height, _, _}) -> Height.
 
+getBalance({}) -> 0;
 getBalance({_, _, L, R}) -> getHeight(R) - getHeight(L).
 getBalance(L, R) -> getHeight(R) - getHeight(L).
 

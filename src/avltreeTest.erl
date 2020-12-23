@@ -59,17 +59,71 @@ rotateRight_test() ->
 
 buildElementAndRotate_test() ->
   ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleRightRight())),
-  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleLeftLeft())),
+  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleLeftLeft())).
+buildElementAndRotateDoubleRot_test() ->
   ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleLeftRight())),
   ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleRightLeft()))
 .
 
+insertNoRotate_test() ->
+  ?assertEqual(correctTree3HInsert100(), insertBT(correctTree3H(), 100)).
+insertSingleRotate_test() ->
+  ?assertEqual(treeExampleBalanced(), insertBT(treeExampleLeftLeft_beforeInsert3(), 3)),
+  ?assertEqual(treeExampleBalanced(), insertBT(treeExampleRightRight_beforeInsert5(), 5)).
+insertDoubleRotate_test() ->
+  ?assertEqual(treeExampleBalanced(), insertBT(treeExampleRightLeft_beforeInsert4(), 4)),
+  ?assertEqual(treeExampleBalanced(), insertBT(treeExampleLeftRight_beforeInsert4(), 4))
+.
+
+insertAsc_test() ->
+  ?assertEqual(insert3(), insertBT(insert2(), 3)),
+  ?assertEqual(insert4(), insertBT(insert3(), 4)),
+  ?assertEqual(insert5(), insertBT(insert4(), 5)),
+  ?assertEqual(insert6(), insertBT(insert5(), 6)),
+  ?assertEqual(insert7(), insertBT(insert6(), 7)),
+  ?assertEqual(doublAdd2(), insertBT(doubl(), 2)).
+
+isBt_test() ->
+  ?assert(isBT(treeExampleBalanced())),
+  ?assert(isBT(treeExampleLeftLeft_beforeInsert3())),
+  ?assertNot(isBT(treeExampleLeftLeft())),
+  ?assert(isBT(treeExampleRightRight_beforeInsert5())),
+  ?assertNot(isBT(treeExampleRightRight())),
+  ?assert(isBT(treeExampleLeftRight_beforeInsert4())),
+  ?assertNot(isBT(treeExampleLeftRight())),
+  ?assert(isBT(treeExampleRightLeft_beforeInsert4())),
+  ?assertNot(isBT(treeExampleRightLeft())).
+
+randomInsert_test() ->
+  Numbers = util:randomliste(1000),
+  ?assertEqual(ok, insertList(initBT(), Numbers)).
+
+insertList(Tree, [H|T]) ->
+    Res = insertBT(Tree, H),
+    ?assert(isBT(Res)),
+  insertList(Res, T);
+insertList(Tree, []) -> printBT(Tree, randomRes), ok.
+
+treeExampleRightLeft_beforeInsert4() ->
+  {3, 2,
+    {},
+    {5, 1,
+      {},
+      {}}
+  }.
 treeExampleRightLeft() ->
   {3, 3,
     {},
     {5, 2,
       {4, 1, {}, {}},
       {}}
+  }.
+treeExampleLeftRight_beforeInsert4() ->
+  {5, 2,
+    {3, 1,
+      {},
+      {}},
+    {}
   }.
 treeExampleLeftRight() ->
   {5, 3,
@@ -78,12 +132,24 @@ treeExampleLeftRight() ->
       {4, 1, {}, {}}},
     {}
   }.
+treeExampleLeftLeft_beforeInsert3() ->
+  {5, 2,
+    {4, 1, {}, {}},
+    {}
+  }.
 treeExampleLeftLeft() ->
   {5, 3,
     {4, 2,
       {3, 1, {}, {}},
       {}},
     {}
+  }.
+treeExampleRightRight_beforeInsert5() ->
+  {3, 2,
+    {},
+    {4, 1,
+      {},
+      {}}
   }.
 treeExampleRightRight() ->
   {3, 3,
@@ -146,3 +212,41 @@ correctTree3HInsert100() ->
       {1250, 1, {}, {}},
       {2000, 1, {}, {}}}
   }.
+
+insert2() ->
+  {1, 2, {}, {2, 1, {}, {}}}.
+
+insert3() ->
+  {2, 2, {1, 1, {}, {}}, {3, 1, {}, {}}}.
+
+insert4() ->
+  {2, 3, {1, 1, {}, {}}, {3, 2, {}, {4, 1, {}, {}}}}.
+
+insert5() ->
+  {2, 3, {1, 1, {}, {}}, {4, 2, {3, 1, {}, {}}, {5, 1, {}, {}}}}.
+
+insert6() ->
+  {4, 3,
+    {2, 2,
+      {1, 1, {}, {}},
+      {3, 1, {}, {}}},
+    {5, 2,
+      {},
+      {6, 1, {}, {}}}
+  }.
+
+insert7() ->
+  {4, 3,
+    {2, 2,
+      {1, 1, {}, {}},
+      {3, 1, {}, {}}},
+    {6, 2,
+      {5, 1, {}, {}},
+      {7, 1, {}, {}}}
+  }.
+
+doubl() ->
+  {1, 2, {}, {3, 1, {}, {}}}.
+
+doublAdd2() ->
+  {2, 2, {1, 1, {}, {}}, {3,1,{},{}}}.
