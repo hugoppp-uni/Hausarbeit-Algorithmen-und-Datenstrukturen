@@ -1,7 +1,7 @@
 -module(avltreeTest).
 -author("Hugo Protsch").
 -import(avltree, [initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1,
-deleteBT/2, listAppend/2, printBT/2, rotateR/1, rotateL/1]).
+deleteBT/2, listAppend/2, printBT/2, rotateR/1, rotateL/1, buildElementAndRotateIfNeeded/1]).
 -include_lib("eunit/include/eunit.hrl").
 
 
@@ -57,6 +57,27 @@ rotateLeft_test() ->
 rotateRight_test() ->
   ?assertEqual(treeExampleBalanced(), rotateR(treeExampleLeftLeft())).
 
+buildElementAndRotate_test() ->
+  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleRightRight())),
+  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleLeftLeft())),
+  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleLeftRight())),
+  ?assertEqual(treeExampleBalanced(), buildElementAndRotateIfNeeded(treeExampleRightLeft()))
+.
+
+treeExampleRightLeft() ->
+  {3, 3,
+    {},
+    {5, 2,
+      {4, 1, {}, {}},
+      {}}
+  }.
+treeExampleLeftRight() ->
+  {5, 3,
+    {3, 2,
+      {},
+      {4, 1, {}, {}}},
+    {}
+  }.
 treeExampleLeftLeft() ->
   {5, 3,
     {4, 2,

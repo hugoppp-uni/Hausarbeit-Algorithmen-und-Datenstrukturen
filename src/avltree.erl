@@ -5,7 +5,7 @@
 -import(timer, [now_diff/2]).
 
 -export([initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1, deleteBT/2,
-  listAppend/2, printBT/2, rotateL/1, rotateR/1]).
+  listAppend/2, printBT/2, rotateL/1, rotateR/1,  buildElementAndRotateIfNeeded/1]).
 
 initBT() -> {}.
 
@@ -75,6 +75,34 @@ insertBT({NodeElement, _, Left, Right}, Element) when Element < NodeElement ->
 insertBT({NodeElement, _, Left, Right}, Element) when Element > NodeElement ->
   NewRight = insertBT(Right, Element),
   buildNode(NodeElement, Left, NewRight).
+
+
+buildElementAndRotateIfNeeded({El, _, L, R}) ->
+  buildElementAndRotateIfNeeded(El, L , R).
+buildElementAndRotateIfNeeded(El, L, R) ->
+  Node = buildNode(El, L, R),
+  Balance = getBalance(L, R),
+  if
+    Balance < 1 ->
+      {NodeEl, _, Rotate, NonRotate} = Node,
+      RotateBalance = getBalance(Rotate),
+      if
+        RotateBalance == 1 ->
+          NewRotate = rotateL(Rotate),
+          rotateR(buildNode(NodeEl, NewRotate, NonRotate));
+        true -> rotateR(Node)
+      end;
+    Balance > 1 ->
+      {NodeEl, _, NonRotate, Rotate} = Node,
+      RotateBalance = getBalance(Rotate),
+      if
+        RotateBalance == -1 ->
+          NewRotate = rotateR(Rotate),
+          rotateL(buildNode(NodeEl, NonRotate, NewRotate));
+        true -> rotateL(Node)
+      end;
+    true -> Node
+  end.
 
 maxInt(Int1, Int2) when Int1 > Int2 -> Int1;
 maxInt(Int1, Int2) when Int2 > Int1 -> Int2;
