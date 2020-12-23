@@ -71,10 +71,10 @@ insertBT({Element, Height, Left, Right}, Element) ->
   {Element, Height, Left, Right};
 insertBT({NodeElement, _, Left, Right}, Element) when Element < NodeElement ->
   NewLeft = insertBT(Left, Element),
-  {NodeElement, max(getHeight(Right), getHeight(NewLeft)) + 1, NewLeft, Right};
+  buildNode(NodeElement, NewLeft, Right);
 insertBT({NodeElement, _, Left, Right}, Element) when Element > NodeElement ->
   NewRight = insertBT(Right, Element),
-  {NodeElement, maxInt(getHeight(Left), getHeight(NewRight)) + 1, Left, NewRight}.
+  buildNode(NodeElement, Left, NewRight).
 
 maxInt(Int1, Int2) when Int1 > Int2 -> Int1;
 maxInt(Int1, Int2) when Int2 > Int1 -> Int2;
@@ -92,28 +92,33 @@ deleteBT({Element, _, {}, Right}, Element) -> Right;
 deleteBT({Element, _, Left, {}}, Element) -> Left;
 deleteBT({Element, _, Left, Right}, Element) ->
   {Found, NewLeftTree} = findAndDeleteMax(Left),
-  {Found, maxInt(getHeight(NewLeftTree), getHeight(Right)) + 1, NewLeftTree, Right};
+  buildNode(Found,NewLeftTree, Right);
 deleteBT({NodeElement, _, Left, Right}, Element) when Element < NodeElement ->
   NewLeftTree = deleteBT(Left, Element),
-  {NodeElement, maxInt(getHeight(NewLeftTree), getHeight(Right)) + 1, NewLeftTree, Right};
+  buildNode(NodeElement, NewLeftTree, Right);
 deleteBT({NodeElement, _, Left, Right}, Element) ->
   NewRightTree = deleteBT(Right, Element),
-  {NodeElement, maxInt(getHeight(Left), getHeight(NewRightTree)) + 1, Left, NewRightTree}.
+  buildNode(NodeElement, Left, NewRightTree).
 
 findAndDeleteMax({Found, _, _, {}}) -> {Found, {}};
 findAndDeleteMax({NodeElement, _, Left, Right}) ->
   {Found, NewRight} = findAndDeleteMax(Right),
-  {Found, {NodeElement, maxInt(getHeight(Left), getHeight(NewRight)) + 1, Left, NewRight}}.
+  {Found, buildNode(NodeElement, Left, NewRight)}.
 
 getHeight({}) -> 0;
 getHeight({_, Height, _, _}) -> Height.
+
+getBalance({_, _, L, R}) -> getHeight(R) - getHeight(L).
+
+buildNode(Value, Left, Right) ->
+  {Value, maxInt(getHeight(Left), getHeight(Right)) + 1, Left, Right}.
+
 
 printBT(Tree, Filename) ->
   {ok, IODevice} = file:open(Filename, write),
   io:format(IODevice, "digraph G{~n", []),
   printBT2(Tree, IODevice),
   io:format(IODevice, "}", []).
-
 printBT2({From, H, {}, {To, ToH, ToL, ToR}}, IODevice) ->
   printElement(IODevice, From, To, H),
   printBT2({To, ToH, ToL, ToR}, IODevice);
@@ -126,8 +131,12 @@ printBT2({El, H, L, R}, IODevice) ->
   printBT2({El, H, L, {}}, IODevice),
   printBT2({El, H, {}, R}, IODevice);
 printBT2({}, _IODevice) -> ok.
-
-
 printElement(IODevice, From, To, Height) ->
   io:format(IODevice, "~p -> ~p [label = ~p];~n", [From, To, Height]).
+
+
+
+
+
+
 
