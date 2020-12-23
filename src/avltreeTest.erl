@@ -1,7 +1,7 @@
 -module(avltreeTest).
 -author("Hugo Protsch").
 -import(avltree, [initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1,
-deleteBT/2, listAppend/2]).
+deleteBT/2, listAppend/2, printBT/2] ).
 -include_lib("eunit/include/eunit.hrl").
 
 
@@ -46,6 +46,11 @@ deleteBT_test() ->
   ?assertEqual(inOrderBT(correctTree3HRemove1000()), inOrderBT(deleteBT(correctTree3H(), 1000))),
   ?assertEqual({1000,2,{},{2000,1,{},{}}},deleteBT(tree1(),1500)),
 ?assertEqual({1000,2,{250,1,{},{}},{}},deleteBT(tree2(),500)).
+
+print_test() ->
+  ?assertEqual(ok, printBT(correctTree3HInsert100(),lolu)),
+  ?assertEqual(ok, printBT({10,1,{},{}}, lolu2))
+.
 
 tree1() ->
   {1000,3,

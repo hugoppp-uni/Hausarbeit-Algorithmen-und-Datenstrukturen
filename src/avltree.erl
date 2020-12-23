@@ -5,7 +5,7 @@
 -import(timer, [now_diff/2]).
 
 -export([initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1, deleteBT/2,
-  listAppend/2]).
+  listAppend/2, printBT/2]).
 
 initBT() -> {}.
 
@@ -16,39 +16,39 @@ isBT(Btree) -> isBT(Btree, -1, ok).
 isBT({}, _, _) -> true;
 isBT({Element, Height, {}, {}}, LowerLimit, UpperLimit) ->
   (is_integer(Element)) and
-  (Element >= 0) and
-  (Element > LowerLimit) and
-  (Element < UpperLimit) and
-  (Height == 1);
+    (Element >= 0) and
+    (Element > LowerLimit) and
+    (Element < UpperLimit) and
+    (Height == 1);
 isBT({Element, Height, Left, {}}, LowerLimit, UpperLimit) ->
   {_, HeightL, _, _} = Left,
   (is_integer(Element)) and
-  (Element >= 0) and
-  (Element > LowerLimit) and
-  (Element < UpperLimit) and
-  (Height > 0) and
-  (Height == (HeightL + 1)) and
-  (isBT(Left, LowerLimit, Element));
+    (Element >= 0) and
+    (Element > LowerLimit) and
+    (Element < UpperLimit) and
+    (Height > 0) and
+    (Height == (HeightL + 1)) and
+    (isBT(Left, LowerLimit, Element));
 isBT({Element, Height, {}, Right}, LowerLimit, UpperLimit) ->
   {_, HeightR, _, _} = Right,
   (is_integer(Element)) and
-  (Element >= 0) and 
-  (Element > LowerLimit) and
-  (Element < UpperLimit) and
-  (Height > 0) and
-  (Height == (HeightR + 1)) and
-  (isBT(Right, Element, UpperLimit));
+    (Element >= 0) and
+    (Element > LowerLimit) and
+    (Element < UpperLimit) and
+    (Height > 0) and
+    (Height == (HeightR + 1)) and
+    (isBT(Right, Element, UpperLimit));
 isBT({Element, Height, Left, Right}, LowerLimit, UpperLimit) ->
   {_, HeightL, _, _} = Left,
   {_, HeightR, _, _} = Right,
   (is_integer(Element)) and
-  (Element >= 0) and
-  (Element > LowerLimit) and
-  (Element < UpperLimit) and
-  (Height > 0) and
-  (Height == (maxInt(HeightL, HeightR) + 1)) and
-  (isBT(Left, LowerLimit, Element)) and
-  (isBT(Right, Element, UpperLimit)).
+    (Element >= 0) and
+    (Element > LowerLimit) and
+    (Element < UpperLimit) and
+    (Height > 0) and
+    (Height == (maxInt(HeightL, HeightR) + 1)) and
+    (isBT(Left, LowerLimit, Element)) and
+    (isBT(Right, Element, UpperLimit)).
 
 equalBT(Btree1, Btree2) -> equalList(inOrderBT(Btree1), inOrderBT(Btree2)).
 
@@ -107,3 +107,27 @@ findAndDeleteMax({NodeElement, _, Left, Right}) ->
 
 getHeight({}) -> 0;
 getHeight({_, Height, _, _}) -> Height.
+
+printBT(Tree, Filename) ->
+  {ok, IODevice} = file:open(Filename, write),
+  io:format(IODevice, "digraph G{~n", []),
+  printBT2(Tree, IODevice),
+  io:format(IODevice, "}", []).
+
+printBT2({From, H, {}, {To, ToH, ToL, ToR}}, IODevice) ->
+  printElement(IODevice, From, To, H),
+  printBT2({To, ToH, ToL, ToR}, IODevice);
+printBT2({From, H, {To, ToH, ToL, ToR}, {}}, IODevice) ->
+  printElement(IODevice, From, To, H),
+  printBT2({To, ToH, ToL, ToR}, IODevice);
+printBT2({El, _, {}, {}}, IODevice) ->
+  io:format(IODevice, "~p;~n", [El]);
+printBT2({El, H, L, R}, IODevice) ->
+  printBT2({El, H, L, {}}, IODevice),
+  printBT2({El, H, {}, R}, IODevice);
+printBT2({}, _IODevice) -> ok.
+
+
+printElement(IODevice, From, To, Height) ->
+  io:format(IODevice, "~p -> ~p [label = ~p];~n", [From, To, Height]).
+
