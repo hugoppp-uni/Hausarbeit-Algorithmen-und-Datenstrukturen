@@ -5,7 +5,7 @@
 -import(timer, [now_diff/2]).
 
 -export([initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1, deleteBT/2,
-  listAppend/2, printBT/2]).
+  listAppend/2, printBT/2, rotateL/1, rotateR/1]).
 
 initBT() -> {}.
 
@@ -92,7 +92,7 @@ deleteBT({Element, _, {}, Right}, Element) -> Right;
 deleteBT({Element, _, Left, {}}, Element) -> Left;
 deleteBT({Element, _, Left, Right}, Element) ->
   {Found, NewLeftTree} = findAndDeleteMax(Left),
-  buildNode(Found,NewLeftTree, Right);
+  buildNode(Found, NewLeftTree, Right);
 deleteBT({NodeElement, _, Left, Right}, Element) when Element < NodeElement ->
   NewLeftTree = deleteBT(Left, Element),
   buildNode(NodeElement, NewLeftTree, Right);
@@ -109,6 +109,15 @@ getHeight({}) -> 0;
 getHeight({_, Height, _, _}) -> Height.
 
 getBalance({_, _, L, R}) -> getHeight(R) - getHeight(L).
+getBalance(L, R) -> getHeight(R) - getHeight(L).
+
+rotateR({RootEl, _, {RotateEl, _, RotateL, RotateR}, RootR}) ->
+  NewRight = buildNode(RootEl, RotateR, RootR),
+  buildNode(RotateEl, RotateL, NewRight).
+
+rotateL({RootEl, _, RootL, {RotateEl, _, RotateL, RotateR}}) ->
+  NewLeft = buildNode(RootEl, RootL, RotateL),
+  buildNode(RotateEl, NewLeft, RotateR).
 
 buildNode(Value, Left, Right) ->
   {Value, maxInt(getHeight(Left), getHeight(Right)) + 1, Left, Right}.
