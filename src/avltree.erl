@@ -5,7 +5,7 @@
 -import(timer, [now_diff/2]).
 
 -export([initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1, deleteBT/2,
-  listAppend/2, printBT/2, rotateL/1, rotateR/1,  buildElementAndRotateIfNeeded/1]).
+  listAppend/2, printBT/2, rotateL/1, rotateR/1, buildElementAndRotateIfNeeded/1]).
 
 initBT() -> {}.
 
@@ -15,40 +15,27 @@ isEmptyBT(_) -> false.
 isBT(Btree) -> isBT(Btree, -1, ok).
 isBT({}, _, _) -> true;
 isBT({Element, Height, {}, {}}, LowerLimit, UpperLimit) ->
-  (is_integer(Element)) and
-    (Element >= 0) and
-    (Element > LowerLimit) and
-    (Element < UpperLimit) and
-    (Height == 1);
+  basicChecks(Element, LowerLimit, UpperLimit, Height)
+    and (Height == 1);
 isBT({Element, Height, Left, {}}, LowerLimit, UpperLimit) ->
-  {_, HeightL, _, _} = Left,
-  (is_integer(Element)) and
-    (Element >= 0) and
-    (Element > LowerLimit) and
-    (Element < UpperLimit) and
-    (Height > 0) and
-    (Height == (HeightL + 1)) and
+  basicChecks(Element, LowerLimit, UpperLimit, Height) and
+    (Height == (getHeight(Left) + 1)) and
     (isBT(Left, LowerLimit, Element));
 isBT({Element, Height, {}, Right}, LowerLimit, UpperLimit) ->
-  {_, HeightR, _, _} = Right,
-  (is_integer(Element)) and
-    (Element >= 0) and
-    (Element > LowerLimit) and
-    (Element < UpperLimit) and
-    (Height > 0) and
-    (Height == (HeightR + 1)) and
+  basicChecks(Element, LowerLimit, UpperLimit, Height) and
+    (Height == (getHeight(Right) + 1)) and
     (isBT(Right, Element, UpperLimit));
 isBT({Element, Height, Left, Right}, LowerLimit, UpperLimit) ->
-  {_, HeightL, _, _} = Left,
-  {_, HeightR, _, _} = Right,
-  (is_integer(Element)) and
-    (Element >= 0) and
-    (Element > LowerLimit) and
-    (Element < UpperLimit) and
-    (Height > 0) and
-    (Height == (maxInt(HeightL, HeightR) + 1)) and
+  basicChecks(Element, LowerLimit, UpperLimit, Height) and
+    (Height == (maxInt(getHeight(Left), getHeight(Right)) + 1)) and
     (isBT(Left, LowerLimit, Element)) and
     (isBT(Right, Element, UpperLimit)).
+basicChecks(Element, LowerLimit, UpperLimit, Height) ->
+  (is_integer(Element)) and
+    (Height > 0) and
+    (Element >= 0) and
+    (Element > LowerLimit) and
+    (Element < UpperLimit).
 
 equalBT(Btree1, Btree2) -> equalList(inOrderBT(Btree1), inOrderBT(Btree2)).
 
@@ -78,7 +65,7 @@ insertBT({NodeElement, _, Left, Right}, Element) when Element > NodeElement ->
 
 
 buildElementAndRotateIfNeeded({El, _, L, R}) ->
-  buildElementAndRotateIfNeeded(El, L , R).
+  buildElementAndRotateIfNeeded(El, L, R).
 buildElementAndRotateIfNeeded(El, L, R) ->
   Node = buildNode(El, L, R),
   Balance = getBalance(L, R),
