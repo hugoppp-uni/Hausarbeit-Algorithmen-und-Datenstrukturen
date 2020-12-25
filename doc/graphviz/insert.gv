@@ -1,0 +1,37 @@
+digraph Q {
+
+    node [shape = box];
+    compound = true;
+
+    a1 [label = "Insert(BTree, element)"]
+    a1 -> a2
+    a2 [label = "isEmpty(BTree)" shape = diamond]
+    a2-> b2 [label = "NO"]
+    b2 [label = "neuen Baum mit element zurückgeben"]
+    a2 -> a3 [label = "YES"]
+    a3 [label = "element < BTree.element" shape = diamond]
+    a3 -> smaller [label = "YES"]
+    a3 -> a4 [label = "NO"]
+    a4 [label = "element > BTree.element" shape = diamond]
+    a4 -> larger [label = "YES"]
+    a4 -> "Ende" [label = "NO (Element == BTree.Element)"]
+    smaller [label = "Insert(BTree, left)"]
+    //smaller -> a1
+    larger [label = "InsertBTree(BTree, right)"]
+    //larger -> a1
+
+    checkBalance[ label= "-1 <= getBalance(this) <= +1?" shape = diamond color = green]
+    rotate [label = "Rotate(this)" color = green]
+    noRotate [label = "Ende" color = green]
+
+    smaller -> checkReturnl2
+    checkReturnl2 [label = "height = max(height_left, height_right) + 1"]
+    checkReturnl2 -> checkBalance [color = green]
+    checkBalance -> rotate [label = "NO", color = green]
+    rotate -> noRotate [color = green]
+    checkBalance -> noRotate [label = "YES", color = green]
+
+    larger -> checkReturn2
+    checkReturn2 [label = "height = max(height_left, height_right) + 1"]
+    checkReturn2 -> checkBalance [color = green]
+}
