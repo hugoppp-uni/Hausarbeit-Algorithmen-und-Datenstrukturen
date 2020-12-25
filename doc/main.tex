@@ -23,20 +23,20 @@
 
     In der ersten Praktikumsaufgabe haben wir binäre Suchbäume betrachtet.
     Wir haben festgestellt, dass diese im Vergleich zu verketteten Listen eine erheblich
-    bessere Laufzeit aufweisen, da beim Traversieren des Baumes nur ueber die
-    Hoehe des Baumes gelaufen wird, statt, wie bei der Liste, ueber jedes Element.
+    bessere Laufzeit aufweisen, da beim Traversieren des Baumes nur über die
+    Höhe des Baumes gelaufen wird, statt, wie bei der Liste, über jedes Element.
 
-    Es fiel jedoch auf, dass der Vorteil beim Einfuegen von aufsteigenden und
+    Es fiel jedoch auf, dass der Vorteil beim Einfügen von aufsteigenden und
     absteigenden Zahlen verloren geht.
     Hierbei entsteht ein Baum, der entartet, also nicht balanciert, ist.
     Im Extremfall entsteht somit eine einfach verkettete Liste.
-    Die Laufzeit von Einfuege-, Loesch und Suchoperationen auf diesem
+    Die Laufzeit von Einfüge-, Lösch und Suchoperationen auf diesem
     ist somit wieder linear (\(O(n)\)).
-    Um eine solche Entartung der Baeume und die daraus resultierende verminderte Performance
-    zu vermeiden, muss also eine Strategie entwickeln werden, die den Baum balanciert haelt.
+    Um eine solche Entartung der Bäume und die daraus resultierende verminderte Performance
+    zu vermeiden, muss also eine Strategie entwickeln werden, die den Baum balanciert hält.
     Ein Ansatz, der in Abschnitt~\ref{sec:avl-tree} betrachtet wird, ist der AVL-Baum,
-    der jeweils beim Einfuegen und Loeschen von Elementen die
-    Balance des Baumes ueberprueft und im Falle der Entartung diese ausgleicht.
+    der jeweils beim Einfügen und Löschen von Elementen die
+    Balance des Baumes überprueft und im Falle der Entartung diese ausgleicht.
 
     In beiden Abschnitten werden doppelte Schlüsselwerte in den Bäumen nicht
     erlaubt.

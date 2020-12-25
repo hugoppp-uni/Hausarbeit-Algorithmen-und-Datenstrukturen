@@ -1,13 +1,14 @@
-\subsection{Entwurf}\label{subsec:entwurf}
+\subsection{Algorithmus}\label{subsec:algorithmus}
+
 \paragraph{AVL-Bedingung}
 Ein AVL-Baum ist ein Binärbaum, der die zusätzliche Eigenschaft besitzt, dass
-der Betrag der Balance, die als die Differenz der Höhe $h$ der beiden
-Teilbäume definiert ist (siehe~\ref{eq:balance}), bei jedem Knoten maximal 1 beträgt.
+die Balance, die als die Differenz der Höhe $h$ der beiden
+Teilbäume definiert ist (siehe Formel~\ref{eq:balance}), bei jedem Knoten maximal 1 beträgt.
 Diese Eigenschaft wird AVL-Bedingung genannt.
 Dabei ist die Höhe analog zum regulären Binärbaum definiert (siehe~\ref{eq:equation}).
 
 \begin{equation}
-    bal(k) = h(T_r) - h(T_l)\label{eq:balance}
+    bal(k) = h(T_r) - h(T_l)\label{eq:balance} \in \{-1,0,1\}
 \end{equation}
 \begin{equation}
     h(k) = max(h(T_l), h(T_r))\label{eq:equation}
@@ -24,10 +25,10 @@ und eventuell eine Rebalancierung vornehmen.
 Dabei wird zwischen insgesamt vier Fällen unterschieden, die durch die Folge
 der Balancewerte definiert sind (siehe auch Abbildung~\ref{fig:AVL-Cases}):
 \begin{enumerate}
-    \item Left Left: 2/1
-    \item Right Right: -2/-1
-    \item Left Right: 2/-1
-    \item Right Left: -2/1
+    \item Left Left: -2/-1
+    \item Right Right: +2/+1
+    \item Left Right: -2/+1
+    \item Right Left: +2/-1
 \end{enumerate}
 
 \paragraph*{Rotation}
@@ -40,8 +41,8 @@ bei dem die AVL-Bedingung verletzt wird.
 
 Der Wurzelknoten wird mit dem Kindknoten rotiert, auf dessen Seite die
 Unbalance vorliegt:
-Bei einer negativen Balance mit dem rechten Kindknoten (Linksrotation),
-bei einer positiven Balance mit dem linken Kindknoten (Rechtsrotation).
+Bei einer positiven Balance mit dem rechten Kindknoten (Linksrotation),
+bei einer negativen Balance mit dem linken Kindknoten (Rechtsrotation).
 Im Folgenden wird dieses Kind Rotationsknoten genannt.
 
 Betrachte Abbildung~\ref{fig:AVL-Cases}~(Left~Left~Case).
@@ -61,7 +62,7 @@ Eine Linksrotation erfolgt symmetrisch.
 
 Bei den Fällen Left Left und Right Right konnte der Baum mit lediglich
 einer Rotation balanciert werden.
-Dies reicht bei den anderen Fällen nicht aus, wie wird aus Abbildung x %TODO
+Dies reicht bei den anderen Fällen nicht aus, wie wird aus Abbildung~\ref{fig:AVL-wrong-rotate}
 ersichtlich wird.
 
 Es müssen insgesamt zwei Rotationen durchgeführt werden:
@@ -70,7 +71,7 @@ herbeigeführt, die zweite Rotation befriedigt anschließen die AVL-Bedingung.
 Betrachte Abbildung~\ref{fig:AVL-Cases}`(Left Right Case).
 Im Left Right Case wird zunächst eine Linksrotation zwischen dem linken
 Kindknoten des Wurzelelementes und des rechten Nachfolgers ausgeführt.
-Diese Rotation wird wie symetrisch zur oben beschriebenen Rechtsrotation ausgeführt.
+Diese Rotation wird wie symmetrisch zur oben beschriebenen Rechtsrotation ausgeführt.
 Anschließend liegt der Left Left Case vor, eine einfache Rechtsrotation
 befriedigt nun die AVL-Bedingung.
 
@@ -79,7 +80,30 @@ befriedigt nun die AVL-Bedingung.
     \centering
     %https://fr.m.wikipedia.org/wiki/Fichier:AVL_Tree_Rebalancing.svg
     %https://github.com/LambdaSchool/Data-Structures
-    \includegraphics[width= 0.5\textwidth]{img/AVL_Tree_Rebalancing.png}
+    %https://commons.wikimedia.org/wiki/File:AVL_Tree_Rebalancing_he.svg
+    \includegraphics[width= 0.5\textwidth]{img/AVL_Tree_Rebalancing}
     \caption{Rebalancierung}
     \label{fig:AVL-Cases}
 \end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width= 0.5\textwidth]{img/AVL_Tree_Rebalancing_wrong.pdf}
+    \caption{Falsche Rotation}
+    \label{fig:AVL-wrong-rotate}
+\end{figure}
+
+\subsection{Entwurf}\label{subsec:entwurf2}
+
+\paragraph{InitBT, IsEmptyBT, EqualBT, FindBT}
+Es müssen keine Änderungen von der ersten Praktikumsaufgabe vorgenommen werden.
+
+\paragraph{IsBT}
+Die Methode aus der ersten Praktikumsaufgabe wird um die Überprüfung der
+AVL-Bedingung erweitert.
+Dabei wird bei jedem Knoten überprüft, ob die Balance (siehe Formel~\ref{eq:balance}) -1, 0 oder
++1 beträgt.
+
+\paragraph{InsertBT, DeleteBT}
+Das Einfügen und Löschen wird wie bei einem Binärbaum realisiert.
+Die einzige Änderung, die vorgenommen werden muss, ist das Prüfen der
+AVL-Bedingung und eventuelles Rotieren, bottom-up nach dem Einfügen bzw. Löschen.
