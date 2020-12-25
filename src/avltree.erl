@@ -19,14 +19,12 @@ isBT({Element, Height, {}, {}}, LowerLimit, UpperLimit) ->
     and (Height == 1);
 isBT({Element, Height, Left, {}}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
-    (Height == (getHeight(Left) + 1)) and
-    (Height =< 2) and % => balance < 2
-  (isBT(Left, LowerLimit, Element));
+    (Height == 2) and
+    (isBT(Left, LowerLimit, Element));
 isBT({Element, Height, {}, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
-    (Height == (getHeight(Right) + 1)) and
-    (Height =< 2) and % => balance < 2
-  (isBT(Right, Element, UpperLimit));
+    (Height == 2) and
+    (isBT(Right, Element, UpperLimit));
 isBT({Element, Height, Left, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
     (Height == (maxInt(getHeight(Left), getHeight(Right)) + 1)) and
@@ -61,15 +59,15 @@ insertBT({Element, Height, Left, Right}, Element) ->
   {Element, Height, Left, Right};
 insertBT({NodeElement, _, Left, Right}, Element) when Element < NodeElement ->
   NewLeft = insertBT(Left, Element),
-  buildElementAndRotateIfNeeded(NodeElement, NewLeft, Right);
+  buildNodeAndRotateIfNeeded(NodeElement, NewLeft, Right);
 insertBT({NodeElement, _, Left, Right}, Element) when Element > NodeElement ->
   NewRight = insertBT(Right, Element),
-  buildElementAndRotateIfNeeded(NodeElement, Left, NewRight).
+  buildNodeAndRotateIfNeeded(NodeElement, Left, NewRight).
 
 
 buildNodeAndRotateIfNeeded({El, _, L, R}) ->
-  buildElementAndRotateIfNeeded(El, L, R).
-buildElementAndRotateIfNeeded(El, L, R) ->
+  buildNodeAndRotateIfNeeded(El, L, R).
+buildNodeAndRotateIfNeeded(El, L, R) ->
   Node = buildNode(El, L, R),
   Balance = getBalance(L, R),
   if
@@ -110,13 +108,13 @@ deleteBT({Element, _, {}, Right}, Element) -> Right;
 deleteBT({Element, _, Left, {}}, Element) -> Left;
 deleteBT({Element, _, Left, Right}, Element) ->
   {Found, NewLeftTree} = findAndDeleteMax(Left),
-  buildNode(Found, NewLeftTree, Right);
+  buildNodeAndRotateIfNeeded(Found, NewLeftTree, Right);
 deleteBT({NodeElement, _, Left, Right}, Element) when Element < NodeElement ->
   NewLeftTree = deleteBT(Left, Element),
-  buildNode(NodeElement, NewLeftTree, Right);
+  buildNodeAndRotateIfNeeded(NodeElement, NewLeftTree, Right);
 deleteBT({NodeElement, _, Left, Right}, Element) ->
   NewRightTree = deleteBT(Right, Element),
-  buildNode(NodeElement, Left, NewRightTree).
+  buildNodeAndRotateIfNeeded(NodeElement, Left, NewRightTree).
 
 findAndDeleteMax({Found, _, _, {}}) -> {Found, {}};
 findAndDeleteMax({NodeElement, _, Left, Right}) ->

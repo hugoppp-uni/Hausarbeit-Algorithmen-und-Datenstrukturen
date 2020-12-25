@@ -84,6 +84,8 @@ insertAsc_test() ->
   ?assertEqual(doublAdd2(), insertBT(doubl(), 2)).
 
 isBt_test() ->
+  ?assertNot(isBT(incorrectTree2())),
+  ?assertNot(isBT(incorrectTree1())),
   ?assert(isBT(treeExampleBalanced())),
   ?assert(isBT(treeExampleLeftLeft_beforeInsert3())),
   ?assertNot(isBT(treeExampleLeftLeft())),
@@ -97,6 +99,19 @@ isBt_test() ->
 randomInsert_test() ->
   Numbers = util:randomliste(1000),
   ?assertEqual(ok, insertList(initBT(), Numbers)).
+
+randomDelete_test() ->
+  Numbers = util:randomliste(1000),
+  ?assertEqual(ok, insertList(initBT(), Numbers)),
+  Numbers2 = util:randomliste(1000),
+  ?assertEqual(ok,deleteList(initBT(),Numbers2)).
+
+
+deleteList(Tree, [H | T]) ->
+  Res = deleteBT(Tree, H),
+  ?assert(isBT(Res)),
+  deleteList(Res, T);
+deleteList(Tree, []) -> printBT(Tree, randomRes), ok.
 
 insertList(Tree, [H | T]) ->
   Res = insertBT(Tree, H),
@@ -250,3 +265,16 @@ doubl() ->
 
 doublAdd2() ->
   {2, 2, {1, 1, {}, {}}, {3, 1, {}, {}}}.
+
+incorrectTree1() ->
+  {100, 2,
+    {50, 1, {}, {}},
+    {20, 1, {}, {}}
+  }.
+incorrectTree2() ->
+  {100, 3,
+    {50, 2,
+      {45, 1, {}, {}}, {}},
+    {120, 2,
+      {90, 1, {}, {}}, {}}
+  }.
