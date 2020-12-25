@@ -85,7 +85,7 @@ buildNodeAndRotateIfNeeded(El, L, R) ->
           NewRotate = rotateL(RotationsKnoten),
           util:counting1(ddrightrotate),
           rotateR(buildNode(WurzelEl, NewRotate, NonRotate));
-        true -> util:counting1(rightrotate), rotateR(Wurzel)
+        true -> rotateR(Wurzel)
       end;
     Balance == 2 ->
       %% Right Left Case <OR> Right Right Case
@@ -96,7 +96,7 @@ buildNodeAndRotateIfNeeded(El, L, R) ->
           NewRotate = rotateR(RotationsKnoten),
           util:counting1(ddleftrotate),
           rotateL(buildNode(WurzelEl, NonRotate, NewRotate));
-        true -> util:counting1(leftrotate), rotateL(Wurzel)
+        true ->  rotateL(Wurzel)
       end;
     true -> Wurzel
   end.
@@ -138,10 +138,12 @@ getBalance({_, _, L, R}) -> getBalance(L, R).
 getBalance(L, R) -> getHeight(R) - getHeight(L).
 
 rotateR({RootEl, _, {RotateEl, _, RotateL, RotateR}, RootR}) ->
+  util:counting1(rightrotate),
   NewRight = buildNode(RootEl, RotateR, RootR),
   buildNode(RotateEl, RotateL, NewRight).
 
 rotateL({RootEl, _, RootL, {RotateEl, _, RotateL, RotateR}}) ->
+  util:counting1(leftrotate),
   NewLeft = buildNode(RootEl, RootL, RotateL),
   buildNode(RotateEl, NewLeft, RotateR).
 
