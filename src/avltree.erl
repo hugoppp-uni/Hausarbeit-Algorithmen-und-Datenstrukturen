@@ -82,10 +82,13 @@ buildNodeAndRotateIfNeeded(El, L, R) ->
       RotationsKnotenBalance = getBalance(RotationsKnoten),
       if
         RotationsKnotenBalance == 1 ->
+          %% 3. Left Right Case
           NewRotate = rotateL(RotationsKnoten),
           util:counting1(ddrightrotate),
           rotateR(buildNode(WurzelEl, NewRotate, NonRotate));
-        true -> rotateR(Wurzel)
+        true ->
+          %% 1. Left Left Case
+          rotateR(Wurzel)
       end;
     Balance == 2 ->
       %% Right Left Case <OR> Right Right Case
@@ -93,10 +96,13 @@ buildNodeAndRotateIfNeeded(El, L, R) ->
       RotationsKnotenBalance = getBalance(RotationsKnoten),
       if
         RotationsKnotenBalance == -1 ->
+          %% 4. Right Left Case
           NewRotate = rotateR(RotationsKnoten),
           util:counting1(ddleftrotate),
           rotateL(buildNode(WurzelEl, NonRotate, NewRotate));
-        true ->  rotateL(Wurzel)
+        true ->
+          %% 2. Right Right Case
+          rotateL(Wurzel)
       end;
     true -> Wurzel
   end.
@@ -137,15 +143,23 @@ getBalance({}) -> 0;
 getBalance({_, _, L, R}) -> getBalance(L, R).
 getBalance(L, R) -> getHeight(R) - getHeight(L).
 
-rotateR({RootEl, _, {RotateEl, _, RotateL, RotateR}, RootR}) ->
+%%% Referenzen beziehen sich auf 2.1 Abschnitt "Rotation"
+rotateR({WurzelKnotenEl, _, {RotationsKnotenEl, _, RotationsL, RotationsR}, WurzelR}) ->
   util:counting1(rightrotate),
-  NewRight = buildNode(RootEl, RotateR, RootR),
-  buildNode(RotateEl, RotateL, NewRight).
+  %                                   |Operation 2|
+  NewRight = buildNode(WurzelKnotenEl, RotationsR, WurzelR),
+  %                                      |Operation 1|
+  buildNode(RotationsKnotenEl, RotationsL, NewRight).
+% Rückgabe = Operation 3
 
-rotateL({RootEl, _, RootL, {RotateEl, _, RotateL, RotateR}}) ->
+%%% Referenzen beziehen sich auf 2.1 Abschnitt "Rotation" und sind symmetrisch zu diesen.
+rotateL({WurzelKnotenEl, _, WurzelL, {RotationsKnotenEl, _, RotationsL, RotationsR}}) ->
   util:counting1(leftrotate),
-  NewLeft = buildNode(RootEl, RootL, RotateL),
-  buildNode(RotateEl, NewLeft, RotateR).
+  %                                           |Operation 2|
+  NewLeft = buildNode(WurzelKnotenEl, WurzelL, RotationsL),
+  %                         |Operation 1|
+  buildNode(RotationsKnotenEl, NewLeft, RotationsR).
+% Rückgabe = Operation 3
 
 buildNode(Value, Left, Right) ->
   {Value, maxInt(getHeight(Left), getHeight(Right)) + 1, Left, Right}.
