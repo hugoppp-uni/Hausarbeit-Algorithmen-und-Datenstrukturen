@@ -7,7 +7,12 @@
 -export([initBT/0, isEmptyBT/1, inOrderBT/1, insertBT/2, findBT/2, equalBT/2, isBT/1, deleteBT/2,
   listAppend/2, printBT/2, rotateL/1, rotateR/1, buildNodeAndRotateIfNeeded/1]).
 
-initBT() -> {}.
+initBT() ->
+  util:countreset(leftrotate),
+  util:countreset(rightrotate),
+  util:countreset(ddrightrotate),
+  util:countreset(ddleftrotate),
+  {}.
 
 isEmptyBT({}) -> true;
 isEmptyBT(_) -> false.
@@ -68,28 +73,32 @@ insertBT({NodeElement, _, Left, Right}, Element) when Element > NodeElement ->
 buildNodeAndRotateIfNeeded({El, _, L, R}) ->
   buildNodeAndRotateIfNeeded(El, L, R).
 buildNodeAndRotateIfNeeded(El, L, R) ->
-  Node = buildNode(El, L, R),
+  Wurzel = buildNode(El, L, R),
   Balance = getBalance(L, R),
   if
     Balance == -2 ->
-      {NodeEl, _, Rotate, NonRotate} = Node,
-      RotateBalance = getBalance(Rotate),
+      %% Left Right Case <OR> Left Left Case
+      {WurzelEl, _, RotationsKnoten, NonRotate} = Wurzel,
+      RotationsKnotenBalance = getBalance(RotationsKnoten),
       if
-        RotateBalance == 1 ->
-          NewRotate = rotateL(Rotate),
-          rotateR(buildNode(NodeEl, NewRotate, NonRotate));
-        true -> rotateR(Node)
+        RotationsKnotenBalance == 1 ->
+          NewRotate = rotateL(RotationsKnoten),
+          util:counting1(ddrightrotate),
+          rotateR(buildNode(WurzelEl, NewRotate, NonRotate));
+        true -> util:counting1(rightrotate), rotateR(Wurzel)
       end;
     Balance == 2 ->
-      {NodeEl, _, NonRotate, Rotate} = Node,
-      RotateBalance = getBalance(Rotate),
+      %% Right Left Case <OR> Right Right Case
+      {WurzelEl, _, NonRotate, RotationsKnoten} = Wurzel,
+      RotationsKnotenBalance = getBalance(RotationsKnoten),
       if
-        RotateBalance == -1 ->
-          NewRotate = rotateR(Rotate),
-          rotateL(buildNode(NodeEl, NonRotate, NewRotate));
-        true -> rotateL(Node)
+        RotationsKnotenBalance == -1 ->
+          NewRotate = rotateR(RotationsKnoten),
+          util:counting1(ddleftrotate),
+          rotateL(buildNode(WurzelEl, NonRotate, NewRotate));
+        true -> util:counting1(leftrotate), rotateL(Wurzel)
       end;
-    true -> Node
+    true -> Wurzel
   end.
 
 maxInt(Int1, Int2) when Int1 > Int2 -> Int1;
