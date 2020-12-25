@@ -128,13 +128,13 @@ deleteBT({NodeElement, _, Left, Right}, Element) ->
 findAndDeleteMax({Found, _, _, {}}) -> {Found, {}};
 findAndDeleteMax({NodeElement, _, Left, Right}) ->
   {Found, NewRight} = findAndDeleteMax(Right),
-  {Found, buildNode(NodeElement, Left, NewRight)}.
+  {Found, buildNodeAndRotateIfNeeded(NodeElement, Left, NewRight)}.
 
 getHeight({}) -> 0;
 getHeight({_, Height, _, _}) -> Height.
 
 getBalance({}) -> 0;
-getBalance({_, _, L, R}) -> getHeight(R) - getHeight(L).
+getBalance({_, _, L, R}) -> getBalance(L, R).
 getBalance(L, R) -> getHeight(R) - getHeight(L).
 
 rotateR({RootEl, _, {RotateEl, _, RotateL, RotateR}, RootR}) ->
