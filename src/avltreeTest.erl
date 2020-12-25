@@ -97,27 +97,33 @@ isBt_test() ->
   ?assertNot(isBT(treeExampleRightLeft())).
 
 randomInsert_test() ->
-  Numbers = util:randomliste(1000),
-  ?assertEqual(ok, insertList(initBT(), Numbers)).
+  ?assertEqual(ok, insertListAndAssert(initBT(), util:randomliste(1000))),
+  ?assertEqual(ok, insertListAndAssert(initBT(), util:sortliste(1000))),
+  ?assertEqual(ok, insertListAndAssert(initBT(), util:resortliste(1000))).
 
 randomDelete_test() ->
-  Numbers = util:randomliste(1000),
-  ?assertEqual(ok, insertList(initBT(), Numbers)),
-  Numbers2 = util:randomliste(1000),
-  ?assertEqual(ok,deleteList(initBT(),Numbers2)).
-
-
-deleteList(Tree, [H | T]) ->
-  Res = deleteBT(Tree, H),
-  ?assert(isBT(Res)),
-  deleteList(Res, T);
-deleteList(Tree, []) -> printBT(Tree, randomRes), ok.
+  Init = insertList(initBT(), util:sortliste(100)),
+  ?assertEqual(ok, deleteListAndAssert(Init, util:sortliste(1000))),
+  ?assertEqual(ok, deleteListAndAssert(Init, util:resortliste(1000))),
+  Numbers3 = util:randomliste(5000),
+  ?assertEqual(ok, deleteListAndAssert(initBT(), Numbers3)).
 
 insertList(Tree, [H | T]) ->
+  insertList(insertBT(Tree, H), T);
+insertList(Tree, []) -> Tree.
+
+
+deleteListAndAssert(Tree, [H | T]) ->
+  Res = deleteBT(Tree, H),
+  ?assert(isBT(Res)),
+  deleteListAndAssert(Res, T);
+deleteListAndAssert(Tree, []) -> printBT(Tree, randomRes), ok.
+
+insertListAndAssert(Tree, [H | T]) ->
   Res = insertBT(Tree, H),
   ?assert(isBT(Res)),
-  insertList(Res, T);
-insertList(Tree, []) -> printBT(Tree, randomRes), ok.
+  insertListAndAssert(Res, T);
+insertListAndAssert(Tree, []) -> printBT(Tree, randomRes), ok.
 
 treeExampleRightLeft_beforeInsert4() ->
   {3, 2,
