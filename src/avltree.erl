@@ -151,22 +151,26 @@ buildNode(Value, Left, Right) ->
 
 printBT(Tree, Filename) ->
   {ok, IODevice} = file:open(Filename, write),
+  io:format("digraph G{~n", []),
   io:format(IODevice, "digraph G{~n", []),
   printBT2(Tree, IODevice),
+  io:format("}", []),
   io:format(IODevice, "}", []).
 printBT2({From, H, {}, {To, ToH, ToL, ToR}}, IODevice) ->
-  printElement(IODevice, From, To, H),
+  printElement(IODevice, From, To, ToH),
   printBT2({To, ToH, ToL, ToR}, IODevice);
 printBT2({From, H, {To, ToH, ToL, ToR}, {}}, IODevice) ->
-  printElement(IODevice, From, To, H),
+  printElement(IODevice, From, To, ToH),
   printBT2({To, ToH, ToL, ToR}, IODevice);
-printBT2({El, _, {}, {}}, IODevice) ->
-  io:format(IODevice, "~p;~n", [El]);
+printBT2({El, _, {}, {}}, IODevice) -> ok;
+%%  io:format("~p;~n", [El]),
+%%  io:format(IODevice, "~p;~n", [El]);
 printBT2({El, H, L, R}, IODevice) ->
   printBT2({El, H, L, {}}, IODevice),
   printBT2({El, H, {}, R}, IODevice);
 printBT2({}, _IODevice) -> ok.
 printElement(IODevice, From, To, Height) ->
+  io:format("~p -> ~p [label = ~p];~n", [From, To, Height]),
   io:format(IODevice, "~p -> ~p [label = ~p];~n", [From, To, Height]).
 
 
