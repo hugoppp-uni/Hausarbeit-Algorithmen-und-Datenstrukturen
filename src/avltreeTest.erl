@@ -4,6 +4,11 @@
 deleteBT/2, listAppend/2, printBT/2, rotateR/1, rotateL/1, buildNodeAndRotateIfNeeded/1]).
 -include_lib("eunit/include/eunit.hrl").
 
+aufgabe_1_6_test() ->
+  Tree = treeInsertFromList(initBT(), util:randomliste(2000)),
+  printBT(Tree, aufgabe1_6_before),
+  Tree88deleted = treeDeleteFromList(Tree, util:randomliste(88)),
+  printBT(Tree88deleted, aufgabe1_6_after).
 
 
 initBT_test() ->
@@ -102,16 +107,19 @@ randomInsert_test() ->
   ?assertEqual(ok, insertListAndAssert(initBT(), util:resortliste(1000))).
 
 randomDelete_test() ->
-  Init = insertList(initBT(), util:sortliste(100)),
+  Init = treeInsertFromList(initBT(), util:sortliste(100)),
   ?assertEqual(ok, deleteListAndAssert(Init, util:sortliste(1000))),
   ?assertEqual(ok, deleteListAndAssert(Init, util:resortliste(1000))),
   Numbers3 = util:randomliste(5000),
   ?assertEqual(ok, deleteListAndAssert(initBT(), Numbers3)).
 
-insertList(Tree, [H | T]) ->
-  insertList(insertBT(Tree, H), T);
-insertList(Tree, []) -> Tree.
+treeInsertFromList(Tree, [H | T]) ->
+  treeInsertFromList(insertBT(Tree, H), T);
+treeInsertFromList(Tree, []) -> Tree.
 
+treeDeleteFromList(Tree, [H | T]) ->
+  treeDeleteFromList(deleteBT(Tree, H), T);
+treeDeleteFromList(Tree, []) -> Tree.
 
 deleteListAndAssert(Tree, [H | T]) ->
   Res = deleteBT(Tree, H),

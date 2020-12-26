@@ -24,16 +24,19 @@ isBT({Element, Height, {}, {}}, LowerLimit, UpperLimit) ->
     and (Height == 1);
 isBT({Element, Height, Left, {}}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
-    (Height == 2) and
+    % balance
+  (Height == 2) and
     (isBT(Left, LowerLimit, Element));
 isBT({Element, Height, {}, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
-    (Height == 2) and
+    % balance
+  (Height == 2) and
     (isBT(Right, Element, UpperLimit));
 isBT({Element, Height, Left, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
     (Height == (maxInt(getHeight(Left), getHeight(Right)) + 1)) and
-    (getBalance(Left, Right) < 2) and
+    % balance
+  (abs(getBalance(Left, Right)) < 2) and
     (isBT(Left, LowerLimit, Element)) and
     (isBT(Right, Element, UpperLimit)).
 basicChecks(Element, LowerLimit, UpperLimit, Height) ->
@@ -70,8 +73,19 @@ insertBT({NodeElement, _, Left, Right}, Element) when Element > NodeElement ->
   buildNodeAndRotateIfNeeded(NodeElement, Left, NewRight).
 
 
+%% Überprüft die AVL-Bedingung und führt
+%% Einzel- / Doppelrotationen durch, falls
+%% diese verletzt wird.
+%%
+%% Gibt einen Knoten zurück
 buildNodeAndRotateIfNeeded({El, _, L, R}) ->
   buildNodeAndRotateIfNeeded(El, L, R).
+%% Setzt einen Knoten zusammen.
+%% Überprüft die AVL-Bedingung und führt
+%% Einzel- / Doppelrotationen durch, falls
+%% diese verletzt wird.
+%%
+%% Gibt einen Knoten zurück
 buildNodeAndRotateIfNeeded(El, L, R) ->
   Wurzel = buildNode(El, L, R),
   Balance = getBalance(L, R),
@@ -136,30 +150,39 @@ findAndDeleteMax({NodeElement, _, Left, Right}) ->
   {Found, NewRight} = findAndDeleteMax(Right),
   {Found, buildNodeAndRotateIfNeeded(NodeElement, Left, NewRight)}.
 
-getHeight({}) -> 0;
-getHeight({_, Height, _, _}) -> Height.
-
+% siehe Formel 1
 getBalance({}) -> 0;
 getBalance({_, _, L, R}) -> getBalance(L, R).
 getBalance(L, R) -> getHeight(R) - getHeight(L).
 
-%%% Referenzen beziehen sich auf 2.1 Abschnitt "Rotation"
+getHeight({}) -> 0;
+getHeight({_, Height, _, _}) -> Height.
+
+
+%% Rotiert einen Knoten nach rechts,
+%% die Höhe des Wurzel- und Rotationsknoten wird neu berechnet.
+%% Referenzen beziehen sich auf 2.1 Abschnitt "Rotation"
 rotateR({WurzelKnotenEl, _, {RotationsKnotenEl, _, RotationsL, RotationsR}, WurzelR}) ->
   util:counting1(rightrotate),
   %                                   |Operation 2|
   NewRight = buildNode(WurzelKnotenEl, RotationsR, WurzelR),
   %                                      |Operation 1|
-  buildNode(RotationsKnotenEl, RotationsL, NewRight).
+  buildNode(RotationsKnotenEl, RotationsL, NewRight)
 % Rückgabe = Operation 3
+.
 
-%%% Referenzen beziehen sich auf 2.1 Abschnitt "Rotation" und sind symmetrisch zu diesen.
+%% Rotiert einen Knoten nach links,
+%% die Höhe des Wurzel- und Rotationsknoten wird neu berechnet.
+%% Referenzen beziehen sich auf 2.1 Abschnitt "Rotation"
+%% und sind symmetrisch zu diesen.
 rotateL({WurzelKnotenEl, _, WurzelL, {RotationsKnotenEl, _, RotationsL, RotationsR}}) ->
   util:counting1(leftrotate),
   %                                           |Operation 2|
   NewLeft = buildNode(WurzelKnotenEl, WurzelL, RotationsL),
   %                         |Operation 1|
-  buildNode(RotationsKnotenEl, NewLeft, RotationsR).
+  buildNode(RotationsKnotenEl, NewLeft, RotationsR)
 % Rückgabe = Operation 3
+.
 
 buildNode(Value, Left, Right) ->
   {Value, maxInt(getHeight(Left), getHeight(Right)) + 1, Left, Right}.
