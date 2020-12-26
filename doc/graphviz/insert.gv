@@ -20,16 +20,11 @@ digraph Q {
     larger [label = "InsertBTree(BTree, right)"]
     //larger -> a1
 
-    checkBalance[ label= "-1 <= getBalance(this) <= +1?" shape = diamond color = green]
-    rotate [label = "Rotate(this)" color = green]
-    noRotate [label = "Ende" color = green]
+    checkBalance[ label= "Rebalance(Btree)" color = green]
 
     smaller -> checkReturnl2
     checkReturnl2 [label = "height = max(height_left, height_right) + 1"]
     checkReturnl2 -> checkBalance [color = green]
-    checkBalance -> rotate [label = "NO", color = green]
-    rotate -> noRotate [color = green]
-    checkBalance -> noRotate [label = "YES", color = green]
 
     larger -> checkReturn2
     checkReturn2 [label = "height = max(height_left, height_right) + 1"]
