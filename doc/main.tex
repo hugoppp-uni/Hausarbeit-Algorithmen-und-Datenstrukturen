@@ -10,13 +10,15 @@
 \usepackage{placeins}
 \usepackage{subfig}
 \usepackage{hyperref}
+\usepackage{listings}
 
-\title{ADP Hausarbeit: Vergleich von Bäumen}
+\title{Algorithmen und Datenstrukturen Hausarbeit:\\Vergleich von Bäumen}
 \author{Hugo Protsch}
 
 
 \begin{document}
 
+    \maketitle
     \tableofcontents
     \newpage
     \section{Einleitung}\label{sec:Einleitung}
@@ -30,7 +32,7 @@
     absteigenden Zahlen verloren geht.
     Hierbei entsteht ein Baum, der entartet, also nicht balanciert, ist.
     Im Extremfall entsteht somit eine einfach verkettete Liste.
-    Die Laufzeit von Einfüge-, Lösch und Suchoperationen auf diesem
+    Die Laufzeit von Einfüge-, Lösch- und Suchoperationen auf diesem
     ist somit wieder linear (\(O(n)\)).
     Um eine solche Entartung der Bäume und die daraus resultierende verminderte Performance
     zu vermeiden, muss also eine Strategie entwickeln werden, die den Baum balanciert hält.
