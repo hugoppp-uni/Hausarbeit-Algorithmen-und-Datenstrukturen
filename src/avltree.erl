@@ -193,6 +193,7 @@ printBT(Tree, Filename) ->
   io:format("digraph G{~n", []),
   io:format(IODevice, "digraph G{~n", []),
   printBT2(Tree, IODevice),
+  printHeightAndBalance(Tree, IODevice),
   io:format("}", []),
   io:format(IODevice, "}", []).
 printBT2({From, H, {}, {To, ToH, ToL, ToR}}, IODevice) ->
@@ -209,9 +210,24 @@ printBT2({El, H, L, R}, IODevice) ->
   printBT2({El, H, {}, R}, IODevice);
 printBT2({}, _IODevice) -> ok.
 printElement(IODevice, From, To, Height) ->
-  io:format("~p -> ~p [label = ~p];~n", [From, To, Height]),
-  io:format(IODevice, "~p -> ~p [label = ~p];~n", [From, To, Height]).
+  io:format("~p -> ~p;~n", [From, To]),
+  io:format(IODevice, "~p -> ~p;~n", [From, To]).
 
+printHeightAndBalance({}, _) -> ok;
+printHeightAndBalance({Value, H, L, R}, IODevice) ->
+  printHeightAndBalance(IODevice, Value, getBalance(L, R), H),
+  printHeightAndBalance(L, IODevice),
+  printHeightAndBalance(R, IODevice).
+printHeightAndBalance(IODevice, Value, Balance, Height) ->
+  if
+    Balance == -1 -> io:format(IODevice,
+      "~p [label = \"~p\\n(~p)\" color=purple];~n", [Value, Value, Height]);
+    Balance == 0 -> io:format(IODevice,
+      "~p [label = \"~p\\n(~p)\" color=black];~n", [Value, Value, Height]);
+    Balance == 1 -> io:format(IODevice,
+      "~p [label = \"~p\\n(~p)\" color=blue];~n", [Value, Value, Height]);
+    true -> io:format(IODevice, "~p\\n(~p)[color=red]~n", [Value, Height])
+  end.
 
 
 
