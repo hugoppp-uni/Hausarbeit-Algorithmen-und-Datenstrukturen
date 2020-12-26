@@ -5,7 +5,7 @@ deleteBT/2, listAppend/2, printBT/2, rotateR/1, rotateL/1, buildNodeAndRotateIfN
 -include_lib("eunit/include/eunit.hrl").
 
 aufgabe_1_6_test() ->
-  Tree = treeInsertFromList(initBT(), util:randomliste(2000)),
+  Tree = treeInsertFromList(initBT(), util:randomliste(100)),
   printBT(Tree, aufgabe1_6_before),
   Tree88deleted = treeDeleteFromList(Tree, util:randomliste(88)),
   printBT(Tree88deleted, aufgabe1_6_after).
