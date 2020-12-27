@@ -33,8 +33,9 @@ der Balancewerte definiert sind (siehe auch Abbildung~\ref{fig:AVL-Cases}):
 \end{enumerate}
 Die ersten beiden und letzten beiden Fälle sind dabei jeweils symmetrisch zueinander.
 
-\paragraph*{Rotation}
+\paragraph*{Rotation}\label{par:rotating}
 
+Die Rebalancierung wird mithilfe von Rotationen von Knoten vorgenommen.
 Bei einer Rotation wird immer ein Knoten als Wurzelknoten betrachtet.
 Alle Knoten, die über dem Wurzelknoten stehen, sind für die Rotation nicht von
 Relevanz.
@@ -43,8 +44,8 @@ Relevanz.
 Der Wurzelknoten wird mit dem Kindknoten rotiert, auf dessen Seite die
 Unbalance vorliegt, im Folgenden wird dieses Kind Rotationsknoten genannt:
 \begin{itemize}
-    \item Linksrotation: Bei positiver Balance mit dem rechten Kindknoten
-    \item Rechtsrotation: Bei negativer Balance mit dem linken Kindknoten
+    \item Linksrotation: Rotieren vom Wurzelknoten mit rechtem Kindknoten
+    \item Rechtsrotation: Rotieren vom Wurzelknoten mit linken Kindknoten
 \end{itemize}
 Betrachte Abbildung~\ref{fig:AVL-Cases}~(Left~Left~Case).
 Zum Rotieren der beiden Knoten nach rechts werden folgende Operationen ausgeführt:
@@ -57,6 +58,7 @@ Zum Rotieren der beiden Knoten nach rechts werden folgende Operationen ausgefüh
 \end{enumerate}
 Dabei muss die Höhe des Rotations- und Wurzelknotens angepasst werden.
 Dies lässt sich am leichtesten durch eine erneute Berechnung mit Formel~\ref{eq:height} erzielen.
+Des Weiteren muss eventuell die Höhe der Knoten über dem Wurzelknoten angepasst werden.
 
 %TODO Formel machen
 Die Operation~\ref{enm:reblStep1} ist erlaubt, da (5) größer als (4) sein muss, somit als rechtes
@@ -106,75 +108,164 @@ befriedigt nun die AVL-Bedingung.
 
 \paragraph{InitBT, IsEmptyBT, EqualBT, FindBT}
 Die Implementation dieser Methoden kann aus der ersten Praktikumsaufgabe übernommen werden.
+Bei der InitBT Methode müssen lediglich alle Counter der Rotationszählung zurückgesetzt werden.
 
-\paragraph{IsBT}
+\paragraph{IsBT(BTree)}
 Die Methode aus der ersten Praktikumsaufgabe wird um die Überprüfung der
 AVL-Bedingung erweitert.
 Dabei wird bei jedem Knoten zusätzlich überprüft, ob die Balance (siehe Formel~\ref{eq:balance})
 -1, 0 oder +1 beträgt.
 Der Ausdruck wird mit den bisherigen Ausdrücken und-verknüpft.
 
-\paragraph{InsertBT, DeleteBT}
+\paragraph{InsertBT(BTree, Element), DeleteBT(BTree, Element)}
 Das Einfügen und Löschen wird wie bei einem Binärbaum realisiert.
 Die einzige Änderung, die vorgenommen werden muss, ist das Prüfen der
 AVL-Bedingung und eventuelles Rotieren, bottom-up nach dem Einfügen bzw. Löschen.
-Diese wird mithilfe der \verb|Rebalance|-Methode vorgenommen, die in
+Dies wird mithilfe der \verb|Rebalance|-Methode vorgenommen, die in
 Abschnitt~\nameref{par:MethodRebalance} weiter ausgeführt wird.
 Beim Löschen muss darauf geachtet werden, dass der Pfad vom tatsächlich entfernten Knoten, also
 dem Substitution-Knoten, überprüft wird.
 In Abbildung~\ref{fig:AVL-insert} und~\ref{fig:AVL-delete} sind die notwendigen Änderungen jeweils
-grün markiert.
+blau markiert.
 
 \begin{figure}[p]
     \centering
-    \includegraphics[width= 1.0\textwidth]{img/insert}
+    \includegraphics[width= 0.75\textwidth]{img/insert}
     \caption{InsertBT}
     \label{fig:AVL-insert}
 \end{figure}
 \begin{figure}[p]
     \centering
-    \includegraphics[width= 1.0\textwidth]{img/insert}
+    \includegraphics[height= 0.9\textheight]{img/delete}
     \caption{DeleteBT}
     \label{fig:AVL-delete}
 \end{figure}
 
-\paragraph{PrintBT}
-Diese Funktion speichert eine Datei im GraphViz Format, welche den Baum darstellt.
-Dafür muss am Anfang einmal der Header (\verb|digraph G{|), dann der Inhalt, am Ende eine
+\paragraph{PrintBT(BTree)}
+Diese Funktion speichert eine Representation des übergebenen Baumes als Datei im GraphViz Format.
+Dafür wird am Anfang einmal der Header (\verb|digraph G{|), dann der Inhalt, am Ende eine
 schließende Klammer ausgegeben.
-Um den Inhalt auszugeben werden für jeden Knoten bis zu zwei Zeilen ausgegeben:
+Um den Inhalt auszugeben werden für jeden Knoten bis zu drei Zeilen ausgegeben:
 \begin{enumerate}
-    \item \verb|<Vater> -> <Linkes Kind> [label = <Hoehe Linkes Kind>];|
-    \item \verb|<Vater> -> <Rechtes Kind> [label = <Hoehe Rechtes Kind>];|
+    \item \verb|<Knoten> -> <Linkes Kind>;|
+    \item \verb|<Knoten> -> <Rechtes Kind>;|
+    \item \verb|<Knoten> [label = "<Knoten>\n(<Hoehe von Knoten>)" color = <Farbe>;|
 \end{enumerate}
-Dabei entspricht \verb|Vater, Linkes Kind, Rechtes Kind| dem Wert des jeweiligen Knotens.
-Falls ein Kindknoten leer sein sollte, wird dafür keine Zeile ausgegeben.
+Dabei entspricht \verb|Knoten, Linkes Kind, Rechtes Kind| dem Wert des jeweiligen Knotens.
+Falls ein Kindknoten leer sein sollte, wird dafür nur die letzte Zeile ausgegeben.
+Diese formatiert den Knoten selber, dabei wird die Farbe abhängig der Balance gesetzt.
+
+Knoten mit der Balance von \(-1\) werden violett, mit der Balance von \(+1\)
+blau, mit der Balance von \(0\) schwarz dargestellt.
+Falls die AVL-Bedingung nicht eingehalten wird, erscheint der Knoten rot.
 
 \paragraph{Rebalance(BTree)}\label{par:MethodRebalance}
-Die \verb|Rebalance|-Methode bekommt einen Knoten übergeben, überprüft die Balance und balanciert
-den Knoten durch Rotieren, falls diese nicht gegeben ist.
+Die \verb|Rebalance|-Methode bekommt einen Knoten übergeben, überprüft die AVL-Bedingung und
+balanciert den Knoten durch Rotieren, falls die AVL-Bedingung nicht erfüllt ist.
 Dafür wird zunächst die Balance des übergebenen Knotens überprüft.
 Falls diese -1, 0, +1 beträgt, wird der Knoten nicht verändert.
 Andernfalls wird überprüft, welcher der in Abschnitt \nameref{par:rebalancing} aufgeführten Fälle
 vorliegt und die nötigen Rotationen mithilfe der \nameref{par:MethodRotate}-Methode ausgeführt.
-Falls
+Falls eine Doppelrotation ausgeführt wird, wird außerdem der entsprechende Counter erhöht.
+Diese Methode auch in Abbildung~\ref{fig:rebalance} in einem Flussdiagramm dargestellt.
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width = 0.85\textwidth]{img/rebalance}
+    \caption{Rebalancing}
+    \label{fig:rebalance}
+\end{figure}
 
-\paragraph{Rotate(BTree, Direction)}\label{par:MethodRotate}
+
+\paragraph{Rotate(BTree)}\label{par:MethodRotate}
+Das Rotieren wurde in Abschnitt \nameref{par:rotating} dargestellt.
+In Abbildung~\ref{fig:rotate} wird die Rechts- und Linksrotation zusätzlich in jeweils einem
+Flussdiagramm dargestellt.
+\begin{figure}[hbt!]
+    \centering
+    \subfloat[\centering Links]{\includegraphics[width = 0.3\textwidth]{img/rotateL.pdf}}
+    \subfloat[\centering Rechts]{\includegraphics[width = 0.3\textwidth]{img/rotateR.pdf}}
+    \caption{Rotieren}
+    \label{fig:rotate}
+\end{figure}
 
 \subsection{Aufgaben}
 
-\paragraph{Aufgabe 1.5: Löschen von 88 Prozent der Zahlen}
+\paragraph{Aufgabe 1.4:}
+Beispielhafte Bäume werden mit der zur verfügung gestellten Methode
+\verb|analyseBT:test(<Anzahl Elemente>)| analysiert.
+\subparagraph{100 Elemente}
+Ein Aufruf mit \verb|analyseBT:test(100)| ergibt folgende Ausgabe:
+\begin{verbatim}
+Bei gegebener Höhe 8:
+         minimale Anzahl Knoten: 54.
+         maximale Anzahl Knoten: 255
+Bei gegebener Anzahl an Knoten 100:
+         minimale Höhe: 6.
+         maximale Höhe: 9
+Durchschnittliche Balancefehler: 0.28
+         maximaler Balancefehler: 1.
+\end{verbatim}
+
+An der Ausgabe ist zu erkennen, dass der erzeugte Baum mit 100 Elementen eine Höhe von 8
+aufweist.
+Dies liegt innerhalb des theoretischen Rahmens für AVL Bäume der Elementanzahl 100 von mindestens
+6 und maximal 9.
+Die Ausgabe zeigt außerdem die minimale und maximale Elementanzahl für einen Baum der
+vorgegebenen Höhe an, die hier bei 54 und 255 liegt.
+Der maximale Balancefehler beträgt 1, somit wurde die AVL-Bedingung bei jedem Knoten eingehalten.
+Der durchschnittliche Balancefehler beträgt 0.28, somit hatten 28 der 100 Knoten eine Balance
+von -1 oder 1.
+
+\subparagraph{1000 Elemente}
+Ein Aufruf mit \verb|analyseBT:test(1000)| ergibt folgende Ausgabe:
+\begin{verbatim}
+Bei gegebener Höhe 12:
+         minimale Anzahl Knoten: 376.
+         maximale Anzahl Knoten: 4095
+Bei gegebener Anzahl an Knoten 1000:
+         minimale Höhe: 9.
+         maximale Höhe: 14
+Durchschnittliche Balancefehler: 0.321
+         maximaler Balancefehler: 1.
+\end{verbatim}
+
+Aus der Ausgabe wird ersichtlich, dass die AVL-Bedingung auch bei 1000 Elementen eingehalten wird.
+Des Weiteren wird die Logarithmische Natur des AVL-Baumes ersichtlich:
+Bei einer Verzehnfachung der Elementanzahl hat sich die Höhe lediglich um dem Faktor 0.5 erhöht.
+
+\subparagraph{Fehlerhafter Baum}
+Ein Aufruf mit einem Baum, der an einem Knoten eine Balance von 2 besitzt, ergibt folgende Ausgabe:
+\begin{verbatim}
+>analyseBT:analyseBT({3, 3, {}, {4, 2, {}, {5, 1, {}, {}}}}).
+Bei gegebener Höhe 3:
+         minimale Anzahl Knoten: 4.
+         maximale Anzahl Knoten: 7
+Bei gegebener Anzahl an Knoten 3:
+         minimale Höhe: 2.
+         maximale Höhe: 1
+Durchschnittliche Balancefehler: 1.0
+         maximaler Balancefehler: 2.
+\end{verbatim}
+Der maximale Balancefehler beträgt wie erwartet 2, außerdem liegt die Höhe des Baumes über dem
+theoretischen Maximum.
+Der Baum ist somit kein AVL-Baum.
+
+\paragraph{Aufgabe 1.5}
 Es wird ein Baum aus 100 Zufallszahlen erstellt, anschließen werden zufällig 88 davon wieder
 gelöscht.
 In Abbildung~\ref{fig:88before} ist der Baum vor dem Löschen zu sehen.
 In Abbildung~\ref{fig:88after} ist der Baum nach dem Löschen zu sehen.
 
-\begin{figure}[hbtp]\label{fig:88before}
-    \centerline{\includegraphics[width = 1.2\textwidth,center]{img/1_6_before.pdf}}
-        \caption{Vor dem Löschen}
+\begin{figure}[hbtp]
+    \centerline{\includegraphics[width = 1.2\textwidth]{img/1_6_before.pdf}}
+    \caption{Vor dem Löschen}
+    \label{fig:88before}
 \end{figure}
-\begin{figure}[hbtp]\label{fig:88after}
-\centering
-        \includegraphics[width = 0.25\textwidth]{img/1_6_after.pdf}
-        \caption{Nach dem Löschen}
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[width = 0.25\textwidth]{img/1_6_after.pdf}
+    \caption{Nach dem Löschen}
+    \label{fig:88after}
 \end{figure}
+\FloatBarrier
+
