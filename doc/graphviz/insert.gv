@@ -20,13 +20,10 @@ digraph Q {
     larger [label = "InsertBTree(BTree, right)"]
     //larger -> a1
 
-    checkBalance[ label= "Rebalance(Btree)" color = green]
+    checkBalance[ label= "Rebalance(Btree)" color = blue]
 
-    smaller -> checkReturnl2
-    checkReturnl2 [label = "height = max(height_left, height_right) + 1"]
-    checkReturnl2 -> checkBalance [color = green]
-
+    smaller -> checkReturn2
     larger -> checkReturn2
     checkReturn2 [label = "height = max(height_left, height_right) + 1"]
-    checkReturn2 -> checkBalance [color = green]
+    checkReturn2 -> checkBalance [color = blue]
 }

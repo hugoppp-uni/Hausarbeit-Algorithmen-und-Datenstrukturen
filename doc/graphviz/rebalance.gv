@@ -5,13 +5,13 @@ digraph G {
     check1Pos [label = "getBalance(BTree.left) = 1" shape = diamond]
     check1Neg [label = "getBalance(BTree.right) = -1" shape = diamond]
 
-    RightRight [label = "rotate(BTree, Left)"]
-    LeftLeft [label = "rotate(BTree, Right)"]
+    RightRight [label = "rotateL(BTree)"]
+    LeftLeft [label = "rotateR(BTree)"]
 
-    RightLeft [label = "rotate(BTree.Right, Right)"]
-    RightLeft -> "rotate(BTree, Left)" -> "incement(ddleftrotate)"
-    LeftRight [label = "rotate(BTree.Left, Left)"]
-    LeftRight -> "rotate(BTree, Right)" -> "incement(ddrightrotate)"
+    RightLeft [label = "rotateR(BTree.Right)"]
+    RightLeft -> "rotateL(BTree)" -> "incement(ddleftrotate)"
+    LeftRight [label = "rotateL(BTree.Left)"]
+    LeftRight -> "rotateR(BTree)" -> "incement(ddrightrotate)"
 
     rebalance -> check2Neg
 

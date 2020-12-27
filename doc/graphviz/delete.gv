@@ -20,8 +20,8 @@ digraph Q {
         s_a5 -> s_a6;
         s_a6 [label = "height = max(height_left,
                   height_right) + 1"];
-        s_a6 -> rebalance [color = green]
-        rebalance [label = "Rebalance(BTree)" color = green]
+        s_a6 -> rebalance [color = blue]
+        rebalance [label = "Rebalance(BTree)" color = blue]
         rebalance -> cluster1_end;
         cluster1_end [label = "return delted"];
     }
@@ -54,9 +54,9 @@ digraph Q {
     smaller [label = "Delete(BTree, left)"] smaller -> hohe;
     larger [label = "Delete(BTree, right)"] larger -> hohe;
 
-    checkBalance [label = "Rebalance(Btree)" color = green];
+    checkBalance [label = "Rebalance(Btree)" color = blue];
 
-    hohe -> checkBalance [color = green];
+    hohe -> checkBalance [color = blue];
 
 
 }

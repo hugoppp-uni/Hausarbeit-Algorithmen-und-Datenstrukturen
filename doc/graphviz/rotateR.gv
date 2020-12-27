@@ -1,0 +1,15 @@
+digraph G {
+    rotateR [label = "rotateR(Btree)" shape = box];
+    rotateR -> wurzel
+    wurzel [label = "Rotationsknoten = Btree.left\nRotationsR = Rotationsknoten.right"];
+    wurzel -> a0
+    a0 [label = "<R0>increment(rightrotate)"]
+    a0 -> a1
+    a1 [label = "<R1>Rotationsknoten.right = Btree"]
+    a1 -> a2
+    a2  [label = "<R2>Btree.left = RotationsR"]
+    a2 -> a3
+    a3 [label = "<R3>Btree = Rotationsknoten"]
+    a3 -> a4
+    a4 [label = "Btree.Height = calcHeight()\nBtree.Right.Height = calcHeight()"]
+}
