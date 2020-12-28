@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[a4paper]{article}
 \usepackage{amsmath}
 \usepackage{cite}
 \usepackage{graphicx}
@@ -21,7 +21,8 @@
     \maketitle
     \tableofcontents
     \newpage
-    \section{Einleitung}\label{sec:Einleitung}
+    \section*{Einleitung}\label{sec:Einleitung}
+    \addcontentsline{toc}{section}{Einleitung}
 
     In der ersten Praktikumsaufgabe haben wir binäre Suchbäume betrachtet.
     Wir haben festgestellt, dass diese im Vergleich zu verketteten Listen eine erheblich
@@ -32,13 +33,22 @@
     absteigenden Zahlen verloren geht.
     Hierbei entsteht ein Baum, der entartet, also nicht balanciert, ist.
     Im Extremfall entsteht somit eine einfach verkettete Liste.
-    Die Laufzeit von Einfüge-, Lösch- und Suchoperationen auf diesem
-    ist somit wieder linear (\(O(n)\)).
+    Die Laufzeit von Einfüge-, Lösch- und Suchoperationen
+    ist in diesem Fall wieder linear (\(O(n)\)).
     Um eine solche Entartung der Bäume und die daraus resultierende verminderte Performance
     zu vermeiden, muss also eine Strategie entwickeln werden, die den Baum balanciert hält.
     Ein Ansatz, der in Abschnitt~\ref{sec:avl-tree} betrachtet wird, ist der AVL-Baum,
     der jeweils beim Einfügen und Löschen von Elementen die
-    Balance des Baumes überprueft und im Falle der Entartung diese ausgleicht.
+    Balance des Baumes überprüft und im Falle der Entartung diese sofort ausgleicht.
+
+    Eine zweite Variation des binären Suchbaumes, die in Abschnitt~\ref{sec:splay-tree}
+    betrachtet wird, ist der Splay-Tree.
+    Dieser hat das Ziel, Elemente, die häufig zugegriffen werden, im Baum möglichst weit oben zu
+    halten und somit die Zugriffszeit auf diese zu verringern.
+    Anders als beim AVL-Baum, wird ein Splay-Tree nicht balanciert, somit kann der Baum, wie ein
+    normaler Binärbaum, entarten.
+    Der Vorteil liegt also lediglich beim wiederholten Zugriff auf eine kleine Teilmenge der im
+    Baum befindlichen Elementen.
 
     In beiden Abschnitten werden doppelte Schlüsselwerte in den Bäumen nicht
     erlaubt.
