@@ -1,0 +1,39 @@
+digraph G{
+start [label = "find2(BTree, Element)" shape = box]
+start -> b1
+b1[label = "Element" shape = diamond]
+b1 -> lt [label = " < BTree.Element"]
+b1 -> eq [label = " = BTree.Element"]
+b1 -> gt [label = " > BTree.Element"]
+
+gt[label = "{D, Height} = find2(BTree.left, Element)"]
+gt -> gt2
+gt2[label = "D" shape = diamond]
+gt2 -> gtl [label="= L"]
+gt2 -> gth [label="= HERE"]
+gt2 -> gtr [label="= R"]
+gth[label = "return {R, Height}"]
+gtl[label = "zig-zig left"]
+gtr[label = "zig-zag left"]
+gtl -> gtlr
+gtr -> gtlr
+gtlr [label = "return {HERE, Height}"]
+
+eq [label = "return\n{HERE, BTree.Height}"]
+
+lt[label = "{D, Height} = find2(BTree.left, Element)"]
+lt -> lt2
+lt2[label = "D" shape = diamond]
+lt2 -> ltl [label="= L"]
+lt2 -> lth [label="= HERE"]
+lt2 -> ltr [label="= R"]
+lth[label = "return {L, Height}"]
+ltl[label = "zig-zig right"]
+ltr[label = "zig-zag right"]
+ltl -> ltlr
+ltr -> ltlr
+ltlr [label = "return {HERE, Height}"]
+
+
+}
+
