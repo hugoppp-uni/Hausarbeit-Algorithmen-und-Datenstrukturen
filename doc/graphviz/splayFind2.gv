@@ -1,5 +1,6 @@
 digraph G{
-start [label = "find2(BTree, Element)" shape = box]
+node [shape = box];
+start [label = "find2(BTree, Element)" shape = ellipse]
 start -> b1
 b1[label = "Element" shape = diamond]
 b1 -> lt [label = " < BTree.Element"]

@@ -1,5 +1,6 @@
 digraph G{
-find [label = "findBT(BTree, Element)" shape = box]
+node [shape = box];
+find [label = "findBT(BTree, Element)" shape = ellipse]
 find -> find2
 find2 [label = "{D, Height} = findBT2(BTree, Element)"]
 find2 -> a1

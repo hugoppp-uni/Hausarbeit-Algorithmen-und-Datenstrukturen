@@ -7,7 +7,7 @@ digraph Q {
         compound = true;
 
         //insert
-            cluster1_start [label = "findAndDeleteMax(BTree)"];
+            cluster1_start [label = "findAndDeleteMax(BTree)" shape = ellipse];
         cluster1_start -> s_a2
         s_a2 [label = "isEmpty(BTree.right)?" shape = diamond];
         s_a2 -> s_a4 [label = "YES (größtes Element im linken\nTree is BTree.Element)"];
@@ -29,18 +29,18 @@ digraph Q {
     node [shape = box];
     compound = true;
 
-    a1 [label = "delete(BTree, element)"];
+    a1 [label = "delete(BTree, element)" shape = ellipse];
     a1 -> a2;
     a2 [label = "isEmpty(BTree)" shape = diamond];
     a2 -> b2 [label = "YES"];
-    b2 [label = "return empty list"];
+    b2 [label = "return"];
     a2 -> a3 [label = "NO"];
-    a3 [label = "element < BTree.element" shape = diamond];
-    a3 -> smaller [label = "YES"];
-    a3 -> a4 [label = "NO"];
-    a4 [label = "element > BTree.element" shape = diamond];
-    a4 -> larger [label = "YES"];
-    a4 -> hilfs [label = "NO (Element == BTree .Element)"];
+    a3 [label = "element" shape = diamond];
+    a3 -> smaller [label = " < BTree.element"];
+    a3 -> larger [label = " > BTree.element"];
+//    a4 [label = "element > BTree.element" shape = diamond];
+//    a4 -> larger [label = "YES"];
+    a3 -> hilfs [label = "= BTree.Element"];
     hilfs [label = "findAndDeleteMax(BTree.left)"];
 //    hilfs -> a10;
 //    hilfs -> connectornode [lhead = cluster1]

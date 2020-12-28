@@ -1,7 +1,7 @@
 digraph G {
-    rebalance [label = "Rabalance(BTree)" shape = box]
-    check2Neg [label = "getBalance(BTree) = -2" shape = diamond]
-    check2Pos [label = "getBalance(BTree) = 2" shape = diamond]
+    node [shape = box];
+    rebalance [label = "Rabalance(BTree)" shape = ellipse]
+    check2 [label = "getBalance(BTree)" shape = diamond]
     check1Pos [label = "getBalance(BTree.left) = 1" shape = diamond]
     check1Neg [label = "getBalance(BTree.right) = -1" shape = diamond]
 
@@ -9,21 +9,20 @@ digraph G {
     LeftLeft [label = "rotateR(BTree)"]
 
     RightLeft [label = "rotateR(BTree.Right)"]
-    RightLeft -> "rotateL(BTree)" -> "incement(ddleftrotate)"
+    RightLeft -> "rotateL(BTree)" -> "increment(ddleftrotate)"
     LeftRight [label = "rotateL(BTree.Left)"]
-    LeftRight -> "rotateR(BTree)" -> "incement(ddrightrotate)"
+    LeftRight -> "rotateR(BTree)" -> "increment(ddrightrotate)"
 
-    rebalance -> check2Neg
+    rebalance -> check2
 
-    check2Neg -> check1Pos [label = "YES"]
+    check2 -> check1Pos [label = "= -2"]
     check1Pos -> LeftRight [label = "YES\nLeft Right Case"]
     check1Pos -> LeftLeft [label = "NO\nLeft Left Case"]
 
-    check2Neg -> check2Pos [label = "NO"]
-    check2Pos -> check1Neg [label = "YES"]
+    check2 -> check1Neg [label = "= 2"]
     check1Neg -> RightLeft [label = "YES\nRight Left Case"]
     check1Neg -> RightRight [label = "NO\nRight Right Case"]
 
-    check2Pos -> "Return" [label = "NO\nBalanced Case"]
+    check2 -> "Return" [label = "∈{-1,0,1}\nBalanced Case"]
 
 }

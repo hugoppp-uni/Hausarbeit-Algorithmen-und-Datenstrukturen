@@ -3,7 +3,7 @@ digraph Q {
     node [shape = box];
     compound = true;
 
-    a1 [label = "Insert(BTree, element)"]
+    a1 [label = "Insert(BTree, element)" shape = ellipse]
     a1 -> a2
     a2 [label = "isEmpty(BTree)" shape = diamond]
     a2-> b2 [label = "NO"]

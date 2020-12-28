@@ -1,5 +1,6 @@
 digraph L {
-    rotateR [label = "rotateL(Btree)" shape = box];
+    node [shape = box];
+    rotateR [label = "rotateL(Btree)" shape = ellipse];
     rotateR -> wurzel
     wurzel [label = "Rotationsknoten = Btree.right\nRotationsL = Rotationsknoten.left"];
     wurzel -> a0
