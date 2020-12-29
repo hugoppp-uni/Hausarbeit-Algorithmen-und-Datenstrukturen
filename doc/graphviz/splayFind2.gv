@@ -9,31 +9,25 @@ b1 -> gt [label = " > BTree.Element"]
 
 gt[label = "{D, Height} = find2(BTree.left, Element)"]
 gt -> gt2
-gt2[label = "D" shape = diamond]
-gt2 -> gtl [label="= L"]
-gt2 -> gth [label="= HERE"]
-gt2 -> gtr [label="= R"]
+gt2[label = "D = HERE" shape = diamond]
+gt2 -> gtnh [label="= NO"]
+gt2 -> gth [label="= YES"]
 gth[label = "return {R, Height}"]
-gtl[label = "zig-zig left"]
-gtr[label = "zig-zag left"]
-gtl -> gtlr
-gtr -> gtlr
-gtlr [label = "return {HERE, Height}"]
+gtnh[label = "splay(R<D>)"]
+gtnh -> Splay
+Splay [label = "return {HERE, Height}"]
 
 eq [label = "return\n{HERE, BTree.Height}"]
 
 lt[label = "{D, Height} = find2(BTree.left, Element)"]
 lt -> lt2
-lt2[label = "D" shape = diamond]
-lt2 -> ltl [label="= L"]
-lt2 -> lth [label="= HERE"]
-lt2 -> ltr [label="= R"]
+lt2[label = "D = HERE" shape = diamond]
+lt2 -> lth [label="= YES"]
+lt2 -> ltnh [label="= NO"]
 lth[label = "return {L, Height}"]
-ltl[label = "zig-zig right"]
-ltr[label = "zig-zag right"]
-ltl -> ltlr
-ltr -> ltlr
-ltlr [label = "return {HERE, Height}"]
+ltnh[label = "splay(L<D>)"]
+ltnh -> Splay
+Splay [label = "return {HERE, Height}"]
 
 
 }
