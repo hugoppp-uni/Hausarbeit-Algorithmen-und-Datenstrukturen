@@ -24,13 +24,13 @@ Die Wurzel \verb|x| ist dabei jeweils die, die nach oben befördert werden soll.
 \begin{figure}[hbt]
     \centering
     \subfloat[\centering Zig Zig: L/L (R/R)]{
-    \includegraphics[width = 0.45\textwidth]{img/splay/zigzig}}
+    \includegraphics[width = 0.45\textwidth]{img/external/zigzig}}
     \qquad
     \subfloat[\centering Zig Zag: L/R (R/L)]{
-    \includegraphics[width = 0.48\textwidth]{img/splay/zigzag}}
+    \includegraphics[width = 0.48\textwidth]{img/external/zigzag}}
     \qquad
     \subfloat[\centering Zig: L (R)]{
-    \includegraphics[width = 0.52\textwidth]{img/splay/zig}}
+    \includegraphics[width = 0.52\textwidth]{img/external/zig}}
     \caption{Splaying Vorgang}\label{fig:splayinCase}
 \end{figure}
 
@@ -56,14 +56,15 @@ bottom-up hoch gegeben wird.
 Als Erstes wird \verb|HERE|, danach \verb|L| oder \verb|R| zurückgegeben.
 Beim zweiten Schritt ist das gesuchte Element zwei Elemente entfernt, kann also über zwei
 Kanten erreicht werden.
-Nun wird die entsprechende Doppelrotation durchgeführt.
+Nun wird die entsprechende Doppelrotation durchgeführt, dies wird in die \nameref{par:splay}
+Methode ausgelagert.
 Das gesuchte Element steht jetzt an dem Knoten, der gerade als Wurzel betrachtet wird, somit wird
 als Pfad \verb|HERE| zurückgegeben.
 Dies wird rekursiv fortgeführt, bis die Wurzel des Baumes erreicht wird.
 Der Vorgang ist in Abbildung~\ref{fig:splayFind} dargestellt.
 \begin{figure}[hbt]
     \centering
-    \includegraphics[width=\textwidth]{img/splay/splayFind2}
+    \includegraphics[width=0.8\textwidth]{img/gv/splayFind2}
     \caption{FindBT}
     \label{fig:splayFind}
 \end{figure}
@@ -81,17 +82,29 @@ Anschließend steht das gesuchte Element an der Wurzel.
 Dies ist in Abbildung~\ref{fig:splayFind2} dargestellt.
 \begin{figure}[hbt]
     \centering
-    \includegraphics[width=0.35\textwidth]{img/splay/splayFind}
+    \includegraphics[width=0.3\textwidth]{img/gv/splayFind}
     \caption{FindBT Wrapper}
     \label{fig:splayFind2}
 \end{figure}
 
+\paragraph{Splay}\label{par:splay}
+Die Splay Methode bekommt einen Baum und einen Pfad \(P \in \{LL, RR, LR, RL\}\) übergeben,
+welcher angibt, welcher Splaying Fall vorliegt.
+Es wird eine Fallunterscheidung über den Pfad gemacht, welche die Abfolge der Rotationen bestimmt.
+Diese sind wie beim AVL Baum zu implementieren.
+\begin{itemize}
+    \item LL → Rechtsrotation auf linkes Kind → Rechtsrotation auf Wurzel.
+    \item RR → Linksrotation auf rechtes Kind → Linksrotation auf Wurzel.
+    \item LR → Linksrotation auf linkes Kind → Rechtsrotation auf Wurzel.
+    \item RL → Rechtsrotation auf rechtes Kind → Linksrotation auf Wurzel.
+\end{itemize}
+
 \paragraph{FindTP}
 Alternativ kann beim Finden eines Elementes dieses nur um einen Knoten nach oben bewegt werden.
 Zunächst wird das Element gefunden, anschließend eine Zig-Operation durchgeführt.
-Um dies zu realisieren, wird, sobald das Element gefunden wurde, ein Flag zurückgegeben, welches
-signalisiert, dass rotiert werden soll.
-Dieses Flag wird nur einmal zurückgegeben, sodass insgesamt nur einmal rotiert wird.
+Um dies zu realisieren, wird, sobald das erste mal rotiert wurde, ein Flag zurückgegeben, welches
+signalisiert, dass nicht mehr rotiert werden soll.
+Somit wird das Element nur um eine ebene hoch gegeben.
 
 \paragraph{InsertBT}
 Beim Einfügen eines Elementes wird dieses an die Wurzel befördert.

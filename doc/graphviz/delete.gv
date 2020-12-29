@@ -41,12 +41,12 @@ digraph Q {
 //    a4 [label = "element > BTree.element" shape = diamond];
 //    a4 -> larger [label = "YES"];
     a3 -> hilfs [label = "= BTree.Element"];
-    hilfs [label = "findAndDeleteMax(BTree.left)"];
+    hilfs [label = "deleted = findAndDeleteMax(BTree.left)"];
 //    hilfs -> a10;
 //    hilfs -> connectornode [lhead = cluster1]
     hilfs -> cluster1_start
-    cluster1_end -> a10
-    a10 [label = "Btree.element = gelöschte Zahl"];
+    cluster1_end -> a10 [ltail = cluster1]
+    a10 [label = "Btree.element = deleted.element"];
     a10 -> hohe;
     hohe [label = "height = max(height_left,
                   height_right) + 1"];

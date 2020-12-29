@@ -6,19 +6,15 @@ digraph Q {
     a1 [label = "Insert(BTree, element)" shape = ellipse]
     a1 -> a2
     a2 [label = "isEmpty(BTree)" shape = diamond]
-    a2-> b2 [label = "NO"]
+    a2-> b2 [label = "YES"]
     b2 [label = "neuen Baum mit element zurückgeben"]
-    a2 -> a3 [label = "YES"]
-    a3 [label = "element < BTree.element" shape = diamond]
-    a3 -> smaller [label = "YES"]
-    a3 -> a4 [label = "NO"]
-    a4 [label = "element > BTree.element" shape = diamond]
-    a4 -> larger [label = "YES"]
-    a4 -> "Ende" [label = "NO (Element == BTree.Element)"]
+    a2 -> element [label = "NO"]
+    element [label = "element" shape = diamond]
+    element -> smaller [label = "< BTree.element"]
+    element -> "return" [label = " = BTree.Element\n (bereits vorhanden)"]
+    element -> larger [label = "> BTree.element"]
     smaller [label = "Insert(BTree, left)"]
-    //smaller -> a1
     larger [label = "InsertBTree(BTree, right)"]
-    //larger -> a1
 
     checkBalance[ label= "Rebalance(Btree)" color = blue]
 

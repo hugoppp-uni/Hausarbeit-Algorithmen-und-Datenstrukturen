@@ -95,12 +95,12 @@ befriedigt nun die AVL-Bedingung.
     %https://commons.wikimedia.org/wiki/File:AVL_Tree_Rebalancing_he.svg
     \begin{minipage}[c]{.45\textwidth}
     \subfloat[Korrekt]{
-        \includegraphics[width=.95\linewidth]{img/AVL_Tree_Rebalancing}
+        \includegraphics[width=.95\linewidth]{img/external/AVL_Tree_Rebalancing}
         \label{fig:AVL-Cases}}
     \end{minipage}
     \begin{minipage}[c]{.45\textwidth}
     \subfloat[Falsch]{
-        \includegraphics[width=.95\linewidth]{img/AVL_Tree_Rebalancing_wrong.pdf}
+        \includegraphics[width=.95\linewidth]{img/external/AVL_Tree_Rebalancing_wrong.pdf}
         \label{fig:AVL-wrong-rotate}}
     \end{minipage}
     \caption{Rebalancierung}
@@ -136,34 +136,16 @@ blau markiert.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width= 0.75\textwidth]{img/insert}
+    \includegraphics[width= 0.70\textwidth]{img/gv/insert}
     \caption{InsertBT}
     \label{fig:AVL-insert}
 \end{figure}
 \begin{figure}[p]
     \centering
-    \includegraphics[height= 0.97\textheight]{img/delete}
+    \includegraphics[height= 0.97\textheight]{img/gv/delete}
     \caption{DeleteBT}
     \label{fig:AVL-delete}
 \end{figure}
-
-\paragraph{PrintBT}\label{par:printBT}
-Diese Funktion speichert eine Representation des übergebenen Baumes als Datei im GraphViz Format.
-Dafür wird am Anfang einmal der Header (\verb|digraph G{|), dann der Inhalt, am Ende eine
-schließende Klammer ausgegeben.
-Um den Inhalt auszugeben werden für jeden Knoten bis zu drei Zeilen ausgegeben:
-\begin{enumerate}
-    \item \verb|<Knoten> -> <Linkes Kind>;|
-    \item \verb|<Knoten> -> <Rechtes Kind>;|
-    \item \verb|<Knoten> [label = "<Knoten>\n(<Hoehe von Knoten>)" color = <Farbe>;|
-\end{enumerate}
-Dabei entspricht \verb|Knoten, Linkes Kind, Rechtes Kind| dem Wert des jeweiligen Knotens.
-Falls ein Kindknoten leer sein sollte, wird dafür nur die letzte Zeile ausgegeben.
-Diese formatiert den Knoten selber, dabei wird die Farbe abhängig der Balance gesetzt.
-
-Knoten mit der Balance von \(-1\) werden violett, mit der Balance von \(+1\)
-blau, mit der Balance von \(0\) schwarz dargestellt.
-Falls die AVL-Bedingung nicht eingehalten wird, erscheint der Knoten rot.
 
 \paragraph{Rebalance}\label{par:MethodRebalance}
 Die \verb|Rebalance|-Methode bekommt einen Knoten übergeben, überprüft die AVL-Bedingung und
@@ -176,7 +158,7 @@ Falls eine Doppelrotation ausgeführt wird, wird außerdem der entsprechende Cou
 In Abbildung~\ref{fig:rebalance} wird die Methode in einem Flussdiagramm dargestellt.
 \begin{figure}[p]
     \centering
-    \includegraphics[width = 0.85\textwidth]{img/rebalance}
+    \includegraphics[width = 0.85\textwidth]{img/gv/rebalance}
     \caption{Rebalancierung}
     \label{fig:rebalance}
 \end{figure}
@@ -188,8 +170,8 @@ In Abbildung~\ref{fig:rotate} wird die Rechts- und Linksrotation zusätzlich in 
 Flussdiagramm dargestellt.
 \begin{figure}[p]
     \centering
-    \subfloat[\centering Links]{\includegraphics[width = 0.3\textwidth]{img/rotateL.pdf}}
-    \subfloat[\centering Rechts]{\includegraphics[width = 0.3\textwidth]{img/rotateR.pdf}}
+    \subfloat[\centering Links]{\includegraphics[width = 0.3\textwidth]{img/gv/rotateL.pdf}}
+    \subfloat[\centering Rechts]{\includegraphics[width = 0.3\textwidth]{img/gv/rotateR.pdf}}
     \caption{Rotieren}
     \label{fig:rotate}
 \end{figure}
@@ -266,13 +248,13 @@ In Abbildung~\ref{fig:88before} ist der Baum vor dem Löschen zu sehen.
 In Abbildung~\ref{fig:88after} ist der Baum nach dem Löschen zu sehen.
 
 \begin{figure}[hbtp]
-    \centerline{\includegraphics[width = 1.2\textwidth]{img/1_6_before.pdf}}
+    \centerline{\includegraphics[width = 1.2\textwidth]{img/gv/aufgabe1_6_before.pdf}}
     \caption{Vor dem Löschen}
     \label{fig:88before}
 \end{figure}
 \begin{figure}[hbtp]
     \centering
-    \includegraphics[width = 0.25\textwidth]{img/1_6_after.pdf}
+    \includegraphics[width = 0.25\textwidth]{img/gv/aufgabe1_6_after.pdf}
     \caption{Nach dem Löschen}
     \label{fig:88after}
 \end{figure}
