@@ -3,9 +3,12 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/img" />
+      <sourceFolder url="file://$MODULE_DIR$/img" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/zeitmessung" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/out" />
       <excludeFolder url="file://$MODULE_DIR$/graphviz/out" />
+      <excludeFolder url="file://$MODULE_DIR$/img/gv" />
+      <excludeFolder url="file://$MODULE_DIR$/zeitmessung/out" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8 (base)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
