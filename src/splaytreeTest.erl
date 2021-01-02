@@ -9,10 +9,8 @@ print_test() ->
   splaytree:printBT(Tree, 'splay100Random.gv').
 
 notfound_test() ->
-  ?assertEqual({{}, notfound, 0}, splaytree:findBT2({}, 1)),
-  ?assertEqual({{}, 0}, splaytree:findBT({}, 1)),
-  ?assertEqual({tree4(), 0}, splaytree:findBT(tree4(), 1)),
-  ?assertEqual({tree4(), notfound, 0}, splaytree:findBT2(tree4(), 1)).
+  ?assertEqual({0, {}}, splaytree:findBT({}, 1)),
+  ?assertEqual({0, tree4()}, splaytree:findBT(tree4(), 1)).
 
 insertAlreadyThere_test() ->
   ?assertEqual(tree2(), insertBT(tree2(), 1000)),
@@ -37,29 +35,16 @@ insert_test() ->
 
 zigzig_test() ->
   initBT(),
-  {Tree2Find250, here, 1} = splaytree:findBT2(tree2(), 250),
-  ?assertEqual(2, util:countread(rightrotate)),
-  ?assertEqual(tree2_find250(), Tree2Find250),
-  initBT(),
   {1, Tree2Find250} = splaytree:findBT(tree2(), 250),
   ?assertEqual(2, util:countread(rightrotate)),
   ?assertEqual(tree2_find250(), Tree2Find250),
 
-  initBT(),
-  {Tree2, here, 1} = splaytree:findBT2(tree2_find250(), 1000),
-  ?assertEqual(2, util:countread(leftrotate)),
-  ?assertEqual(tree2(), Tree2),
   initBT(),
   {1, Tree2} = splaytree:findBT(tree2_find250(), 1000),
   ?assertEqual(2, util:countread(leftrotate)),
   ?assertEqual(tree2(), Tree2).
 
 zigzagLR_test() ->
-  initBT(),
-  {Tree3Find75, here, 1} = splaytree:findBT2(tree3(), 75),
-  ?assertEqual(1, util:countread(leftrotate)),
-  ?assertEqual(1, util:countread(rightrotate)),
-  ?assertEqual(tree3_find75(), Tree3Find75),
   initBT(),
   {1, Tree3Find75} = splaytree:findBT(tree3(), 75),
   ?assertEqual(1, util:countread(leftrotate)),
@@ -68,11 +53,6 @@ zigzagLR_test() ->
 
 
 zigzagRL_test() ->
-  initBT(),
-  {Tree4Find500, here, 1} = splaytree:findBT2(tree4(), 500),
-  ?assertEqual(1, util:countread(leftrotate)),
-  ?assertEqual(1, util:countread(rightrotate)),
-  ?assertEqual(tree4_find500(), Tree4Find500),
   initBT(),
   {1, Tree4Find500} = splaytree:findBT(tree4(), 500),
   ?assertEqual(1, util:countread(leftrotate)),

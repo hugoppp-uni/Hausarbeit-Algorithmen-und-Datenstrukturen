@@ -13,64 +13,52 @@ printBT(BTree, Filename) -> avltree:printBT(BTree, Filename).
 
 findBT({SearchEl, H, L, R}, SearchEl) -> {H, {SearchEl, H, L, R}};
 findBT(BTree, SearchEl) ->
-  {NewBTree, D, FoundHeight} = findBT2(BTree, SearchEl),
-  if
-    (D == notfound) -> {BTree, 0};
-    true -> {FoundHeight, zigIfNeeded({NewBTree, D})}
-  end.
+  {{NewBTree, D}, FoundHeight} = findBT2(BTree, SearchEl),
+  {FoundHeight, zigIfNeeded({NewBTree, D})}.
 
 insertBT(BTree, InsertElement) ->
   zigIfNeeded(insertBT2(BTree, InsertElement)).
 
+%% returns {{Root, direction}, H}
 findBT2({El, H, L, R}, SearchEl) when SearchEl < El ->
-  {NewL, D, FoundHeight} = findBT2(L, SearchEl),
+  {{NewL, D}, FoundHeight} = findBT2(L, SearchEl),
   NewRoot = {El, H, NewL, R},
-  if
-    (D == here) -> {NewRoot, left, FoundHeight};
-    (D == notfound) -> {NewRoot, notfound, FoundHeight};
-    true -> {splay(NewRoot, left, D), here, FoundHeight}
-  end;
-findBT2({SearchEl, H, L, R}, SearchEl) -> {{SearchEl, H, L, R}, here, H};
+  {splay(NewRoot, left, D), FoundHeight};
+findBT2({SearchEl, H, L, R}, SearchEl) -> {{{SearchEl, H, L, R}, here}, H};
 findBT2({El, H, L, R}, SearchEl) ->
-  {NewR, D, FoundHeight} = findBT2(R, SearchEl),
+  {{NewR, D}, FoundHeight} = findBT2(R, SearchEl),
   NewRoot = {El, H, L, NewR},
-  if
-    (D == here) -> {NewRoot, right, FoundHeight};
-    (D == notfound) -> {NewRoot, notfound, FoundHeight};
-    true -> {splay(NewRoot, right, D), here, FoundHeight}
-  end;
-findBT2({}, _) -> {{}, notfound, 0}.
+  {splay(NewRoot, right, D), FoundHeight};
+findBT2({}, _) -> {{{}, notfound}, 0}.
 
-insertBT2({El, H, L, R}, InsertEl) when InsertEl < El ->
+insertBT2({El, _, L, R}, InsertEl) when InsertEl < El ->
   {NewL, D} = insertBT2(L, InsertEl),
   NewRoot = {El, -1, NewL, R }, % height is recalculated when rotating
-  if
-    (D == here) -> {NewRoot, left};
-    true -> {splay(NewRoot, left, D), here}
-  end;
-insertBT2({El, H, L, R}, InsertEl) when InsertEl > El ->
+  splay(NewRoot, left, D);
+insertBT2({El, _, L, R}, InsertEl) when InsertEl > El ->
   {NewR, D} = insertBT2(R, InsertEl),
   NewRoot = {El, -1, L, NewR}, % height is recalculated when rotating
-  if
-    (D == here) -> {NewRoot, right};
-    true -> {splay(NewRoot, right, D), here}
-  end;
+  splay(NewRoot, right, D);
 insertBT2({}, InsertEl) -> {{InsertEl, 1, {}, {}}, here};
 insertBT2({InsertEl, H, L, R}, InsertEl) -> {{InsertEl, H, L, R}, here}.
 
+%%% returns {Root, here} if has been splayed, {Root, <left,right>} if element is parent of root.
+splay(Root, D, here) -> {Root, D};
 splay(Root, left, left) ->
   NewRoot = avltree:rotateR(Root),
-  avltree:rotateR(NewRoot);
+  {avltree:rotateR(NewRoot), here};
 splay(Root, right, right) ->
   NewRoot = avltree:rotateL(Root),
-  avltree:rotateL(NewRoot);
-splay({El, H, L, R}, right, left) -> avltree:rotateL({El, H, L, avltree:rotateR(R)});
-splay({El, H, L, R}, left, right) -> avltree:rotateR({El, H, avltree:rotateL(L), R}).
+  {avltree:rotateL(NewRoot), here};
+splay({El, H, L, R}, right, left) -> {avltree:rotateL({El, H, L, avltree:rotateR(R)}), here};
+splay({El, H, L, R}, left, right) -> {avltree:rotateR({El, H, avltree:rotateL(L), R}), here};
+splay(Root, _, notfound) -> {Root, notfound}.
 
-zigIfNeeded({NewBTree, D}) ->
+zigIfNeeded({BTree, D}) ->
   if
-    (D == here) -> NewBTree;
-    (D == left) -> avltree:rotateR(NewBTree);
-    (D == right) -> avltree:rotateL(NewBTree);
+    (D == here) -> BTree;
+    (D == left) -> avltree:rotateR(BTree);
+    (D == right) -> avltree:rotateL(BTree);
+    (D == notfound) -> BTree;
     true -> err
   end.
