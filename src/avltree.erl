@@ -34,7 +34,7 @@ isBT({Element, Height, {}, Right}, LowerLimit, UpperLimit) ->
     (isBT(Right, Element, UpperLimit));
 isBT({Element, Height, Left, Right}, LowerLimit, UpperLimit) ->
   basicChecks(Element, LowerLimit, UpperLimit, Height) and
-    (Height == (maxInt(getHeight(Left), getHeight(Right)) + 1)) and
+    (Height == (max(getHeight(Left), getHeight(Right)) + 1)) and
     % balance
   (abs(getBalance(Left, Right)) < 2) and
     (isBT(Left, LowerLimit, Element)) and
@@ -121,10 +121,6 @@ buildNodeAndRotateIfNeeded(El, L, R) ->
     true -> Wurzel
   end.
 
-maxInt(Int1, Int2) when Int1 > Int2 -> Int1;
-maxInt(Int1, Int2) when Int2 > Int1 -> Int2;
-maxInt(Int, Int) -> Int.
-
 findBT({Element, Height, _, _}, Element) -> Height;
 findBT({NodeElement, _, Left, _}, Element) when Element < NodeElement ->
   findBT(Left, Element);
@@ -145,7 +141,7 @@ deleteBT({NodeElement, _, Left, Right}, Element) ->
   NewRightTree = deleteBT(Right, Element),
   buildNodeAndRotateIfNeeded(NodeElement, Left, NewRightTree).
 
-findAndDeleteMax({Found, _, _, {}}) -> {Found, {}};
+findAndDeleteMax({Found, _, Left, {}}) -> {Found, Left};
 findAndDeleteMax({NodeElement, _, Left, Right}) ->
   {Found, NewRight} = findAndDeleteMax(Right),
   {Found, buildNodeAndRotateIfNeeded(NodeElement, Left, NewRight)}.
@@ -185,7 +181,7 @@ rotateL({WurzelKnotenEl, _, WurzelL, {RotationsKnotenEl, _, RotationsL, Rotation
 .
 
 buildNode(Value, Left, Right) ->
-  {Value, maxInt(getHeight(Left), getHeight(Right)) + 1, Left, Right}.
+  {Value, max(getHeight(Left), getHeight(Right)) + 1, Left, Right}.
 
 
 printBT(Tree, Filename) ->
@@ -197,21 +193,18 @@ printBT(Tree, Filename) ->
   io:format("}", []),
   io:format(IODevice, "}", []).
 printBT2({From, H, {}, {To, ToH, ToL, ToR}}, IODevice) ->
-  printElement(IODevice, From, To, ToH),
+  printElement(IODevice, From, To, r),
   printBT2({To, ToH, ToL, ToR}, IODevice);
 printBT2({From, H, {To, ToH, ToL, ToR}, {}}, IODevice) ->
-  printElement(IODevice, From, To, ToH),
+  printElement(IODevice, From, To, l),
   printBT2({To, ToH, ToL, ToR}, IODevice);
 printBT2({El, _, {}, {}}, IODevice) -> ok;
-%%  io:format("~p;~n", [El]),
-%%  io:format(IODevice, "~p;~n", [El]);
 printBT2({El, H, L, R}, IODevice) ->
   printBT2({El, H, L, {}}, IODevice),
   printBT2({El, H, {}, R}, IODevice);
 printBT2({}, _IODevice) -> ok.
-printElement(IODevice, From, To, Height) ->
-  io:format("~p -> ~p;~n", [From, To]),
-  io:format(IODevice, "~p -> ~p;~n", [From, To]).
+printElement(IODevice, From, To, LR) ->
+  io:format(IODevice, "~p -> ~p[label = ~p];~n", [From, To, atom_to_list(LR)]).
 
 printHeightAndBalance({}, _) -> ok;
 printHeightAndBalance({Value, H, L, R}, IODevice) ->
@@ -226,7 +219,8 @@ printHeightAndBalance(IODevice, Value, Balance, Height) ->
       "~p [label = \"~p\\n(~p)\" color=black];~n", [Value, Value, Height]);
     Balance == 1 -> io:format(IODevice,
       "~p [label = \"~p\\n(~p)\" color=blue];~n", [Value, Value, Height]);
-    true -> io:format(IODevice, "~p\\n(~p)[color=red]~n", [Value, Height])
+    true -> io:format(IODevice,
+      "~p [label = \"~p\\n(~p)\" color=red];~n", [Value, Value, Height])
   end.
 
 
