@@ -2,10 +2,10 @@
 -author("Hugo Protsch").
 
 -include_lib("eunit/include/eunit.hrl").
--import(splaytree, [initBT/0, insertBT/2]).
+-import(splaytree, [initBT/0, insertBT/2, findBT/2, equalBT/2, deleteBT/2]).
 
 print_test() ->
-  Tree = treeInsertFromList(initBT(),util:randomliste(100)),
+  Tree = treeInsertFromList(initBT(), util:randomliste(100)),
   splaytree:printBT(Tree, 'splay100Random.gv').
 
 notfound_test() ->
@@ -15,6 +15,31 @@ notfound_test() ->
 insertAlreadyThere_test() ->
   ?assertEqual(tree2(), insertBT(tree2(), 1000)),
   ?assertEqual(tree2_find250(), insertBT(tree2(), 250)).
+
+emptyFind_test() ->
+  ?assertEqual({0, {}}, splaytree:findBT({}, 1)).
+
+emptyDelete_test() ->
+  ?assertEqual({}, splaytree:deleteBT({}, 1)).
+
+splayLargest_test() ->
+  ?assertEqual(tree2(), splaytree:splayLargestBT(tree2())),
+  ?assertEqual({1000, 3, {250, 2, {}, {500, 1, {}, {}}}, {}}, splaytree:splayLargestBT(tree4())).
+
+delete_test() ->
+  ?assert(equalBT({75, 2, {}, {100, 1, {},{}}}, deleteBT(tree3(), 50))).
+
+delete_random_test() ->
+  Tree = treeInsertFromList(initBT(),util:randomliste(1000)),
+  deleteListAndAssert(Tree, util:randomliste(1000)).
+
+deleteListAndAssert(_, []) -> ok;
+deleteListAndAssert(Tree, [H|T]) ->
+  Before = splaytree:inOrderBT(Tree),
+  AfterCorrect = lists:delete(H, Before),
+  AfterActualTree = deleteBT(Tree, H),
+  ?assertEqual(AfterCorrect, splaytree:inOrderBT(AfterActualTree)),
+  deleteListAndAssert(AfterActualTree, T).
 
 insert_test() ->
   Insert100 = {100, 1, {}, {}},

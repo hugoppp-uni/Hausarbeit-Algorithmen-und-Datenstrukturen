@@ -1,15 +1,21 @@
 -module(splaytree).
 -author("Hugo Protsch").
 
--export([findBT2/2, findBT/2, equalBT/2, isEmptyBT/1, initBT/0, insertBT2/2, insertBT/2, printBT/2]).
+-export([findBT/2, equalBT/2, isEmptyBT/1, initBT/0, insertBT2/2, insertBT/2, printBT/2, splayLargestBT/1, deleteBT/2, isBT/1, inOrderBT/1, findTP/2]).
 
 initBT() -> avltree:initBT().
 
 isEmptyBT(BTree) -> avltree:isEmptyBT(BTree).
 
-equalBT(BTree, BTree) -> avltree:equalBT(BTree, BTree).
+equalBT(BTree, BTree2) -> avltree:equalBT(BTree, BTree2).
 
 printBT(BTree, Filename) -> avltree:printBT(BTree, Filename).
+
+isBT(BTree) -> avltree:isBT(BTree).
+
+inOrderBT(BTree) -> avltree:inOrderBT(BTree).
+
+findTP(BTree, SearchElement) -> {0,{}}.
 
 findBT({SearchEl, H, L, R}, SearchEl) -> {H, {SearchEl, H, L, R}};
 findBT(BTree, SearchEl) ->
@@ -18,6 +24,15 @@ findBT(BTree, SearchEl) ->
 
 insertBT(BTree, InsertElement) ->
   zigIfNeeded(insertBT2(BTree, InsertElement)).
+
+deleteBT(BTree, DeleteElement) ->
+  {H, NewBTree} = findBT(BTree, DeleteElement),
+  if
+    (H == 0) -> BTree;
+    true ->
+      {_, _, L, R} = NewBTree,
+      joinBT(L,R)
+  end.
 
 %% returns {{Root, direction}, H}
 findBT2({El, H, L, R}, SearchEl) when SearchEl < El ->
@@ -42,6 +57,14 @@ insertBT2({El, _, L, R}, InsertEl) when InsertEl > El ->
 insertBT2({}, InsertEl) -> {{InsertEl, 1, {}, {}}, here};
 insertBT2({InsertEl, H, L, R}, InsertEl) -> {{InsertEl, H, L, R}, here}.
 
+splayLargestBT(BTree) -> zigIfNeeded(splayLargestBT2(BTree)).
+
+splayLargestBT2({El, H, L, {}}) -> {{El, H, L, {}}, here};
+splayLargestBT2({El, H, L, R}) ->
+  {NewR, D} = splayLargestBT2(R),
+  splay({El, H, L, NewR}, right, D);
+splayLargestBT2({}) -> {{},notfound}.
+
 %%% returns {Root, here} if has been splayed, {Root, <left,right>} if element is parent of root.
 splay(Root, D, here) -> {Root, D};
 splay(Root, left, left) ->
@@ -62,3 +85,14 @@ zigIfNeeded({BTree, D}) ->
     (D == notfound) -> BTree;
     true -> err
   end.
+
+joinBT({}, R) -> R;
+joinBT(L, R) ->
+  {El, _, NewL, {}} = splayLargestBT(L),
+  buildNode(El, NewL, R).
+
+buildNode(Value, Left, Right) ->
+  {Value, max(getHeight(Left), getHeight(Right)) + 1, Left, Right}.
+
+getHeight({}) -> 0;
+getHeight({_, Height, _, _}) -> Height.
