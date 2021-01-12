@@ -126,7 +126,7 @@ findBT({NodeElement, _, Left, _}, Element) when Element < NodeElement ->
   findBT(Left, Element);
 findBT({NodeElement, _, _, Right}, Element) when Element > NodeElement ->
   findBT(Right, Element);
-findBT(_, _) -> -1.
+findBT(_, _) -> 0.
 
 deleteBT({}, _) -> {};
 deleteBT({Element, _, {}, Right}, Element) -> Right;

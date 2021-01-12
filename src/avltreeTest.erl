@@ -13,12 +13,12 @@ isEmptyBT_test() ->
   ?assertNot(isEmptyBT({5, 1, {}, {}})).
 
 findBT_test() ->
-  ?assertEqual(-1, findBT({}, 50)),
+  ?assertEqual(0, findBT({}, 50)),
   ?assertEqual(1, findBT({50, 1, {}, {}}, 50)),
   ?assertEqual(2, findBT(correctTree3H(), 500)),
   ?assertEqual(1, findBT(correctTree3H(), 1250)),
   ?assertEqual(1, findBT(correctTree3H(), 2000)),
-  ?assertEqual(-1, findBT(correctTree3H(), 1999)).
+  ?assertEqual(0, findBT(correctTree3H(), 1999)).
 
 inOrderBT_test() ->
   ?assertEqual([], inOrderBT({})),
