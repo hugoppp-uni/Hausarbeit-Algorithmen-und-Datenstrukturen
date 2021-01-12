@@ -15,7 +15,24 @@ isBT(BTree) -> avltree:isBT(BTree).
 
 inOrderBT(BTree) -> avltree:inOrderBT(BTree).
 
-findTP(BTree, SearchElement) -> {0,{}}.
+findTP({SearchElement, H, L, R}, SearchElement) -> {H, {SearchElement, H, L, R}};
+findTP(BTree, SearchElement) -> findTP2(BTree, SearchElement).
+
+findTP2({El, H, L, R}, SearchEl) when SearchEl < El ->
+  {Height, BTree} = findTP(L, SearchEl),
+  if
+    (BTree == here) -> {Height, avltree:rotateR({El, H, L, R})};
+    true -> {Height, BTree}
+  end;
+findTP2({El, H, L, R}, SearchEl) when SearchEl > El ->
+  {Height, BTree} = findTP(R, SearchEl),
+  if
+    (BTree == here) -> {Height, avltree:rotateL({El, H, L, R})};
+    true -> {Height, BTree}
+  end;
+findTP2({SearchEl, H, _, _}, SearchEl) -> {here, H};
+findTP2({}, _) -> {0, {}}.
+
 
 findBT({SearchEl, H, L, R}, SearchEl) -> {H, {SearchEl, H, L, R}};
 findBT(BTree, SearchEl) ->
@@ -31,7 +48,7 @@ deleteBT(BTree, DeleteElement) ->
     (H == 0) -> BTree;
     true ->
       {_, _, L, R} = NewBTree,
-      joinBT(L,R)
+      joinBT(L, R)
   end.
 
 %% returns {{Root, direction}, H}
@@ -48,7 +65,7 @@ findBT2({}, _) -> {{{}, notfound}, 0}.
 
 insertBT2({El, _, L, R}, InsertEl) when InsertEl < El ->
   {NewL, D} = insertBT2(L, InsertEl),
-  NewRoot = {El, -1, NewL, R }, % height is recalculated when rotating
+  NewRoot = {El, -1, NewL, R}, % height is recalculated when rotating
   splay(NewRoot, left, D);
 insertBT2({El, _, L, R}, InsertEl) when InsertEl > El ->
   {NewR, D} = insertBT2(R, InsertEl),
@@ -63,7 +80,7 @@ splayLargestBT2({El, H, L, {}}) -> {{El, H, L, {}}, here};
 splayLargestBT2({El, H, L, R}) ->
   {NewR, D} = splayLargestBT2(R),
   splay({El, H, L, NewR}, right, D);
-splayLargestBT2({}) -> {{},notfound}.
+splayLargestBT2({}) -> {{}, notfound}.
 
 %%% returns {Root, here} if has been splayed, {Root, <left,right>} if element is parent of root.
 splay(Root, D, here) -> {Root, D};

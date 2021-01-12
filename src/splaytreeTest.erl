@@ -17,7 +17,12 @@ insertAlreadyThere_test() ->
   ?assertEqual(tree2_find250(), insertBT(tree2(), 250)).
 
 emptyFind_test() ->
-  ?assertEqual({0, {}}, splaytree:findBT({}, 1)).
+  ?assertEqual({0, {}}, splaytree:findBT({}, 1)),
+  ?assertEqual({0, {}}, splaytree:findTP({}, 1)).
+
+findTP_test() ->
+  ?assertEqual({3, tree2()}, splaytree:findTP(tree2(), 1000))
+  .
 
 emptyDelete_test() ->
   ?assertEqual({}, splaytree:deleteBT({}, 1)).
