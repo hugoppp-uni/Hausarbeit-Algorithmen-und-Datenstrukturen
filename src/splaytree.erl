@@ -11,27 +11,61 @@ equalBT(BTree, BTree2) -> avltree:equalBT(BTree, BTree2).
 
 printBT(BTree, Filename) -> avltree:printBT(BTree, Filename).
 
-isBT(BTree) -> avltree:isBT(BTree).
+isBT(Btree) -> isBT(Btree, -1, ok).
+isBT({}, _, _) -> true;
+isBT({Element, Height, {}, {}}, LowerLimit, UpperLimit) ->
+  basicChecks(Element, LowerLimit, UpperLimit, Height)
+    and (Height == 1);
+isBT({Element, Height, Left, {}}, LowerLimit, UpperLimit) ->
+  basicChecks(Element, LowerLimit, UpperLimit, Height) and
+    (Height == getHeight(Left) + 1) and
+    (isBT(Left, LowerLimit, Element));
+isBT({Element, Height, {}, Right}, LowerLimit, UpperLimit) ->
+  basicChecks(Element, LowerLimit, UpperLimit, Height) and
+    (Height == getHeight(Right) + 1) and
+    (isBT(Right, Element, UpperLimit));
+isBT({Element, Height, Left, Right}, LowerLimit, UpperLimit) ->
+  basicChecks(Element, LowerLimit, UpperLimit, Height) and
+    (Height == (max(getHeight(Left), getHeight(Right)) + 1)) and
+    (isBT(Left, LowerLimit, Element)) and
+    (isBT(Right, Element, UpperLimit)).
+basicChecks(Element, LowerLimit, UpperLimit, Height) ->
+  (is_integer(Element)) and
+    (Height > 0) and
+    (Element >= 0) and
+    (Element > LowerLimit) and
+    (Element < UpperLimit).
+
 
 inOrderBT(BTree) -> avltree:inOrderBT(BTree).
 
 findTP({SearchElement, H, L, R}, SearchElement) -> {H, {SearchElement, H, L, R}};
-findTP(BTree, SearchElement) -> findTP2(BTree, SearchElement).
+findTP(BTree, SearchElement) ->
+  io:format("num1~n"),
+  {H, Res} = findTP2(BTree, SearchElement),
+  if
+    (Res == notfound) -> {0, {}};
+    (Res == here) -> {H, BTree};
+    true -> {H, Res}
+  end.
 
 findTP2({El, H, L, R}, SearchEl) when SearchEl < El ->
-  {Height, BTree} = findTP(L, SearchEl),
+  io:format("starting~n"),
+  {Height, NewLeft} = findTP2(L, SearchEl),
   if
-    (BTree == here) -> {Height, avltree:rotateR({El, H, L, R})};
-    true -> {Height, BTree}
+    (NewLeft == here) -> {Height, avltree:rotateR({El, H, L, R})};
+    (NewLeft == notfound) -> {0, here};
+    true -> {Height, buildNode(El, NewLeft, R)}
   end;
 findTP2({El, H, L, R}, SearchEl) when SearchEl > El ->
-  {Height, BTree} = findTP(R, SearchEl),
+  {Height, NewRight} = findTP2(R, SearchEl),
   if
-    (BTree == here) -> {Height, avltree:rotateL({El, H, L, R})};
-    true -> {Height, BTree}
+    (NewRight == here) -> {Height, avltree:rotateL({El, H, L, R})};
+    (NewRight == notfound) -> {0, here};
+    true -> {Height, buildNode(El, L, NewRight)}
   end;
-findTP2({SearchEl, H, _, _}, SearchEl) -> {here, H};
-findTP2({}, _) -> {0, {}}.
+findTP2({SearchEl, H, _, _}, SearchEl) -> {H, here};
+findTP2({}, _) -> {0, notfound}.
 
 
 findBT({SearchEl, H, L, R}, SearchEl) -> {H, {SearchEl, H, L, R}};
@@ -65,11 +99,11 @@ findBT2({}, _) -> {{{}, notfound}, 0}.
 
 insertBT2({El, _, L, R}, InsertEl) when InsertEl < El ->
   {NewL, D} = insertBT2(L, InsertEl),
-  NewRoot = {El, -1, NewL, R}, % height is recalculated when rotating
+  NewRoot = {El, 0, NewL, R}, % height is recalculated when rotating
   splay(NewRoot, left, D);
 insertBT2({El, _, L, R}, InsertEl) when InsertEl > El ->
   {NewR, D} = insertBT2(R, InsertEl),
-  NewRoot = {El, -1, L, NewR}, % height is recalculated when rotating
+  NewRoot = {El, 0, L, NewR}, % height is recalculated when rotating
   splay(NewRoot, right, D);
 insertBT2({}, InsertEl) -> {{InsertEl, 1, {}, {}}, here};
 insertBT2({InsertEl, H, L, R}, InsertEl) -> {{InsertEl, H, L, R}, here}.
@@ -92,7 +126,8 @@ splay(Root, right, right) ->
   {avltree:rotateL(NewRoot), here};
 splay({El, H, L, R}, right, left) -> {avltree:rotateL({El, H, L, avltree:rotateR(R)}), here};
 splay({El, H, L, R}, left, right) -> {avltree:rotateR({El, H, avltree:rotateL(L), R}), here};
-splay(Root, _, notfound) -> {Root, notfound}.
+splay(Root, left, notfound) -> {Root, here};
+splay(Root, right, notfound) -> {Root, here}.
 
 zigIfNeeded({BTree, D}) ->
   if
