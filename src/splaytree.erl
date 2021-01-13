@@ -1,7 +1,8 @@
 -module(splaytree).
 -author("Hugo Protsch").
 
--export([findBT/2, equalBT/2, isEmptyBT/1, initBT/0, insertBT2/2, insertBT/2, printBT/2, splayLargestBT/1, deleteBT/2, isBT/1, inOrderBT/1, findTP/2]).
+-export([findBT/2, equalBT/2, isEmptyBT/1, initBT/0, insertBT2/2, insertBT/2, printBT/2,
+  splayLargestBT/1, deleteBT/2, isBT/1, inOrderBT/1, findTP/2, splay/3]).
 
 initBT() -> avltree:initBT().
 
@@ -41,7 +42,6 @@ inOrderBT(BTree) -> avltree:inOrderBT(BTree).
 
 findTP({SearchElement, H, L, R}, SearchElement) -> {H, {SearchElement, H, L, R}};
 findTP(BTree, SearchElement) ->
-  io:format("num1~n"),
   {H, Res} = findTP2(BTree, SearchElement),
   if
     (Res == notfound) -> {0, {}};
@@ -50,7 +50,6 @@ findTP(BTree, SearchElement) ->
   end.
 
 findTP2({El, H, L, R}, SearchEl) when SearchEl < El ->
-  io:format("starting~n"),
   {Height, NewLeft} = findTP2(L, SearchEl),
   if
     (NewLeft == here) -> {Height, avltree:rotateR({El, H, L, R})};
@@ -79,10 +78,12 @@ insertBT(BTree, InsertElement) ->
 deleteBT(BTree, DeleteElement) ->
   {H, NewBTree} = findBT(BTree, DeleteElement),
   if
-    (H == 0) -> BTree;
+    (H == 0) ->
+      NewBTree;
     true ->
       {_, _, L, R} = NewBTree,
-      joinBT(L, R)
+      Res = joinBT(L, R),
+      Res
   end.
 
 %% returns {{Root, direction}, H}
@@ -117,6 +118,8 @@ splayLargestBT2({El, H, L, R}) ->
 splayLargestBT2({}) -> {{}, notfound}.
 
 %%% returns {Root, here} if has been splayed, {Root, <left,right>} if element is parent of root.
+splay(Root, left, notfound) -> {Root, here};
+splay(Root, right, notfound) -> {Root, here};
 splay(Root, D, here) -> {Root, D};
 splay(Root, left, left) ->
   NewRoot = avltree:rotateR(Root),
@@ -125,9 +128,7 @@ splay(Root, right, right) ->
   NewRoot = avltree:rotateL(Root),
   {avltree:rotateL(NewRoot), here};
 splay({El, H, L, R}, right, left) -> {avltree:rotateL({El, H, L, avltree:rotateR(R)}), here};
-splay({El, H, L, R}, left, right) -> {avltree:rotateR({El, H, avltree:rotateL(L), R}), here};
-splay(Root, left, notfound) -> {Root, here};
-splay(Root, right, notfound) -> {Root, here}.
+splay({El, H, L, R}, left, right) -> {avltree:rotateR({El, H, avltree:rotateL(L), R}), here}.
 
 zigIfNeeded({BTree, D}) ->
   if
