@@ -102,9 +102,11 @@ Diese sind wie beim AVL Baum zu implementieren.
 \paragraph{FindTP}
 Alternativ kann beim Finden eines Elementes dieses nur um einen Knoten nach oben bewegt werden.
 Zunächst wird das Element gefunden, anschließend eine Zig-Operation durchgeführt.
-Um dies zu realisieren, wird, sobald das erste mal rotiert wurde, ein Flag zurückgegeben, welches
-signalisiert, dass nicht mehr rotiert werden soll.
-Somit wird das Element nur um eine ebene hoch gegeben.
+Um dies zu realisieren, wird, sobald das gesuchte Element gefunden wurde, ein Flag zurückgegeben,
+welches signalisiert, dass rotiert werden soll.
+Wenn beim Überprüfen des Rückgabewertes das Flag gesetzt ist, wird in die entsprechende Richtung
+rotiert.
+Somit wird das Element nur um eine Ebene nach oben gegeben.
 
 \paragraph{InsertBT}
 Beim Einfügen eines Elementes wird dieses an die Wurzel befördert.
@@ -117,3 +119,20 @@ Dabei ist letzteres wie bei \nameref{par:splay-findBT} zu realisieren,
 die Höhe muss dabei nicht zurückgegeben werden.
 
 \paragraph{DeleteBT}
+Bei deleteBT wird ein Element als Erstes mit \nameref{par:splay-findBT} an die Wurzel befördert.
+Dieses wird gelöscht, nun bleiben zwei Teilbäume, übrig, welche mit \nameref{par:joinbt} zu einem
+zusammengeführt werden.
+Wenn ein Element nicht gefunden wird, wird das zuletzt besuchte Element gesplayt.
+
+\paragraph{JoinBT}\label{par:joinbt}
+Um zwei Bäume zu einem zusammenzuführen wird zunächst das größte Element des linken Teilbaumes
+gesplayt, somit hat die neue Wurzel kein rechtes Kind, da es das größte Element des Baumes ist.
+Der rechte Teilbaum wird jetzt als rechtes Kind der neuen Wurzel gesetzt.
+
+\subsection{Aufgaben}\label{subsec:aufgaben2}
+
+\paragraph{Aufgabe 1.5}
+Beispielhafte Bäume werden mit der zur verfügung gestellten Methode\\
+
+\paragraph{Aufgabe 2.6} Zum Prüfen der Korrektheit der Strategie werden kleine Bäume mithilfe von
+printBT ausgegeben.
