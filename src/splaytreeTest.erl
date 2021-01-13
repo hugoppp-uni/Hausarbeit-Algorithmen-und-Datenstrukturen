@@ -22,7 +22,24 @@ emptyFind_test() ->
 
 findTP_test() ->
   ?assertEqual({3, tree2()}, splaytree:findTP(tree2(), 1000))
-  .
+.
+
+splay_leftleft_test() ->
+  Res = splaytree:splay(splayZigZigBefore50(), left, left),
+  ?assertEqual({splayZigZigAfter50(), here}, Res),
+  ?assertEqual({2, splayZigZigAfter50()}, findBT(splayZigZigBefore50(), 50)),
+  ?assertEqual({0, splayZigZigAfter50_noleave()}, findBT(splayZigZigBefore50_noleave(), 51)).
+
+splayZigZigBefore50() ->
+  {100, 4, {75, 3, {50, 2, leaf(41), leaf(61)}, leaf(81)}, leaf(101)}.
+splayZigZigAfter50() ->
+  {50, 4, leaf(41), {75, 3, leaf(61), {100, 2, leaf(81), leaf(101)}}}.
+splayZigZigBefore50_noleave() ->
+  {100, 3, {75, 2, leaf(50), leaf(81)}, leaf(101)}.
+splayZigZigAfter50_noleave() ->
+  {50, 4, {}, {75, 3, {}, {100, 2, leaf(81), leaf(101)}}}.
+
+leaf(El) -> {El, 1, {}, {}}.
 
 emptyDelete_test() ->
   ?assertEqual({}, splaytree:deleteBT({}, 1)).
@@ -32,14 +49,14 @@ splayLargest_test() ->
   ?assertEqual({1000, 3, {250, 2, {}, {500, 1, {}, {}}}, {}}, splaytree:splayLargestBT(tree4())).
 
 delete_test() ->
-  ?assert(equalBT({75, 2, {}, {100, 1, {},{}}}, deleteBT(tree3(), 50))).
+  ?assert(equalBT({75, 2, {}, {100, 1, {}, {}}}, deleteBT(tree3(), 50))).
 
 delete_random_test() ->
-  Tree = treeInsertFromList(initBT(),util:randomliste(1000)),
+  Tree = treeInsertFromList(initBT(), util:randomliste(1000)),
   deleteListAndAssert(Tree, util:randomliste(1000)).
 
 deleteListAndAssert(_, []) -> ok;
-deleteListAndAssert(Tree, [H|T]) ->
+deleteListAndAssert(Tree, [H | T]) ->
   Before = splaytree:inOrderBT(Tree),
   AfterCorrect = lists:delete(H, Before),
   AfterActualTree = deleteBT(Tree, H),
