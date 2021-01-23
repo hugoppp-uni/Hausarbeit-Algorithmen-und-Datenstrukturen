@@ -2,32 +2,32 @@ digraph G{
 node [shape = box];
 start [label = "find2(BTree, Element)" shape = ellipse]
 start -> b1
-b1[label = "Element" shape = diamond]
+b1[label = "<D1> Element" shape = diamond]
 b1 -> lt [label = " < BTree.Element"]
 b1 -> eq [label = " = BTree.Element"]
 b1 -> gt [label = " > BTree.Element"]
 
-gt[label = "{D, Height} = find2(BTree.left, Element)"]
+gt[label = "<N1> {D, Height} = find2(BTree.left, Element)"]
 gt -> gt2
-gt2[label = "D = HERE" shape = diamond]
+gt2[label = "<D3> D = HERE" shape = diamond]
 gt2 -> gtnh [label="= NO"]
 gt2 -> gth [label="= YES"]
-gth[label = "return {R, Height}"]
-gtnh[label = "splay(R<D>)"]
+gth[label = "<N5> return {R, Height}"]
+gtnh[label = "<N7>splay(R<D>)"]
 gtnh -> Splay
-Splay [label = "return {HERE, Height}"]
+Splay [label = "<N9> return {HERE, Height}"]
 
-eq [label = "return\n{HERE, BTree.Height}"]
+eq [label = "<N0> return\n{HERE, BTree.Height}"]
 
-lt[label = "{D, Height} = find2(BTree.left, Element)"]
+lt[label = "<N2> {D, Height} = find2(BTree.left, Element)"]
 lt -> lt2
-lt2[label = "D = HERE" shape = diamond]
+lt2[label = "<D4> D = HERE" shape = diamond]
 lt2 -> lth [label="= YES"]
 lt2 -> ltnh [label="= NO"]
-lth[label = "return {L, Height}"]
-ltnh[label = "splay(L<D>)"]
+lth[label = "<N6> return {L, Height}"]
+ltnh[label = "<N8> splay(L<D>)"]
 ltnh -> Splay
-Splay [label = "return {HERE, Height}"]
+Splay [label = "<N9> return {HERE, Height}"]
 
 
 }

@@ -24,13 +24,13 @@ Die Wurzel \verb|x| ist dabei jeweils die, die nach oben befördert werden soll.
 \begin{figure}[hbt]
     \centering
     \subfloat[\centering Zig Zig: L/L (R/R)]{
-    \includegraphics[width = 0.45\textwidth]{img/external/zigzig}}
+        \includegraphics[width = 0.45\textwidth]{img/external/zigzig}}
     \qquad
     \subfloat[\centering Zig Zag: L/R (R/L)]{
-    \includegraphics[width = 0.48\textwidth]{img/external/zigzag}}
+        \includegraphics[width = 0.48\textwidth]{img/external/zigzag}}
     \qquad
     \subfloat[\centering Zig: L (R)]{
-    \includegraphics[width = 0.52\textwidth]{img/external/zig}}
+        \includegraphics[width = 0.52\textwidth]{img/external/zig}}
     \caption{Splaying Vorgang}\label{fig:splayinCase}
 \end{figure}
 
@@ -70,8 +70,9 @@ Der Vorgang ist in Abbildung~\ref{fig:splayFind} dargestellt.
 \end{figure}
 
 In der Abbildung ist der Fall, dass das gesuchte Element nicht im Baum vorhanden ist, präteriert.
-Hierfür kann der Pfad z.B. als \verb|NOTFOUND| zurückgegeben werden.
-Falls bei der Überprüfung dessen \verb|NOTFOUND| vorliegt, werden keine Rotationen ausgeführt.
+Hierfür wird der Pfad als \verb|NOTFOUND| zurückgegeben.
+Falls bei der Überprüfung dessen \verb|NOTFOUND| vorliegt, wird wiederum \verb|HERE|
+zurückgegeben, was dazu führt, dass das zuletzt aufgerufene Element zur Wurzel wird \verb|<R1>|.
 
 Da immer zwei Nachfolger betrachtet werden, ist es möglich, dass am Ende das gesuchte Element
 am linken oder rechtem Kind vom Wurzelknoten steht.
@@ -86,6 +87,8 @@ Dies ist in Abbildung~\ref{fig:splayFind2} dargestellt.
     \caption{FindBT Wrapper}
     \label{fig:splayFind2}
 \end{figure}
+Diese Operation ist in allen Methoden zu implementieren und wird in den Entwurf dieser nicht
+explizit betrachtet.
 
 \paragraph{Splay}\label{par:splay}
 Die Splay Methode bekommt einen Baum und einen Pfad \(P \in \{LL, RR, LR, RL\}\) übergeben,
@@ -93,41 +96,52 @@ welcher angibt, welcher Splaying Fall vorliegt.
 Es wird eine Fallunterscheidung über den Pfad gemacht, welche die Abfolge der Rotationen bestimmt.
 Diese sind wie beim AVL Baum zu implementieren.
 \begin{itemize}
-    \item LL → Rechtsrotation auf linkes Kind → Rechtsrotation auf Wurzel.
-    \item RR → Linksrotation auf rechtes Kind → Linksrotation auf Wurzel.
-    \item LR → Linksrotation auf linkes Kind → Rechtsrotation auf Wurzel.
-    \item RL → Rechtsrotation auf rechtes Kind → Linksrotation auf Wurzel.
+    \item LL → Rechtsrotation auf Wurzel → Rechtsrotation auf neue Wurzel. \verb|<R1>|
+    \item RR → Linksrotation auf Wurzel → Linksrotation auf neue Wurzel. \verb|<R2>|
+    \item RL → Rechtsrotation auf rechtes Kind → Linksrotation auf Wurzel. \verb|<R3>|
+    \item LR → Linksrotation auf linkes Kind → Rechtsrotation auf Wurzel. \verb|<R4>|
 \end{itemize}
 
 \paragraph{FindTP}
 Alternativ kann beim Finden eines Elementes dieses nur um einen Knoten nach oben bewegt werden.
 Zunächst wird das Element gefunden, anschließend eine Zig-Operation durchgeführt.
 Um dies zu realisieren, wird, sobald das gesuchte Element gefunden wurde, ein Flag zurückgegeben,
-welches signalisiert, dass rotiert werden soll.
+welches signalisiert, dass rotiert werden soll \verb|<R1>|.
 Wenn beim Überprüfen des Rückgabewertes das Flag gesetzt ist, wird in die entsprechende Richtung
-rotiert.
-Somit wird das Element nur um eine Ebene nach oben gegeben.
+rotiert \verb|<R2>|.
+Somit wird das Element nur um eine Ebene nach oben gegeben, anschließend nicht mehr zurückgegeben
+wird \verb|<R3>|.
+Falls ein Element nicht gefunden wird, wird \verb|NOTFOUND| zurückgegeben \verb|<R4>|, beim
+Überprüfen des Pfades wird daraufhin \verb|HERE| zurückgeben \verb|<R5>|, was dazu führt, dass
+wieder genau einmal rotiert wird.
 
 \paragraph{InsertBT}
 Beim Einfügen eines Elementes wird dieses an die Wurzel befördert.
 Dies kann dadurch realisiert werden, dass das Element zunächst wie bei einem Binärbaum
 eingefügt, anschließend mithilfe von \nameref{par:splay-findBT} an die Wurzel befördert wird.
 Diese Implementation hat den Nachteil, dass der Baum insgesamt zweimal durchlaufen wird.
-Zur Optimierung ist es möglich, beide Schritte in einem Durchlauf durchzuführen: Zunächst top-down
-das Element einfügen, dann, mithilfe von Rotationen, bottom-up das Element zur Wurzel bringen.
+Zur Optimierung werden, beide Schritte in einem Durchlauf durchgeführt: Zunächst top-down
+das Element einfügen \verb|<R1>|, dann, mithilfe von Rotationen, bottom-up das Element zur Wurzel
+bringen \verb|<R2>|.
 Dabei ist letzteres wie bei \nameref{par:splay-findBT} zu realisieren,
 die Höhe muss dabei nicht zurückgegeben werden.
+Außerdem muss das \verb|NOTFOUND| nicht zurückgegeben werden, da dieser Fall hier nicht auftritt.
+Stattdessen wird nach dem Einfügen \verb|HERE| zurückgegeben, damit dieses Element gesplayt wird
+\verb|<R3>|.
 
 \paragraph{DeleteBT}
-Bei deleteBT wird ein Element als Erstes mit \nameref{par:splay-findBT} an die Wurzel befördert.
+Bei deleteBT wird ein Element als Erstes mit \nameref{par:splay-findBT} an die Wurzel befördert
+\verb|<R1>|.
 Dieses wird gelöscht, nun bleiben zwei Teilbäume, übrig, welche mit \nameref{par:joinbt} zu einem
-zusammengeführt werden.
-Wenn ein Element nicht gefunden wird, wird das zuletzt besuchte Element gesplayt.
+zusammengeführt werden \verb|<R2>|.
+Wenn ein Element nicht gefunden wird, wird das zuletzt besuchte Element gesplayt, dies wird wie
+in \nameref{par:splay-findBT} realisiert.
 
 \paragraph{JoinBT}\label{par:joinbt}
 Um zwei Bäume zu einem zusammenzuführen wird zunächst das größte Element des linken Teilbaumes
-gesplayt, somit hat die neue Wurzel kein rechtes Kind, da es das größte Element des Baumes ist.
-Der rechte Teilbaum wird jetzt als rechtes Kind der neuen Wurzel gesetzt.
+gesplayt \verb|<R1>|, somit hat die neue Wurzel kein rechtes Kind, da es das größte Element des
+Baumes ist.
+Der rechte Teilbaum wird jetzt als rechtes Kind der neuen Wurzel gesetzt \verb|<R2>|.
 
 \subsection{Aufgaben}\label{subsec:aufgaben2}
 

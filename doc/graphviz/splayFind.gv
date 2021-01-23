@@ -4,11 +4,14 @@ find [label = "findBT(BTree, Element)" shape = ellipse]
 find -> find2
 find2 [label = "{D, Height} = findBT2(BTree, Element)"]
 find2 -> a1
-a1 [label = "D = HERE " shape = diamond]
-a1 -> return [label = "YES"]
-a1 -> nhere[label = "NO"]
+a1 [label = "D" shape = diamond]
+a1 -> nleft[label = "LEFT"]
+a1 -> return [label = "HERE"]
+a1 -> nright[label = "RIGHT"]
 
-nhere [label = "splay(D)"]
-nhere -> return
+nleft -> return
+nleft [label = "rotate(R)"]
+nright [label = "rotate(L)"]
+nright -> return
 return [label = "return height"]
 }
