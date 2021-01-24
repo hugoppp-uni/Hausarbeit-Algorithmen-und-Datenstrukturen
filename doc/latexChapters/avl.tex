@@ -147,6 +147,24 @@ blau markiert.
     \label{fig:AVL-delete}
 \end{figure}
 
+\paragraph{PrintBT}\label{par:printBT}
+Diese Funktion speichert eine Representation des übergebenen Baumes als Datei im GraphViz Format.
+Dafür wird am Anfang einmal der Header (\verb|digraph G{|), dann der Inhalt, am Ende eine
+schließende Klammer ausgegeben.
+Um den Inhalt auszugeben werden für jeden Knoten bis zu drei Zeilen ausgegeben:
+\begin{enumerate}
+    \item \verb|<Knoten> -> <Linkes Kind>;|
+    \item \verb|<Knoten> -> <Rechtes Kind>;|
+    \item \verb|<Knoten> [label = "<Knoten>\n(<Hoehe von Knoten>)" color = <Farbe>];|
+\end{enumerate}
+Dabei entspricht \verb|Knoten, Linkes Kind, Rechtes Kind| dem Wert des jeweiligen Knotens.
+Falls ein Kindknoten leer sein sollte, wird dafür nur die letzte Zeile ausgegeben.
+Diese formatiert den Knoten selber, dabei wird die Farbe abhängig der Balance gesetzt.
+
+Knoten mit der Balance von \(-1\) werden violett, mit der Balance von \(+1\)
+blau, mit der Balance von \(0\) schwarz dargestellt.
+Falls die AVL-Bedingung nicht eingehalten wird, erscheint der Knoten rot.
+
 \paragraph{Rebalance}\label{par:MethodRebalance}
 Die \verb|Rebalance|-Methode bekommt einen Knoten übergeben, überprüft die AVL-Bedingung und
 balanciert den Knoten durch Rotieren, falls die AVL-Bedingung nicht erfüllt ist.
