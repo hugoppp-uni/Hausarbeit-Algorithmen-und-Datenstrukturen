@@ -9,21 +9,21 @@ digraph Q {
         //insert
             cluster1_start [label = "findAndDeleteMax(BTree)" shape = ellipse];
         cluster1_start -> s_a2
-        s_a2 [label = "isEmpty(BTree.right)?" shape = diamond];
+        s_a2 [label = "<D11> isEmpty(BTree.right)?" shape = diamond];
         s_a2 -> s_a4 [label = "YES (größtes Element im linken\nTree is BTree.Element)"];
 
-        s_a4 [label = "lösche Btree"];
+        s_a4 [label = "<N11> lösche Btree"];
         s_a4 -> s_a41
-        s_a41 [label = "return deleted value"];
+        s_a41 [label = "<N12> return deleted value"];
         s_a2 -> s_a5 [label = "NO"];
-        s_a5 [label = "deleted = findAndDeleteMax(Btree.right)"];
+        s_a5 [label = "<N13> deleted = findAndDeleteMax(Btree.right)"];
         s_a5 -> s_a6;
-        s_a6 [label = "height = max(height_left,
+        s_a6 [label = "<N14> height = max(height_left,
                   height_right) + 1"];
         s_a6 -> rebalance [color = blue]
-        rebalance [label = "Rebalance(BTree)" color = blue]
+        rebalance [label = "<N15> Rebalance(BTree)" color = blue]
         rebalance -> cluster1_end;
-        cluster1_end [label = "return delted"];
+        cluster1_end [label = "<N16> return delted"];
     }
 
     node [shape = box];
@@ -33,28 +33,28 @@ digraph Q {
     a1 -> a2;
     a2 [label = "isEmpty(BTree)" shape = diamond];
     a2 -> b2 [label = "YES"];
-    b2 [label = "return"];
+    b2 [label = "<N1> return"];
     a2 -> a3 [label = "NO"];
-    a3 [label = "element" shape = diamond];
+    a3 [label = "<D1> element" shape = diamond];
     a3 -> smaller [label = " < BTree.element"];
     a3 -> larger [label = " > BTree.element"];
 //    a4 [label = "element > BTree.element" shape = diamond];
 //    a4 -> larger [label = "YES"];
     a3 -> hilfs [label = "= BTree.Element"];
-    hilfs [label = "deleted = findAndDeleteMax(BTree.left)"];
+    hilfs [label = "<N2> deleted = findAndDeleteMax(BTree.left)"];
 //    hilfs -> a10;
 //    hilfs -> connectornode [lhead = cluster1]
     hilfs -> cluster1_start
     cluster1_end -> a10 [ltail = cluster1]
-    a10 [label = "Btree.element = deleted.element"];
+    a10 [label = "<N5> Btree.element = deleted.element"];
     a10 -> hohe;
-    hohe [label = "height = max(height_left,
+    hohe [label = "<N6> height = max(height_left,
                   height_right) + 1"];
 
-    smaller [label = "Delete(BTree, left)"] smaller -> hohe;
-    larger [label = "Delete(BTree, right)"] larger -> hohe;
+    smaller [label = "<N4> Delete(BTree, left)"] smaller -> hohe;
+    larger [label = "<N3> Delete(BTree, right)"] larger -> hohe;
 
-    checkBalance [label = "Rebalance(Btree)" color = blue];
+    checkBalance [label = "<N7> Rebalance(Btree)" color = blue];
 
     hohe -> checkBalance [color = blue];
 

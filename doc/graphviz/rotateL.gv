@@ -4,13 +4,13 @@ digraph L {
     rotateR -> wurzel
     wurzel [label = "Rotationsknoten = Btree.right\nRotationsL = Rotationsknoten.left"];
     wurzel -> a0
-    a0 [label = "<L0>increment(leftrotate)"]
+    a0 [label = "<N0> increment(leftrotate)"]
     a0 -> a1
-    a1 [label = "<L1>Rotationsknoten.left = Btree"]
+    a1 [label = "<N1> Rotationsknoten.left = Btree"]
     a1 -> a2
-    a2  [label = "<L2>Btree.right = RotationsL"]
+    a2  [label = "<N2> Btree.right = RotationsL"]
     a2 -> a3
-    a3 [label = "<L3>Btree = Rotationsknoten"]
+    a3 [label = "<N3> Btree = Rotationsknoten"]
     a3 -> a4
     a4 [label = "Btree.Height = calcHeight()\nBtree.Left.Height = calcHeight()"]
 }

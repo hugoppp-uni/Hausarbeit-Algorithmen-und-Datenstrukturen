@@ -5,21 +5,21 @@ digraph Q {
 
     a1 [label = "Insert(BTree, element)" shape = ellipse]
     a1 -> a2
-    a2 [label = "isEmpty(BTree)" shape = diamond]
+    a2 [label = "<D1> isEmpty(BTree)" shape = diamond]
     a2-> b2 [label = "YES"]
-    b2 [label = "neuen Baum mit element zurückgeben"]
+    b2 [label = "<N1> neuen Baum mit element zurückgeben"]
     a2 -> element [label = "NO"]
-    element [label = "element" shape = diamond]
+    element [label = "<D2> element" shape = diamond]
     element -> smaller [label = "< BTree.element"]
-    element -> "return" [label = " = BTree.Element\n (bereits vorhanden)"]
+    element -> "<N3> return" [label = " = BTree.Element\n (bereits vorhanden)"]
     element -> larger [label = "> BTree.element"]
-    smaller [label = "Insert(BTree, left)"]
-    larger [label = "InsertBTree(BTree, right)"]
+    smaller [label = "<N2> Insert(BTree, left)"]
+    larger [label = "<N4> InsertBTree(BTree, right)"]
 
-    checkBalance[ label= "Rebalance(Btree)" color = blue]
+    checkBalance[ label= "<N6> Rebalance(Btree)" color = blue]
 
     smaller -> checkReturn2
     larger -> checkReturn2
-    checkReturn2 [label = "height = max(height_left, height_right) + 1"]
+    checkReturn2 [label = "<N5>height = max(height_left, height_right) + 1"]
     checkReturn2 -> checkBalance [color = blue]
 }
