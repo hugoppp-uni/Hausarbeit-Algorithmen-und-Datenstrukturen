@@ -8,6 +8,25 @@ print_test() ->
   Tree = treeInsertFromList(initBT(), util:randomliste(100)),
   splaytree:printBT(Tree, 'splay100Random.gv').
 
+aufgabe26_test() ->
+  Tree = treeInsertFromList(initBT(), [4, 7, 2, 3, 5, 9, 6, 8, 1]),
+  splaytree:printBT(Tree, 'aufg2_6_2.gv'),
+  splaytree:printBT(splaytree:deleteBT(Tree, 4), 'aufg2_6_Delete4.gv'),
+  splaytree:printBT(splaytree:insertBT(Tree, 10), 'aufg2_6_2_Insert_10.gv'),
+
+  {_, BT4} = splaytree:findBT(Tree, 4),
+  splaytree:printBT(BT4, 'aufg2_6_FindBT4.gv'),
+  {_, BT99} = splaytree:findBT(Tree, 99),
+  splaytree:printBT(BT99, 'aufg2_6_FindBT99.gv'),
+
+  {_, TP4} = splaytree:findTP(Tree, 4),
+  splaytree:printBT(TP4, 'aufg2_6_FindTP4.gv'),
+  {_, TP99} = splaytree:findTP(Tree, 99),
+  splaytree:printBT(TP99, 'aufg2_6_FindTP99.gv'),
+
+  splaytree:printBT(splaytree:deleteBT(Tree, 99), 'aufg2_6_Delete99.gv')
+.
+
 notfound_test() ->
   ?assertEqual({0, {}}, splaytree:findBT({}, 1)),
   ?assertEqual({0, tree4()}, splaytree:findBT(tree4(), 1)).
@@ -74,9 +93,12 @@ insert_test() ->
     100), 200)),
   ?assertEqual(Insert150, splaytree:insertBT(splaytree:insertBT(splaytree:insertBT(initBT(),
     100), 200), 150)),
+  Insert125actual = splaytree:insertBT(splaytree:insertBT(avltree:insertBT(initBT(),
+    100), 200), 150),
   ?assertEqual(Insert125,
-    splaytree:insertBT(splaytree:insertBT(splaytree:insertBT(avltree:insertBT(initBT(),
-      100), 200), 150), 125))
+    splaytree:insertBT(Insert125actual, 125)),
+  splaytree:printBT(Insert125, 'aufg2_6_1a.gv'),
+  splaytree:printBT(Insert125actual, 'aufg2_6_1b.gv')
 .
 
 

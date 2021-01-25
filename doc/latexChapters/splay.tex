@@ -192,3 +192,58 @@ schlechtere Charakteristik aufzeigt.
 
 \subsubsection{Aufgabe 2.6} Zum Prüfen der Korrektheit der Strategie werden kleine Bäume mithilfe von
 printBT ausgegeben.
+In Abbildung~\ref{fig:splay-base} ist der Ausgangsbaum dargestellt.
+Alle folgenden Operationen werden auf diesem Baum ausgeführt.
+
+\paragraph{Im Baum vorhandene Elemente}
+In Abbildung~\ref{fig:splay-del4} wurde die 4 gelöscht.
+Der Vaterknoten der 4 ist die 3 gewesen, somit wurde diese gesplayt und steht nun an der Wurzel.
+
+In Abbildung~\ref{fig:splay-findbt4} wurde die \verb|FindBT(4)| auf den Ausgangsbaum angewandt,
+die 4 wurde gesplayt und steht jetzt an der Wurzel.
+
+In Abbildung~\ref{fig:splay-findtp4} wurde die \verb|FindTP(4)| auf den Ausgangsbaum angewandt.
+Die 4 wurde um eine Position gesplayt.
+
+In Abbildung~\ref{fig:splay-insert10} wurde die 10 eingefügt, diese wurde an die Wurzel gesplayt.
+
+\begin{figure}[hbt]
+    \centering
+    \subfloat[\centering Ausgangsbaum]{
+        \includegraphics[scale = 0.32]{img/gv/aufg2_6}\label{fig:splay-base}}
+    \qquad
+    \subfloat[\centering Delete 4]{
+        \includegraphics[scale = 0.32]{img/gv/aufg2_6_Delete4}\label{fig:splay-del4}}
+    \qquad
+    \subfloat[\centering FindBT 4]{
+        \includegraphics[scale = 0.32]{img/gv/aufg2_6_FindBT4}\label{fig:splay-findbt4}}
+    \qquad
+    \subfloat[\centering FindTP 4]{
+        \includegraphics[scale = 0.32]{img/gv/aufg2_6_FindTP4}\label{fig:splay-findtp4}}
+    \caption{Bilder der Splaying-Strategie - vorhandene Elemente}\label{fig:splay}
+\end{figure}
+
+\paragraph{Im Baum nicht vorhandene Elemente}
+
+In Abbildung~\ref{fig:splay-findbt99} und Abbildung~\ref{fig:splay-delete99} wurde jeweils die
+99 gesucht bzw gelöscht.
+Da die 99 nicht existiert wurde der Vaterknoten (9) gesplayt und steht anschließend an der Wurzel.
+
+In Abbildung~\ref{fig:splay-findtp99} wurde die \verb|FindTP(99)| auf den Ausgangsbaum angewandt.
+Hier wurde die 9 um eine Position gesplayt.
+
+\begin{figure}[hbt]
+    \centering
+    \subfloat[\centering Insert 10]{
+        \includegraphics[scale = 0.32]{img/gv/aufg2_6_Insert10}\label{fig:splay-insert10}}
+    \qquad
+    \subfloat[\centering FindTP 99]{
+        \includegraphics[scale = 0.32]{img/gv/aufg2_6_FindTP99}\label{fig:splay-findtp99}}
+    \qquad
+    \subfloat[\centering Delete 99]{
+        \includegraphics[scale = 0.32]{img/gv/aufg2_6_Delete99}\label{fig:splay-delete99}}
+    \qquad
+    \subfloat[\centering FindBT 99]{
+        \includegraphics[scale = 0.32]{img/gv/aufg2_6_FindBT99}\label{fig:splay-findbt99}}
+    \caption{Bilder der Splaying-Strategie - nicht vorhandene Elemente}\label{fig:splay2}
+\end{figure}
