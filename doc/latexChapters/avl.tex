@@ -1,6 +1,6 @@
 \subsection{Algorithmus}\label{subsec:algorithmus}
 
-\paragraph{AVL-Bedingung}
+\subsubsection{AVL-Bedingung}
 Ein AVL-Baum ist ein Binärbaum, der die zusätzliche Eigenschaft besitzt, dass
 die Balance, die als die Differenz der Höhe $h$ der beiden
 Teilbäume definiert ist (siehe Formel~\ref{eq:balance}), bei jedem Knoten mindestens 1 und
@@ -18,7 +18,7 @@ Durch diese Bedingung wird sichergestellt, dass der Baum zu jedem Zeitpunkt
 balanciert ist und somit das in der Einleitung beschriebene Problem der
 schlechten Laufzeit des Binärbaumes durch Entartung nicht auftreten kann.
 
-\paragraph{Rebalancierung}\label{par:rebalancing}
+\subsubsection{Rebalancierung}\label{par:rebalancing}
 Nach dem Einfügen und Löschen von Elementen kann es jeweils vorkommen, dass die
 Balance eines Konten -2 oder 2 beträgt.
 Somit muss der AVL-Baum nach diesen Operationen die AVL-Bedingung überprüfen,
@@ -65,7 +65,7 @@ Rechtsrotation beim Left Left Case die AVL-Bedingung wieder erfüllt ist.
 
 Eine Linksrotation erfolgt symmetrisch.
 
-\paragraph{Doppelrotation}
+\subsubsection{Doppelrotation}
 
 Bei den Fällen Left Left und Right Right konnte der Baum mit lediglich
 einer Rotation balanciert werden.
@@ -108,17 +108,17 @@ befriedigt nun die AVL-Bedingung.
 
 \subsection{Entwurf}\label{subsec:entwurf2}
 
-\paragraph{InitBT, IsEmptyBT, EqualBT, FindBT}
+\subsubsection{InitBT, IsEmptyBT, EqualBT, FindBT}
 Die Implementation dieser Methoden kann aus der Implementation des Binärbaumes übernommen werden.
 Bei der InitBT Methode müssen lediglich alle Counter der Rotationszählung zurückgesetzt werden.
 
-\paragraph{IsBT}\label{par:avl-isBT}
+\subsubsection{IsBT}\label{par:avl-isBT}
 Die Methode von dem Binärbaum wird um die Überprüfung der AVL-Bedingung erweitert.
 Dabei wird bei jedem Knoten zusätzlich überprüft, ob die Balance (siehe Formel~\ref{eq:balance})
 -1, 0 oder +1 beträgt.
 Der Ausdruck wird mit den bisherigen Ausdrücken und-verknüpft.
 
-\paragraph{InsertBT, DeleteBT}
+\subsubsection{InsertBT, DeleteBT}
 Das Einfügen und Löschen wird wie bei einem Binärbaum realisiert.
 Die einzige Änderung, die vorgenommen werden muss, ist das Prüfen der
 AVL-Bedingung und eventuelles Rotieren, bottom-up nach dem Einfügen bzw. Löschen.
@@ -142,7 +142,7 @@ blau markiert.
     \label{fig:AVL-delete}
 \end{figure}
 
-\paragraph{PrintBT}\label{par:printBT}
+\subsubsection{PrintBT}\label{par:printBT}
 Diese Funktion speichert eine Representation des übergebenen Baumes als Datei im GraphViz Format.
 Dafür wird am Anfang einmal der Header (\verb|digraph G{|), dann der Inhalt, am Ende eine
 schließende Klammer ausgegeben.
@@ -160,7 +160,7 @@ Knoten mit der Balance von \(-1\) werden violett, mit der Balance von \(+1\)
 blau, mit der Balance von \(0\) schwarz dargestellt.
 Falls die AVL-Bedingung nicht eingehalten wird, erscheint der Knoten rot.
 
-\paragraph{Rebalance}\label{par:MethodRebalance}
+\subsubsection{Rebalance}\label{par:MethodRebalance}
 Die \verb|Rebalance|-Methode bekommt einen Knoten übergeben, überprüft die AVL-Bedingung und
 balanciert den Knoten durch Rotieren, falls die AVL-Bedingung nicht erfüllt ist.
 Dafür wird zunächst die Balance des übergebenen Knotens überprüft.
@@ -177,7 +177,7 @@ In Abbildung~\ref{fig:rebalance} wird die Methode in einem Flussdiagramm dargest
 \end{figure}
 
 
-\paragraph{Rotate}\label{par:MethodRotate}
+\subsubsection{Rotate}\label{par:MethodRotate}
 Das Rotieren wurde in Abschnitt \nameref{par:rotating} dargestellt.
 In Abbildung~\ref{fig:rotate} wird die Rechts- und Linksrotation zusätzlich in jeweils einem
 Flussdiagramm dargestellt.
@@ -192,7 +192,7 @@ Flussdiagramm dargestellt.
 \FloatBarrier
 \subsection{Aufgaben}\label{subsec:aufgaben}
 
-\paragraph{Aufgabe 1.4:}
+\subsubsection{Aufgabe 1.4 - Analysieren von Beispielhaften Bäumen}
 Beispielhafte Bäume werden mit der zur verfügung gestellten Methode\\
 \verb|analyseBT:test(<Anzahl Elemente>)| analysiert.
 \subparagraph{100 Elemente}
@@ -254,7 +254,7 @@ Der maximale Balancefehler beträgt wie erwartet 2, außerdem liegt die Höhe de
 theoretischen Maximum.
 Der Baum ist somit kein AVL-Baum.
 
-\paragraph{Aufgabe 2.5}
+\subsubsection{Aufgabe 1.5 - Löschen von 88 Prozent der Zahlen}
 Es wird ein Baum aus 100 Zufallszahlen erstellt, anschließen werden zufällig 88 davon wieder
 gelöscht.
 In Abbildung~\ref{fig:88before} ist der Baum vor dem Löschen zu sehen.

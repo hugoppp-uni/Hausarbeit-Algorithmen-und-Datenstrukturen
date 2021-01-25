@@ -3,7 +3,7 @@ Ein Splay-Tree ist ein Binärbaum, der beim Einfügen und Suchen von Elementen, 
 die Wurzel befördert.
 Dieser Vorgang wird Splaying gennant.
 
-\paragraph{Splaying}
+\subsubsection{Splaying}
 Ähnlich wie beim AVL-Baum wird wieder ein Knoten als Wurzel betrachtet.
 Zunächst wird das gesuchte Element an diese Wurzel gebracht.
 Dieser Prozess wird anschließend rekursiv auf die verbleibenden Knoten über der Wurzel angewendet,
@@ -38,12 +38,12 @@ weiter ausgeführt.
 
 \subsection{Entwurf}\label{subsec:splay-entwurf}
 
-\paragraph{InitBT, IsEmptyBT, EqualBT, PrintBT}
+\subsubsection{InitBT, IsEmptyBT, EqualBT, PrintBT}
 Wie beim AVL-Baum kann auch hier die Implementation des Binärbaumes verwendet werden.
 Lediglich InitBT wird wieder um das Zurücksetzen der Counter erweitert.
 PrintBT ist identisch zu der in Abschnitt~\ref{subsec:entwurf2} beschrieben Methode.
 
-\paragraph{IsBT}
+\subsubsection{IsBT}
 Bei dem AVL-Baum wurde \nameref{par:avl-isBT} um das Überprüfen der AVL-Bedingung erweitert.
 So konnte die korrekte Arbeitsweise des AVL-Baumes sichergestellt werden.
 Bei dem Splay-Tree lässt sich die Korrektheit vom Splaying jedoch nicht überprüfen, da die
@@ -51,7 +51,7 @@ Datenstruktur selber keine Informationen über die Zugriffe auf Elemente speiche
 In \verb|IsBT(BTree)| werden also lediglich die Voraussetzungen des Binärbaumes überprüft,
 somit kann die Implementation vom Binärbaum übernommen werden.
 
-\paragraph{FindBT}\label{par:splay-findBT}
+\subsubsection{FindBT}\label{par:splay-findBT}
 Beim Finden eines Elementes wird dieses an die Wurzel des Baumes befördert.
 Dafür wird zunächst top-down das gesuchte Element gefunden, wobei der Pfad
 bottom-up hoch gegeben wird.
@@ -92,7 +92,7 @@ Dies ist in Abbildung~\ref{fig:splayFind2} dargestellt.
 Diese Operation ist in allen Methoden zu implementieren und wird in den Entwurf dieser nicht
 explizit betrachtet.
 
-\paragraph{Splay}\label{par:splay}
+\subsubsection{Splay}\label{par:splay}
 Die Splay Methode bekommt einen Baum und einen Pfad \(P \in \{LL, RR, LR, RL\}\) übergeben,
 welcher angibt, welcher Splaying Fall vorliegt.
 Es wird eine Fallunterscheidung über den Pfad gemacht, welche die Abfolge der Rotationen bestimmt.
@@ -104,7 +104,7 @@ Diese sind wie beim AVL Baum zu implementieren.
     \item LR → Linksrotation auf linkes Kind → Rechtsrotation auf Wurzel. \verb|<R4>|
 \end{itemize}
 
-\paragraph{FindTP}
+\subsubsection{FindTP}
 Alternativ kann beim Finden eines Elementes dieses nur um einen Knoten nach oben bewegt werden.
 Zunächst wird das Element gefunden, anschließend eine Zig-Operation durchgeführt.
 Um dies zu realisieren, wird, sobald das gesuchte Element gefunden wurde, ein Flag zurückgegeben,
@@ -117,7 +117,7 @@ Falls ein Element nicht gefunden wird, wird \verb|NOTFOUND| zurückgegeben \verb
 Überprüfen des Pfades wird daraufhin \verb|HERE| zurückgeben \verb|<R5>|, was dazu führt, dass
 wieder genau einmal rotiert wird.
 
-\paragraph{InsertBT}
+\subsubsection{InsertBT}
 Beim Einfügen eines Elementes wird dieses an die Wurzel befördert.
 Dies kann dadurch realisiert werden, dass das Element zunächst wie bei einem Binärbaum
 eingefügt, anschließend mithilfe von \nameref{par:splay-findBT} an die Wurzel befördert wird.
@@ -131,7 +131,7 @@ Außerdem muss das \verb|NOTFOUND| nicht zurückgegeben werden, da dieser Fall h
 Stattdessen wird nach dem Einfügen \verb|HERE| zurückgegeben, damit dieses Element gesplayt wird
 \verb|<R3>|.
 
-\paragraph{DeleteBT}
+\subsubsection{DeleteBT}
 Bei deleteBT wird ein Element als Erstes mit \nameref{par:splay-findBT} an die Wurzel befördert
 \verb|<R1>|.
 Dieses wird gelöscht, nun bleiben zwei Teilbäume, übrig, welche mit \nameref{par:joinbt} zu einem
@@ -139,7 +139,7 @@ zusammengeführt werden \verb|<R2>|.
 Wenn ein Element nicht gefunden wird, wird das zuletzt besuchte Element gesplayt, dies wird wie
 in \nameref{par:splay-findBT} realisiert.
 
-\paragraph{JoinBT}\label{par:joinbt}
+\subsubsection{JoinBT}\label{par:joinbt}
 Um zwei Bäume zu einem zusammenzuführen wird zunächst das größte Element des linken Teilbaumes
 gesplayt \verb|<R1>|, somit hat die neue Wurzel kein rechtes Kind, da es das größte Element des
 Baumes ist.
@@ -147,7 +147,7 @@ Der rechte Teilbaum wird jetzt als rechtes Kind der neuen Wurzel gesetzt \verb|<
 
 \subsection{Aufgaben}\label{subsec:aufgaben2}
 
-\paragraph{Aufgabe 1.5}
+\subsubsection{Aufgabe 1.5}
 Beispielhafte Bäume werden mit der zur verfügung gestellten Methode\\
 \verb|analysesBT:test(<Anzahl Elemente>)| analysiert.
 
@@ -190,5 +190,5 @@ um 100 Prozent.
 Hierdurch wird ersichtlich, dass ein Splay-Tree für Zufällige Lese- und Schreiboperationen eine
 schlechtere Charakteristik aufzeigt.
 
-\paragraph{Aufgabe 2.6} Zum Prüfen der Korrektheit der Strategie werden kleine Bäume mithilfe von
+\subsubsection{Aufgabe 2.6} Zum Prüfen der Korrektheit der Strategie werden kleine Bäume mithilfe von
 printBT ausgegeben.
