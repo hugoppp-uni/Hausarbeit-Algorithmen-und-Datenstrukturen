@@ -149,6 +149,46 @@ Der rechte Teilbaum wird jetzt als rechtes Kind der neuen Wurzel gesetzt \verb|<
 
 \paragraph{Aufgabe 1.5}
 Beispielhafte Bäume werden mit der zur verfügung gestellten Methode\\
+\verb|analysesBT:test(<Anzahl Elemente>)| analysiert.
+
+\subparagraph{100 Elemente}
+Ein Aufruf mit 100 Elementen ergibt folgende Ausgabe:
+\begin{verbatim}
+> analysesBT:test(100).
+Ausgaben beziehen sich auf die Rahmenbedingungen von AVL-Bäumen.
+Bei gegebener Höhe 17:
+         minimale Anzahl Knoten: 4180.
+         maximale Anzahl Knoten: 131071
+Bei gegebener Anzahl an Knoten 100:
+         minimale Höhe: 6.
+         maximale Höhe: 9
+Durchschnittliche Balancefehler: 2.19
+         maximaler Balancefehler: 10.
+\end{verbatim}
+
+\subparagraph{1000 Elemente}
+Ein Aufruf mit 1000 Elementen ergibt folgende Ausgabe:
+\begin{verbatim}
+> analysesBT:test(1000).
+Ausgaben beziehen sich auf die Rahmenbedingungen von AVL-Bäumen.
+Bei gegebener Höhe 25:
+         minimale Anzahl Knoten: 196417.
+         maximale Anzahl Knoten: 33554431
+Bei gegebener Anzahl an Knoten 1000:
+         minimale Höhe: 9.
+         maximale Höhe: 14
+Durchschnittliche Balancefehler: 1.97
+         maximaler Balancefehler: 18.
+\end{verbatim}
+
+An den Ausgaben ist zu erkennen, dass die Bäume im Vergleich zu AVL-Bäumen deutlich schlechter
+balanciert sind.
+Bei beiden Ausgaben ist der durchschnittliche Balancefehler ca. 2, wobei dieser bei den
+AVL-Bäumen nur bei ca. 0.3 lag.
+Außerdem überschreitet die Höhe vom Splay-Tree im ersten Beispiel die maximale Höhe eines AVL-Baumes
+um 100 Prozent.
+Hierdurch wird ersichtlich, dass ein Splay-Tree für Zufällige Lese- und Schreiboperationen eine
+schlechtere Charakteristik aufzeigt.
 
 \paragraph{Aufgabe 2.6} Zum Prüfen der Korrektheit der Strategie werden kleine Bäume mithilfe von
 printBT ausgegeben.
