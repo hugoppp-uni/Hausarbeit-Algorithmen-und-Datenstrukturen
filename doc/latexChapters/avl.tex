@@ -89,16 +89,17 @@ befriedigt nun die AVL-Bedingung.
     %https://github.com/LambdaSchool/Data-Structures
     %https://commons.wikimedia.org/wiki/File:AVL_Tree_Rebalancing_he.svg
     \begin{minipage}[c]{.45\textwidth}
-    \subfloat[Korrekt]{
-        \includegraphics[width=.95\linewidth]{img/external/AVL_Tree_Rebalancing}
-        \label{fig:AVL-Cases}}
+        \subfloat[Korrekt]{
+            \includegraphics[width=.95\linewidth]{img/external/AVL_Tree_Rebalancing}
+            \label{fig:AVL-Cases}}
     \end{minipage}
     \begin{minipage}[c]{.45\textwidth}
-    \subfloat[Falsch]{
-        \includegraphics[width=.95\linewidth]{img/external/AVL_Tree_Rebalancing_wrong.pdf}
-        \label{fig:AVL-wrong-rotate}}
+        \subfloat[Falsch]{
+            \includegraphics[width=.95\linewidth]{img/external/AVL_Tree_Rebalancing_wrong.pdf}
+            \label{fig:AVL-wrong-rotate}}
     \end{minipage}
     \caption{Rebalancierung}
+    \label{fig:rebalancing}
 \end{figure}
 %\begin{figure}[hbt]
 %    \centering
@@ -123,7 +124,7 @@ Das Einfügen und Löschen wird wie bei einem Binärbaum realisiert.
 Die einzige Änderung, die vorgenommen werden muss, ist das Prüfen der
 AVL-Bedingung und eventuelles Rotieren, bottom-up nach dem Einfügen bzw. Löschen.
 Dies wird mithilfe der \verb|Rebalance|-Methode vorgenommen, die in
-Abschnitt~\nameref{par:MethodRebalance} weiter ausgeführt wird.
+Abschnitt~\ref{par:MethodRebalance} weiter ausgeführt wird.
 Beim Löschen muss darauf geachtet werden, dass der Pfad vom tatsächlich entfernten Knoten, also
 dem Substitution-Knoten, überprüft wird.
 In Abbildung~\ref{fig:AVL-insert} und~\ref{fig:AVL-delete} sind die notwendigen Änderungen jeweils
@@ -165,8 +166,8 @@ Die \verb|Rebalance|-Methode bekommt einen Knoten übergeben, überprüft die AV
 balanciert den Knoten durch Rotieren, falls die AVL-Bedingung nicht erfüllt ist.
 Dafür wird zunächst die Balance des übergebenen Knotens überprüft.
 Falls diese -1, 0, +1 beträgt, wird der Knoten nicht verändert.
-Andernfalls wird überprüft, welcher der in Abschnitt \nameref{par:rebalancing} aufgeführten Fälle
-vorliegt und die nötigen Rotationen mithilfe der \nameref{par:MethodRotate}-Methode ausgeführt.
+Andernfalls wird überprüft, welcher der in Abschnitt \ref{par:rebalancing} aufgeführten Fälle
+vorliegt und die nötigen Rotationen mithilfe der~\nameref{par:MethodRotate}-Methode ausgeführt.
 Falls eine Doppelrotation ausgeführt wird, wird außerdem der entsprechende Counter erhöht.
 In Abbildung~\ref{fig:rebalance} wird die Methode in einem Flussdiagramm dargestellt.
 \begin{figure}[p]
@@ -176,9 +177,8 @@ In Abbildung~\ref{fig:rebalance} wird die Methode in einem Flussdiagramm dargest
     \label{fig:rebalance}
 \end{figure}
 
-
 \subsubsection{Rotate}\label{par:MethodRotate}
-Das Rotieren wurde in Abschnitt \nameref{par:rotating} dargestellt.
+Das Rotieren wurde in Abschnitt~\ref{par:rotating} dargestellt.
 In Abbildung~\ref{fig:rotate} wird die Rechts- und Linksrotation zusätzlich in jeweils einem
 Flussdiagramm dargestellt.
 \begin{figure}[hbtp]
@@ -190,11 +190,13 @@ Flussdiagramm dargestellt.
 \end{figure}
 
 \FloatBarrier
+
 \subsection{Aufgaben}\label{subsec:aufgaben}
 
-\subsubsection{Aufgabe 1.4 - Analysieren von Beispielhaften Bäumen}
+\subsubsection{Aufgabe 1.4 - Analysieren beispielhafter Bäume}
 Beispielhafte Bäume werden mit der zur verfügung gestellten Methode\\
 \verb|analyseBT:test(<Anzahl Elemente>)| analysiert.
+
 \subparagraph{100 Elemente}
 Ein Aufruf mit 100 Elementen ergibt folgende Ausgabe:
 \begin{verbatim}
@@ -265,11 +267,105 @@ In Abbildung~\ref{fig:88after} ist der Baum nach dem Löschen zu sehen.
     \caption{Vor dem Löschen}
     \label{fig:88before}
 \end{figure}
+
 \begin{figure}[hbtp]
     \centering
     \includegraphics[width = 0.25\textwidth]{img/gv/aufgabe1_6_after.pdf}
     \caption{Nach dem Löschen}
     \label{fig:88after}
 \end{figure}
+
+\subsection{Laufzeitmessung}\label{subsec:laufzeitmessung}
+
+Für die Laufzeitmessungen wird die zur Verfügung gestellte Datei \textit{zeitAVLBT} verwendet.
+InsertBT, DeleteBT, FindBT, isBT und EqualBT werden hier jeweils für aufsteigende, absteigende und
+zufällige Zahlen getestet.
+Es wurde über 20 Messungen gemittelt, die Schrittgröße beträgt jeweils 500 Elemente.
+
+In Abbildung~\ref{fig:avl-zeit-kummuliert} ist jeweils die Laufzeit von \textit{FindBT} und
+\textit{DeleteBT} kumuliert dargestellt.
+Die anderen Methoden wurden hier nicht dargestellt, da deren Laufzeit jeweils nur bis zu 10ms bei
+50 Tausend Elementen beträgt, und diese bei einer Messauflösung von 1ms nicht aussagekräftig
+sind.
+An den Messwerten lässt sich zunächst nicht die Komplexität des Algorithmus festellen,
+allerdings lassen sich Aussagen über die relative Laufzeit der jeweiligen Kombinationen festhalten.
+
+In Abbildung~\ref{fig:avl-zeit-el-insert-delete},~\ref{fig:avl-zeit-el-eq-is}
+und~\ref{fig:avl-zeit-el-find} sind jeweils die Messungen pro Element dargestellt.
+An diesen lässt sich unter anderem die Komplexität des Algorithmus bestimmen.
+
+\paragraph{Löschen vs. Einfügen}
+Die erste Auffälligkeit ist, dass das Löschen in allen drei Fällen schneller als das Einfügen ist.
+Dies Entspricht nicht den Erwartungen.
+Nach diesen müsste das Einfügen schneller als das Löschen sein, da beim Einfügen jeweils maximal
+einmal rotiert wird.
+Dies wird z.B. an Abbildung~\ref{fig:rebalancing} deutlich:
+In beiden Fällen -- dem Left-Right Case und Left-Left Case (und deren gespiegelten Varianten) --
+ändert sich die Höhe des Wurzelelementes nach dem Einfügen nicht, diese beträgt weiterhin 1.
+\begin{itemize}
+    \item Left Right Case: Nach dem Einfügen der 4 beträgt die Höhe 1
+    \item Left Left Case: Nach dem Einfügen der 3 beträgt die Höhe 1
+\end{itemize}
+Beim Löschen ist es hingegen möglich, dass bei jedem Knoten rotiert werden muss.
+Somit ist die erwartete Laufzeit vom Löschen besser als die vom Einfügen.
+
+\paragraph{Zufällig vs. Auf- / Absteigend}
+Des Weiteren ist sowohl beim Löschen als auch beim Einfügen die Laufzeit bei aufsteigenden Zahlen
+ähnlich zu der bei absteigenden Zahlen.
+Bei zufälligen Zahlen zeigt der Algorithms jedoch eine bemerkbar schlechtere Laufzeit auf.
+Dies ist auch in Abbildung~\ref{fig:avl-zeit-el-find} bei FindBT zu sehen.
+Da der Algorithmus bei zufälligen Zahlen nicht langsamer sein sollte als bei sortieren Zahlen, ist
+dies wahrscheinlich auf das Generieren der Zufallszahlen zurückzuführen.
+
+Aus Abbildung~\ref{fig:avl-zeit-el-eq-is} lässt sich des Weiteren erkennen, dass die Laufzeit
+bei \textit{isBT} und \textit{EqualBT} bei zufälligen und sortierten Zahlen ähnlich ist.
+Lediglich \textit{equalBT} zeigt bei zufälligen Zahlen eine etwas höhere Laufzeit auf, dies liegt
+jedoch im Rahmen des Messfehlers.
+Dies Entspricht den Erwartungen: Da die Bäume in allen Fällen balanciert sind, sollte ein Aufruf
+dieser Methoden kein unterschiedliches Verhalten aufzeigen.
+
+\paragraph{Komplexität}
+In Abbildung~\ref{fig:avl-zeit-el-insert-delete} wurden für die Bestimmung der Komplexität
+bei \textit{InsertBT} und \textit{deleteBT}, jeweils mit zufälligen Zahlen, eine logarithmische
+Regression eingezeichnet.
+Daran ist zu erkennen, dass die Komplexität des Einfügens und Löschens logaritmisch ist.
+Zum Verbessern der Aussagekraft der Messung müsste der Bereich unter 500 Elementen genauer
+betrachtet werden, dies ist allerdings durch die hohe Streuung nicht möglich gewesen.
+
+In Abbildung~\ref{fig:avl-zeit-el-find} ist \textit{FindBT} dargestellt.
+In dem Bereich von ca. 500 - 5000 Elementen streuen die Werte stark, weswegen sich eine sinnvolle
+Regression nicht einzeichnen lässt.
+Mit dem bloßem Auge lässt sich allerdings erkennen, dass die Laufzeit von \textit{FindBT} bei
+zufälligen
+Zahlen einen logaritmischen Trend aufzeigt.
+Bei sortierten Zahlen lässt sich im Gegensatz nicht sagen, ob der Graph logarithmisch oder konstant
+ist.
+Letzteres lässt sich allerdings ausschließen, da aus dem Entwurf bekannt ist, dass bei
+\textit{FindBT} über
+den Baum gelaufen wird und somit keine konstante Komplexität vorliegen kann.
+Um dies zu bestätigen, müsste auch hier die Laufzeit für Elementanzahlen unter 500
+durchgeführt werden.
+
+\begin{figure}[hbt]
+    \centering
+    \subfloat[\centering Kumuliert]{
+        \includegraphics[width = 0.45\textwidth]
+        {img/excel/avl1.png}\label{fig:avl-zeit-kummuliert}}
+    \qquad
+    \subfloat[\centering Pro Element - DeleteBT und InsertBT]{
+        \includegraphics[width = 0.45\textwidth]
+        {img/excel/avl1_el.png}\label{fig:avl-zeit-el-insert-delete}}
+    \qquad
+    \subfloat[\centering Pro Element - EqualBT und IsBT]{
+        \includegraphics[width = 0.45\textwidth]
+        {img/excel/avl2_el.png}\label{fig:avl-zeit-el-eq-is}}
+    \qquad
+    \subfloat[\centering Pro Element - FindBT]{
+        \includegraphics[width = 0.45\textwidth]
+        {img/excel/avl3_el.png}\label{fig:avl-zeit-el-find}}
+    \caption{Zeitmessungen AVL-Baum}
+    \label{fig:avl_zeit}
+\end{figure}
+
 \FloatBarrier
 
