@@ -98,13 +98,13 @@ durchgeführt werden.
     \label{fig:avl_zeit}
 \end{figure}
 
-\subsection{Splay Baum}
+\subsection{Splay-Baum}
 In Abbildung~\ref{fig:splay-zeit} und~\ref{fig:splay-zeit-rand} sind die Laufzeiten
 kumuliert, in Abbildung~\ref{fig:splay-zeit-el} und~\ref{fig:splay-zeit-rand-el}
 elementweise dargestellt.
-Hier wurden anders als bei der Zeitmessung vom AVL-Baum in
-Abschnitt~\ref{subsec:laufzeitmessung-avl} Balkendiagramme gewählt, da viele Messwerte nahezu
-identisch sind und somit besser zu sehen sind.
+Hier wurden, anders als bei der Zeitmessung vom AVL-Baum in
+Abschnitt~\ref{subsec:laufzeitmessung-avl}, Balkendiagramme als Darstellungsart gewählt, da viele
+Messwerte nahezu identisch sind und somit besser zu sehen sind.
 
 Bei den Laufzeitemessungen ist zu beachten, dass die diese bei auf- und absteigenden
 Zahlen nur bis zu 10500 Elementen durchgeführt wurden, da die Laufzeit dieser deutlich
@@ -112,7 +112,7 @@ länger als bei zufälligen ist.
 Außerdem ist bei den kumulierten Messungen in~\ref{fig:splay-zeit} \textit{FindTP} und
 in~\ref{fig:splay-zeit-rand} \textit{FindBT} auf der x-Achse abgeschnitten.
 
-\paragraph{Auf- / Absteigende Zahlen}
+\paragraph{Auf- / Absteigende vs. zufällige Zahlen}
 Bei auf- und absteigenden Zahlen fällt an Abbildung~\ref{fig:splay-zeit} auf, dass \textit{InsertBT}
 eine sehr schnelle Laufzeit aufweist.
 Diese ist konstant.
@@ -141,18 +141,45 @@ als bei aufsteigenden, jedoch höher als bei absteigendenden Zahlen.
 So beträgt die Laufzeit bei 10500 Elementen bei zufälligen Zahlen beispielsweise ca. 250ms,
 bei aufsteigenden Zahlen ca. 1100ms.
 
-\paragraph{Zufällige Zahlen}
 
 \paragraph{FindBT vs. FindTP}
 In Abbildung~\ref{fig:splay-bt-vs-tp} ist \textit{FindTP} auch bei auf- und absteigenden Zahlen
 dargestellt.
-Es wird deutlich, dass \textit{FindTP} im Fall von sortieren Zahlen nicht häufig genug rotiert, um
+Der Graph von \textit{FindTP} scheint bis zu ca 5500 Elementen quadratisch zu verlaufen, danach
+führt dieser linear fort.
+Es wird deutlich, dass im Fall von sortieren Zahlen nicht häufig genug rotiert, um
 die zugegriffenen Elemente nach oben zu rotieren.
+Somit ist die Komplexität von \textit{FindTP} in diesem Fall nicht mehr logarithmisch.
+Falls auf ein Element, welches sich weit unten im Baum befindet, häufig zugegriffen wird, wird
+dieses jeweils nur eine Position gesplayt, dies ist bei einem großem Baum sehr aufwendig.
+
+Im Falle von zufälligen Zahlen (Abbildung~\ref{fig:splay-zeit-rand-el}) erweist sich \textit{FindTP}
+als das schnellere der beiden Verfahren.
+\textit{FindBT} ist bis zu 8 Mal langsamer, was sich dadurch erklären lässt, dass der Overhead
+der Rotationen zu hoch ist.
+Dadurch, dass die Elemente zufällig eingefügt wurden, ist der Baum am Anfang einigermaßen
+ausgeglichen.
+Die Zugriffszeit auf ein Element ist somit nicht hoch genug, dass es sich lohnen würde,
+dieses Element komplett nach oben zu rotieren.
+Dabei ist zu bedenken, dass, durch die Funktionsweise von Erlang, Rotationen sehr teuer sind, da
+die Knoten jedes Mal neu erstellt werden müssen, also Speicherplatz alloziert wird.
+In einer Sprache, in der mit veränderlichen Variablen gearbeitet wird, könnte \textit{FindBT}
+eine bessere Laufzeit aufweisen.
+
+Zusammenfassen lässt sich sagen, dass \textit{FindBT} eine konstantere Laufzeit bei
+unterschiedlichen Bedingungen aufweist, wobei \textit{FindTP} bei zufälligen Zahlen
+schneller, jedoch bei sortierten Zahlen deutlich langsamer ist.
+Da die Komplexität von dem letzteren Verfahren bei sortierten Zahlen nicht mehr
+logarithmisch ist, ist \textit{FindBT} vorzuziehen, wenn sortierte Zahlen nicht ausgeschlossen sind.
+
 
 \paragraph{Komplexität}
 In Abbildung~\ref{fig:splay-zeit-el} und~\ref{fig:splay-zeit-rand-el} sind jeweils
-logaritmische Regressionen für \textit{DeleteBT}, \textit{FindBT} und \textit{FindTP} eingezeichnet.
-
+logarithmische Regressionen für \textit{DeleteBT}, \textit{FindBT} und \textit{FindTP} eingezeichnet.
+Alle Methoden zeigen ein logarithmisches Verhalten.
+Lediglich \textit{FindTP} scheint bei zufälligen Zahlen besser als logarithmisch zu sein.
+\textit{FindTP} ist bei sortierten Zahlen (Abbildung~\ref{fig:splay-bt-vs-tp}), wie oben
+beschrieben, nicht mehr logarithmisch.
 
 \begin{figure}[hbt]
     \centering
@@ -177,8 +204,11 @@ logaritmische Regressionen für \textit{DeleteBT}, \textit{FindBT} und \textit{F
 
 \begin{figure}[hbt]
     \centering
-    \includegraphics[width=0.45\textwidth]{img/excel/splay_tp_vs_bt.png}\label{fig:splay-bt-vs-tp}
+    \includegraphics[width=0.45\textwidth]{img/excel/splay_tp_vs_bt.png}
     \caption{Pro Element - FindTP vs. FindBT}
-    \label{fig:AVL-insert}
+    \label{fig:splay-bt-vs-tp}
 \end{figure}
 
+
+\FloatBarrier
+\subsection{Vergleich}
