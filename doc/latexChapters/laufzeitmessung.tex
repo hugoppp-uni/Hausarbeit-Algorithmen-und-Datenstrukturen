@@ -25,7 +25,7 @@ In Abbildung~\ref{fig:avl-zeit-el-insert-delete},~\ref{fig:avl-zeit-el-eq-is}
 und~\ref{fig:avl-zeit-el-find} sind jeweils die Messungen pro Element dargestellt.
 An diesen lässt sich unter anderem die Komplexität des Algorithmus bestimmen.
 
-\paragraph{Löschen vs. Einfügen}
+\subsubsection{Löschen vs. Einfügen}
 Die erste Auffälligkeit ist, dass das Löschen in allen drei Fällen schneller als das Einfügen ist.
 Dies Entspricht nicht den Erwartungen.
 Nach diesen müsste das Einfügen schneller als das Löschen sein, da beim Einfügen jeweils maximal
@@ -40,7 +40,7 @@ In beiden Fällen -- dem Left-Right Case und Left-Left Case (und deren gespiegel
 Beim Löschen ist es hingegen möglich, dass bei jedem Knoten rotiert werden muss.
 Somit ist die erwartete Laufzeit vom Löschen besser als die vom Einfügen.
 
-\paragraph{Zufällig vs. Auf- / Absteigend}
+\subsubsection{Zufällig vs. Auf- / Absteigend}
 Des Weiteren ist sowohl beim Löschen als auch beim Einfügen die Laufzeit bei aufsteigenden Zahlen
 ähnlich zu der bei absteigenden Zahlen.
 Bei zufälligen Zahlen zeigt der Algorithms jedoch eine bemerkbar schlechtere Laufzeit auf.
@@ -55,7 +55,7 @@ jedoch im Rahmen des Messfehlers.
 Dies Entspricht den Erwartungen: Da die Bäume in allen Fällen balanciert sind, sollte ein Aufruf
 dieser Methoden kein unterschiedliches Verhalten aufzeigen.
 
-\paragraph{Komplexität}
+\subsubsection{Komplexität}
 In Abbildung~\ref{fig:avl-zeit-el-insert-delete} wurden für die Bestimmung der Komplexität
 bei \textit{InsertBT} und \textit{deleteBT}, jeweils mit zufälligen Zahlen, eine logarithmische
 Regression eingezeichnet.
@@ -98,7 +98,9 @@ durchgeführt werden.
     \label{fig:avl_zeit}
 \end{figure}
 
-\subsection{Splay-Baum}
+\subsection{Splay-Baum}\label{subsec:splay-baum}
+Beim Splay-Baum werden bei der zu verfügung gestellten Datei jeweils 8 Mal 12,5 Prozent der
+Zahlen gesucht.
 In Abbildung~\ref{fig:splay-zeit} und~\ref{fig:splay-zeit-rand} sind die Laufzeiten
 kumuliert, in Abbildung~\ref{fig:splay-zeit-el} und~\ref{fig:splay-zeit-rand-el}
 elementweise dargestellt.
@@ -106,13 +108,13 @@ Hier wurden, anders als bei der Zeitmessung vom AVL-Baum in
 Abschnitt~\ref{subsec:laufzeitmessung-avl}, Balkendiagramme als Darstellungsart gewählt, da viele
 Messwerte nahezu identisch sind und somit besser zu sehen sind.
 
-Bei den Laufzeitemessungen ist zu beachten, dass die diese bei auf- und absteigenden
+Bei den Laufzeitmessungen ist zu beachten, dass die diese bei auf- und absteigenden
 Zahlen nur bis zu 10500 Elementen durchgeführt wurden, da die Laufzeit dieser deutlich
 länger als bei zufälligen ist.
 Außerdem ist bei den kumulierten Messungen in~\ref{fig:splay-zeit} \textit{FindTP} und
 in~\ref{fig:splay-zeit-rand} \textit{FindBT} auf der x-Achse abgeschnitten.
 
-\paragraph{Auf- / Absteigende vs. zufällige Zahlen}
+\subsubsection{Zufällig vs. Auf- / Absteigend}
 Bei auf- und absteigenden Zahlen fällt an Abbildung~\ref{fig:splay-zeit} auf, dass \textit{InsertBT}
 eine sehr schnelle Laufzeit aufweist.
 Diese ist konstant.
@@ -141,8 +143,7 @@ als bei aufsteigenden, jedoch höher als bei absteigendenden Zahlen.
 So beträgt die Laufzeit bei 10500 Elementen bei zufälligen Zahlen beispielsweise ca. 250ms,
 bei aufsteigenden Zahlen ca. 1100ms.
 
-
-\paragraph{FindBT vs. FindTP}
+\subsubsection{FindBT vs. FindTP}
 In Abbildung~\ref{fig:splay-bt-vs-tp} ist \textit{FindTP} auch bei auf- und absteigenden Zahlen
 dargestellt.
 Der Graph von \textit{FindTP} scheint bis zu ca 5500 Elementen quadratisch zu verlaufen, danach
@@ -172,12 +173,13 @@ schneller, jedoch bei sortierten Zahlen deutlich langsamer ist.
 Da die Komplexität von dem letzteren Verfahren bei sortierten Zahlen nicht mehr
 logarithmisch ist, ist \textit{FindBT} vorzuziehen, wenn sortierte Zahlen nicht ausgeschlossen sind.
 
-
-\paragraph{Komplexität}
+\subsubsection{Komplexität}
 In Abbildung~\ref{fig:splay-zeit-el} und~\ref{fig:splay-zeit-rand-el} sind jeweils
 logarithmische Regressionen für \textit{DeleteBT}, \textit{FindBT} und \textit{FindTP} eingezeichnet.
 Alle Methoden zeigen ein logarithmisches Verhalten.
 Lediglich \textit{FindTP} scheint bei zufälligen Zahlen besser als logarithmisch zu sein.
+Dies könnte jedoch auch daran liegen, dass der erste Messwert einen Ausreißer nach oben
+darstellen kann.
 \textit{FindTP} ist bei sortierten Zahlen (Abbildung~\ref{fig:splay-bt-vs-tp}), wie oben
 beschrieben, nicht mehr logarithmisch.
 
@@ -204,11 +206,67 @@ beschrieben, nicht mehr logarithmisch.
 
 \begin{figure}[hbt]
     \centering
-    \includegraphics[width=0.45\textwidth]{img/excel/splay_tp_vs_bt.png}
-    \caption{Pro Element - FindTP vs. FindBT}
-    \label{fig:splay-bt-vs-tp}
+    \subfloat[\centering Splay FindTP vs. FindBT - pro Element]{
+        \includegraphics[width = 0.45\textwidth] {img/excel/splay_tp_vs_bt.png}\label{fig:splay-bt-vs-tp}}
+    \qquad
+    \subfloat[\centering AVL vs. Splay - zufällig, pro Element]{
+        \includegraphics[width = 0.45\textwidth] {img/excel/avl_vs_splay.png}\label{fig:splay-vs-avl}}
+    \qquad
+    \subfloat[\centering AVL vs. BT - aufsteigend]{
+        \includegraphics[width = 0.45\textwidth] {img/excel/avl_vs_bt_auf.png}\label{fig:avl-vs-bt-auf}}
+    \qquad
+    \subfloat[\centering AVL vs. BT - zufällig]{
+        \includegraphics[width = 0.45\textwidth] {img/excel/avl_vs_bt.png}\label{fig:avl-vs-bt}}
+    \caption{Vergleich}
 \end{figure}
 
+%\FloatBarrier
 
-\FloatBarrier
-\subsection{Vergleich}
+\subsection{Vergleich}\label{subsec:vergleich}
+
+\subsubsection{AVL vs. Binärbaum}
+Beim Binärbaum haben wir festgestellt, dass bei sortierten Zahlen die Komplexität des
+Algorithms nicht mehr logarithmisch ist.
+Der AVL-Baum hat dieses Problem behoben, wie beim Betrachten der Messwerte zum AVL-Baum
+ersichtlich wurde.
+In Abbildung~\ref{fig:avl-vs-bt-auf} und Abbildung~\ref{fig:avl-vs-bt} ist außerdem zur
+Veranschaulichung ein direkter Vergleich von \textit{FindBT}, \textit{InsertBT} und \textit{DeleteBT}
+dargestellt.
+Hier wird der AVL-Baum mit dem Binärbaum bei aufsteigenden und zufälligen Zahlen verglichen.
+Für den Vergleich werden die kumulierten statt der elementweisen Messwerte herangezogen, da beim
+Binärbaum die Messergebnisse fehlerhaft waren.
+
+\paragraph{Sortierte Zahlen}
+An den sortieren Zahlen ist zu erkennen, dass der AVL Baum bei allen Operationen extrem viel
+schneller ist als der normale Binärbaum.
+Dies liegt daran, dass der normale Binärbaum im Fall von sortierten Zahlen eine einfach verkette
+Liste wird, und somit eine lineare Komplexität aufweist.
+Der AVL-Baum hingegen balanciert sich beim Einfügen und Löschen, wodurch eine logarithmische
+Laufzeit beibehalten wird.
+
+\paragraph{Zufällige Zahlen}
+Da der normale Binärbaum mit zufälligen Zahlen bereits relativ balanciert ist,
+ist an diesen Messungen der Overhead der Rotationen zu erkennen.
+Bei \textit{FindBT} verhalten sich beide Bäume ähnlich, da hier keine Rotationen beim AVL-Baum
+ausgeführt werden.
+Bei \textit{DeleteBT} und \textit{InsertBT} ist zu erkennen, dass der normale Binärbaum ca. 2 bis
+3 Mal schneller ist.
+
+
+\subsubsection{AVL vs. Splay-Baum}
+In Abbildung~\ref{fig:splay-vs-avl} wird der AVL-Baum mit dem Splay-Baum bei zufälligen Zahlen
+verglichen.
+Dafür ist jeweils der Quotient zwischen dem Splay und AVL-Baum dargestellt.
+Beim Vergleich fällt auf, dass der AVL-Baum ca. 10 bis 1000 mal schneller als der Splay-Baum ist.
+Dies lässt sich an den in Erlang teuren Rotationen erklären und ist in beim Vergleichen von
+\textit{FindBT} und \textit{FindTP} bereits aufgefallen.
+Beim Suchen mit zufälligen Zahlen beträgt der Faktor im Vergleich mit \textit{FindTP} ca. 100, mit
+\textit{FindBT} sogar nahezu 1000.
+Dies lässt sich dadurch erklären, dass beim AVL-Baum lediglich lesend auf den
+Arbeitsspeicher zugegriffen wird, wohingegen beim Splay-Baum pro Rotation mehrere Knoten neu
+geschrieben werden müssen.
+Da bei \textit{FindBT} besonders viele Rotationen ausgeführt werden, ist der Faktor dementsprechend
+höher.
+
+Zusammenfassend lässt sich sagen, dass bei einer Erlang Implementation der AVL-Baum einem
+Splay-Baum vorzuziehen ist.
