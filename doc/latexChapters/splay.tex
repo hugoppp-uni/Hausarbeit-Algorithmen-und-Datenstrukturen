@@ -1,7 +1,7 @@
 \subsection{Algorithmus}\label{subsec:splay-algorithmus}
-Ein Splay-Tree ist ein Binärbaum, der beim Einfügen und Suchen von Elementen, diese jeweils an
+Ein Splay-Baum ist ein Binärbaum, der beim Einfügen und Suchen von Elementen, diese jeweils an
 die Wurzel befördert.
-Dieser Vorgang wird Splaying gennant.
+Dieser Vorgang wird Splaying genannt.
 
 \subsubsection{Splaying}
 Ähnlich wie beim AVL-Baum wird wieder ein Knoten als Wurzel betrachtet.
@@ -46,7 +46,7 @@ PrintBT ist identisch zu der in Abschnitt~\ref{par:printBT} beschrieben Methode.
 \subsubsection{IsBT}
 Bei dem AVL-Baum wurde \nameref{par:avl-isBT} um das Überprüfen der AVL-Bedingung erweitert.
 So konnte die korrekte Arbeitsweise des AVL-Baumes sichergestellt werden.
-Bei dem Splay-Tree lässt sich die Korrektheit vom Splaying jedoch nicht überprüfen, da die
+Bei dem Splay-Baum lässt sich die Korrektheit vom Splaying jedoch nicht überprüfen, da die
 Datenstruktur selber keine Informationen über die Zugriffe auf Elemente speichert.
 In \verb|IsBT(BTree)| werden also lediglich die Voraussetzungen des Binärbaumes überprüft,
 somit kann die Implementation vom Binärbaum übernommen werden.
@@ -185,9 +185,9 @@ An den Ausgaben ist zu erkennen, dass die Bäume im Vergleich zu AVL-Bäumen deu
 balanciert sind.
 Bei beiden Ausgaben ist der durchschnittliche Balancefehler ca. 2, wobei dieser bei den
 AVL-Bäumen nur bei ca. 0.3 lag.
-Außerdem überschreitet die Höhe vom Splay-Tree im ersten Beispiel die maximale Höhe eines AVL-Baumes
+Außerdem überschreitet die Höhe vom Splay-Baum im ersten Beispiel die maximale Höhe eines AVL-Baumes
 um 100 Prozent.
-Hierdurch wird ersichtlich, dass ein Splay-Tree für Zufällige Lese- und Schreiboperationen eine
+Hierdurch wird ersichtlich, dass ein Splay-Baum für Zufällige Lese- und Schreiboperationen eine
 schlechtere Charakteristik aufzeigt.
 
 \subsubsection{Aufgabe 2.6 - Prüfen der Strategie anhand von Bildern}
