@@ -178,7 +178,7 @@ In Abbildung~\ref{fig:rebalance} wird die Methode in einem Flussdiagramm dargest
 \end{figure}
 
 \subsubsection{Rotate}\label{par:MethodRotate}
-Das Rotieren wurde in Abschnitt~\ref{par:rotating} dargestellt.
+Das Rotieren wird wie in Abschnitt~\ref{par:rotating} beschrieben implementiert.
 In Abbildung~\ref{fig:rotate} wird die Rechts- und Linksrotation zusätzlich in jeweils einem
 Flussdiagramm dargestellt.
 \begin{figure}[hbtp]
@@ -236,8 +236,7 @@ Durchschnittliche Balancefehler: 0.321
 \end{verbatim}
 
 Aus der Ausgabe wird ersichtlich, dass die AVL-Bedingung auch bei 1000 Elementen eingehalten wird.
-Des Weiteren wird die Logarithmische Natur des AVL-Baumes ersichtlich:
-Bei einer Verzehnfachung der Elementanzahl hat sich die Höhe lediglich um dem Faktor 0.5 erhöht.
+Des Weiteren wird die logarithmische Natur des AVL-Baumes ersichtlich.
 
 \subparagraph{Fehlerhafter Baum}
 Ein Aufruf mit einem Baum, der an einem Knoten eine Balance von 2 besitzt, ergibt folgende Ausgabe:
@@ -259,8 +258,9 @@ Der Baum ist somit kein AVL-Baum.
 \subsubsection{Aufgabe 1.5 - Löschen von 88 Prozent der Zahlen}
 Es wird ein Baum aus 100 Zufallszahlen erstellt, anschließen werden zufällig 88 davon wieder
 gelöscht.
-In Abbildung~\ref{fig:88before} ist der Baum vor dem Löschen zu sehen.
-In Abbildung~\ref{fig:88after} ist der Baum nach dem Löschen zu sehen.
+In Abbildung~\ref{fig:88before} ist der Baum vor dem Löschen,
+in Abbildung~\ref{fig:88after} nach dem Löschen zu sehen.
+In beiden Abbildungen wird die AVL-Bedingung erfüllt.
 
 \begin{figure}[hbtp]
     \centerline{\includegraphics[width = 1.2\textwidth]{img/gv/aufgabe1_6_before.pdf}}

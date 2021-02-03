@@ -44,7 +44,7 @@
 
     Eine zweite Variation des binären Suchbaumes, die in Abschnitt~\ref{sec:splay-tree}
     betrachtet wird, ist der Splay-Baum.
-    Dieser hat das Ziel, Elemente, die häufig zugegriffen werden, im Baum möglichst weit oben zu
+    Dieser hat das Ziel, Elemente, auf die häufig zugegriffen wird, im Baum möglichst weit oben zu
     halten und somit die Zugriffszeit auf diese zu verringern.
     Anders als beim AVL-Baum, wird ein Splay-Baum nicht balanciert, somit kann der Baum, wie ein
     normaler Binärbaum, entarten.
@@ -74,6 +74,19 @@
     \section{Laufzeitmessung}\label{sec:laufzeitmessung}
     \input{latexChapters/laufzeitmessung.tex}
 
+    \section{Fazit}\label{sec:fazit}
+    Zusammenfassend lässt sich festhalten, dass der AVL-Baum die Schwächen eines normalen
+    Binärbaums behebt, dabei jedoch die Laufzeit bei zufälligen Zahlen bis zu 3 Mal verschlechtert.
+    Falls sortierte Zahlen nicht ausgeschlossen sind, ist der AVL-Baum trotzdem eine bessere
+    Wahl, da die lineare Komplexität des normalen Binärbaums im Falle von sortierten Zahlen die
+    Laufzeit dramatisch verschlechtert.
+
+    Der Splay-Baum ist hingegen, zumindest bei der Erlang Implementation, nicht zu empfehlen.
+    Beim Zugriff auf 12,5 Prozent der Zahlen erweist sich dieser in den Laufzeittests
+    in jedem Fall deutlich langsamer als die Alternative.
+    Dies ist hauptsächlich der Erlang Implementation geschuldet und könnte bei einer
+    Implementation in einer Sprache mit mutablen Variablen deutlich performanter sein.
+
     \FloatBarrier
     \newpage
     \appendix
@@ -87,7 +100,7 @@
 
     \paragraph{Abbildung~\ref{fig:splayingCase-zig}}\mbox{}\\
 
-    \url{https://en.wikipedia .org/wiki/File:Splay_tree_zig .svg}
+    \url{https://en.wikipedia.org/wiki/File:Splay_tree_zig.svg}
 
     \paragraph{Abbildung~\ref{fig:splayingCase-zig-zag}}\mbox{}\\
 

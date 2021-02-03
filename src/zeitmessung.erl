@@ -14,7 +14,7 @@ start() ->
 mittlen_ueber() -> 20.
 
 avl() -> io:format("- - - - - - - - - - - AVL - - - - - - - - - - - ~n"),
-  avl(500, 1000, 50)   % 0 - 50_000
+  avl(500, 1000, 50)
 .
 splay() -> io:format("- - - - - - - - - - SPLAY - - - - - - - - - - ~n"),
   messung(splay, 500, 1000, 20, rand),

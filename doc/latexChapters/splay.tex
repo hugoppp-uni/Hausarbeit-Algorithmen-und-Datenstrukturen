@@ -1,3 +1,8 @@
+Das Ziel eines Splay-Baumes ist es, die Zugriffszeit auf häufig verwendete Elemente zu verringern,
+in dem diese beim Zugriff nach oben rotiert werden.
+Dies könnte vor allem Anwendungen, in denen nur auf eine kleine Menge aller Elemente
+zugegriffen wird, beschleunigen.
+
 \subsection{Algorithmus}\label{subsec:splay-algorithmus}
 Ein Splay-Baum ist ein Binärbaum, der beim Einfügen und Suchen von Elementen, diese jeweils an
 die Wurzel befördert.
@@ -58,10 +63,10 @@ bottom-up hoch gegeben wird.
 Als Erstes wird \verb|HERE|, danach \verb|L| oder \verb|R| zurückgegeben.
 Beim zweiten Schritt ist das gesuchte Element zwei Elemente entfernt, kann also über zwei
 Kanten erreicht werden.
-Nun wird die entsprechende Doppelrotation durchgeführt, dies wird in die \nameref{par:splay}
-Methode ausgelagert.
+Nun wird die entsprechende Doppelrotation durchgeführt.
+Dies wird in die \nameref{par:splay} Methode ausgelagert.
 Das gesuchte Element steht jetzt an dem Knoten, der gerade als Wurzel betrachtet wird, somit wird
-als Pfad \verb|HERE| zurückgegeben.
+als Pfad wieder \verb|HERE| zurückgegeben.
 Dies wird rekursiv fortgeführt, bis die Wurzel des Baumes erreicht wird.
 Der Vorgang ist in Abbildung~\ref{fig:splayFind} dargestellt.
 \begin{figure}[hbt]
@@ -72,9 +77,10 @@ Der Vorgang ist in Abbildung~\ref{fig:splayFind} dargestellt.
 \end{figure}
 
 In der Abbildung ist der Fall, dass das gesuchte Element nicht im Baum vorhanden ist, präteriert.
-Hierfür wird der Pfad als \verb|NOTFOUND| zurückgegeben.
-Falls bei der Überprüfung dessen \verb|NOTFOUND| vorliegt, wird wiederum \verb|HERE|
-zurückgegeben, was dazu führt, dass das zuletzt aufgerufene Element zur Wurzel wird \verb|<R1>|.
+Hierfür soll der Pfad als \verb|NOTFOUND| zurückgegeben werden.
+Falls bei der Überprüfung des Pfades \verb|NOTFOUND| vorliegt, wird \verb|HERE|
+zurückgegeben, was dazu führt, dass das zuletzt aufgerufene Element gesplayt wird, also zur
+neuen Wurzel wird \verb|<R1>|.
 
 Da immer zwei Nachfolger betrachtet werden, ist es möglich, dass am Ende das gesuchte Element
 am linken oder rechtem Kind vom Wurzelknoten steht.
@@ -89,14 +95,15 @@ Dies ist in Abbildung~\ref{fig:splayFind2} dargestellt.
     \caption{FindBT Wrapper}
     \label{fig:splayFind2}
 \end{figure}
-Diese Operation ist in allen Methoden zu implementieren und wird in den Entwurf dieser nicht
-explizit betrachtet.
+Diese Operation ist auch in \textit{FindBT}, \textit{FindTP} und \textit{DeleteBT} zu implementieren
+und wird in den Entwurf dieser Methoden nicht weiter explizit betrachtet.
 
 \subsubsection{Splay}\label{par:splay}
 Die Splay Methode bekommt einen Baum und einen Pfad \(P \in \{LL, RR, LR, RL\}\) übergeben,
 welcher angibt, welcher Splaying Fall vorliegt.
-Es wird eine Fallunterscheidung über den Pfad gemacht, welche die Abfolge der Rotationen bestimmt.
-Diese sind wie beim AVL Baum zu implementieren.
+Es wird eine Fallunterscheidung über den Pfad durchgeführt, welche die Abfolge der Rotationen
+bestimmt.
+Die Rotationen sind wie beim AVL Baum zu implementieren.
 \begin{itemize}
     \item LL → Rechtsrotation auf Wurzel → Rechtsrotation auf neue Wurzel. \verb|<R1>|
     \item RR → Linksrotation auf Wurzel → Linksrotation auf neue Wurzel. \verb|<R2>|
@@ -111,11 +118,11 @@ Um dies zu realisieren, wird, sobald das gesuchte Element gefunden wurde, ein Fl
 welches signalisiert, dass rotiert werden soll \verb|<R1>|.
 Wenn beim Überprüfen des Rückgabewertes das Flag gesetzt ist, wird in die entsprechende Richtung
 rotiert \verb|<R2>|.
-Somit wird das Element nur um eine Ebene nach oben gegeben, anschließend nicht mehr zurückgegeben
-wird \verb|<R3>|.
-Falls ein Element nicht gefunden wird, wird \verb|NOTFOUND| zurückgegeben \verb|<R4>|, beim
-Überprüfen des Pfades wird daraufhin \verb|HERE| zurückgeben \verb|<R5>|, was dazu führt, dass
-wieder genau einmal rotiert wird.
+Somit wird das Element nur um eine Ebene nach oben rotiert, da das Flag anschließend nicht mehr
+zurückgegeben wird \verb|<R3>|.
+Falls ein Element nicht gefunden wird, wird \verb|NOTFOUND| zurückgegeben \verb|<R4>|.
+Beim Überprüfen des Pfades wird daraufhin \verb|HERE| zurückgeben \verb|<R5>|, was dazu führt, dass
+das zuletzt zugegriffene Elemente genau eine Ebene nach oben rotiert wird.
 
 \subsubsection{InsertBT}
 Beim Einfügen eines Elementes wird dieses an die Wurzel befördert.
@@ -187,7 +194,7 @@ Bei beiden Ausgaben ist der durchschnittliche Balancefehler ca. 2, wobei dieser 
 AVL-Bäumen nur bei ca. 0.3 lag.
 Außerdem überschreitet die Höhe vom Splay-Baum im ersten Beispiel die maximale Höhe eines AVL-Baumes
 um 100 Prozent.
-Hierdurch wird ersichtlich, dass ein Splay-Baum für Zufällige Lese- und Schreiboperationen eine
+Hierdurch wird ersichtlich, dass ein Splay-Baum für zufällige Lese- und Schreiboperationen eine
 schlechtere Charakteristik aufzeigt.
 
 \subsubsection{Aufgabe 2.6 - Prüfen der Strategie anhand von Bildern}
@@ -206,6 +213,7 @@ In Abbildung~\ref{fig:splay-findtp4} wurde die \verb|FindTP(4)| auf den Ausgangs
 Die 4 wurde um eine Position gesplayt.
 
 In Abbildung~\ref{fig:splay-insert10} wurde die 10 eingefügt, diese wurde an die Wurzel gesplayt.
+
 
 \begin{figure}[hbt]
     \centering
@@ -231,6 +239,8 @@ Da die 99 nicht existiert wurde der Vaterknoten (9) gesplayt und steht anschlie�
 
 In Abbildung~\ref{fig:splay-findtp99} wurde die \verb|FindTP(99)| auf den Ausgangsbaum angewandt.
 Hier wurde die 9 um eine Position gesplayt.
+
+Alle Funktionen funktionieren somit wie erwartet.
 
 \begin{figure}[hbt]
     \centering

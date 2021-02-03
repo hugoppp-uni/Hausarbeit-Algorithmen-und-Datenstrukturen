@@ -8,7 +8,8 @@ deleteBT/2, listAppend/2, printBT/2, rotateR/1, rotateL/1, buildNodeAndRotateIfN
 
 start() ->
   avl_aufgabe_1_5(),
-  splay_aufgabe_1_6()
+  splay_aufgabe_1_6(),
+  splay_aufgabe_2_6()
 .
 
 avl_aufgabe_1_5() ->
@@ -24,6 +25,25 @@ treeInsertFromList(Tree, []) -> Tree.
 treeDeleteFromList(Tree, [H | T]) ->
   treeDeleteFromList(deleteBT(Tree, H), T);
 treeDeleteFromList(Tree, []) -> Tree.
+
+splay_aufgabe_2_6() ->
+  Tree = treeInsertFromList(initBT(), [4, 7, 2, 3, 5, 9, 6, 8, 1]),
+  splaytree:printBT(Tree, 'aufg2_6_2.gv'),
+  splaytree:printBT(splaytree:deleteBT(Tree, 4), 'aufg2_6_Delete4.gv'),
+  splaytree:printBT(splaytree:insertBT(Tree, 10), 'aufg2_6_2_Insert_10.gv'),
+
+  {_, BT4} = splaytree:findBT(Tree, 4),
+  splaytree:printBT(BT4, 'aufg2_6_FindBT4.gv'),
+  {_, BT99} = splaytree:findBT(Tree, 99),
+  splaytree:printBT(BT99, 'aufg2_6_FindBT99.gv'),
+
+  {_, TP4} = splaytree:findTP(Tree, 4),
+  splaytree:printBT(TP4, 'aufg2_6_FindTP4.gv'),
+  {_, TP99} = splaytree:findTP(Tree, 99),
+  splaytree:printBT(TP99, 'aufg2_6_FindTP99.gv'),
+
+  splaytree:printBT(splaytree:deleteBT(Tree, 99), 'aufg2_6_Delete99.gv')
+.
 
 
 splay_aufgabe_1_6() -> notimplementedgv.

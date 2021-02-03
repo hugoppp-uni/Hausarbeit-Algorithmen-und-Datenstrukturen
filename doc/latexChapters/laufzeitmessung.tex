@@ -1,6 +1,6 @@
 Für die Laufzeitmessungen wird die zur Verfügung gestellte Datei \textit{zeitAVLBT} verwendet.
-InsertBT, DeleteBT, FindBT, FindTP, isBT und EqualBT werden hier jeweils für aufsteigende,
-absteigende und zufällige Zahlen getestet.
+\textit{InsertBT}, \textit{DeleteBT}, \textit{FindBT}, \textit{FindTP}, \textit{isBT} und
+\textit{EqualBT} werden hier jeweils für aufsteigende, absteigende und zufällige Zahlen getestet.
 Es wurde über 20 Messungen gemittelt, die Schrittgröße beträgt jeweils 500 Elemente.
 
 Die Testsystemspezifikationen sehen folgt aus:
@@ -61,7 +61,8 @@ bei \textit{InsertBT} und \textit{deleteBT}, jeweils mit zufälligen Zahlen, ein
 Regression eingezeichnet.
 Daran ist zu erkennen, dass die Komplexität des Einfügens und Löschens logaritmisch ist.
 Zum Verbessern der Aussagekraft der Messung müsste der Bereich unter 500 Elementen genauer
-betrachtet werden, dies ist allerdings durch die hohe Streuung nicht möglich gewesen.
+betrachtet werden, dies ist allerdings durch die hohe Streuung bei kleineren Elementzahlen nicht
+möglich gewesen.
 
 In Abbildung~\ref{fig:avl-zeit-el-find} ist \textit{FindBT} dargestellt.
 In dem Bereich von ca. 500 - 5000 Elementen streuen die Werte stark, weswegen sich eine sinnvolle
@@ -237,8 +238,8 @@ Für den Vergleich werden die kumulierten statt der elementweisen Messwerte hera
 Binärbaum die Messergebnisse fehlerhaft waren.
 
 \paragraph{Sortierte Zahlen}
-An den sortieren Zahlen ist zu erkennen, dass der AVL Baum bei allen Operationen extrem viel
-schneller ist als der normale Binärbaum.
+An den sortieren Zahlen ist zu erkennen, dass der AVL Baum bei allen Operationen dramatisch viel
+schneller als der normale Binärbaum ist.
 Dies liegt daran, dass der normale Binärbaum im Fall von sortierten Zahlen eine einfach verkette
 Liste wird, und somit eine lineare Komplexität aufweist.
 Der AVL-Baum hingegen balanciert sich beim Einfügen und Löschen, wodurch eine logarithmische
@@ -246,7 +247,7 @@ Laufzeit beibehalten wird.
 
 \paragraph{Zufällige Zahlen}
 Da der normale Binärbaum mit zufälligen Zahlen bereits relativ balanciert ist,
-ist an diesen Messungen der Overhead der Rotationen zu erkennen.
+ist an den Messungen mit zufälligen Zahlen der Overhead der Rotationen zu erkennen.
 Bei \textit{FindBT} verhalten sich beide Bäume ähnlich, da hier keine Rotationen beim AVL-Baum
 ausgeführt werden.
 Bei \textit{DeleteBT} und \textit{InsertBT} ist zu erkennen, dass der normale Binärbaum ca. 2 bis
@@ -268,5 +269,5 @@ geschrieben werden müssen.
 Da bei \textit{FindBT} besonders viele Rotationen ausgeführt werden, ist der Faktor dementsprechend
 höher.
 
-Zusammenfassend lässt sich sagen, dass bei einer Erlang Implementation der AVL-Baum einem
-Splay-Baum vorzuziehen ist.
+Bei einer Implementation in Erlang ist der AVL-Baum einem
+Splay-Baum somit vorzuziehen.
